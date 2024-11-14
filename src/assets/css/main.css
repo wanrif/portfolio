@@ -1,0 +1,25 @@
+@import url(https://fonts.bunny.net/css?family=spline-sans-mono:300,300i,400,400i,500,500i,600,600i,700,700i);
+@import url(https://fonts.bunny.net/css?family=jersey-10:400);
+
+/* Fonts */
+@font-face {
+  font-family: franchise;
+  src: url('@assets/fonts/franchise/Franchise.ttf') format('truetype');
+  font-size: medium;
+}
+
+@font-face {
+  font-family: franchiseFilled;
+  src: url('@assets/fonts/franchise/FranchiseFilled.ttf') format('truetype');
+  font-size: medium;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .wrapper {
+    @apply box-border relative flex flex-col antialiased bg-gallery-50 dark:bg-shark-900 min-h-screen text-tertiary-500 dark:text-gallery-100 transition-colors duration-200 ease-in-out scroll-smooth;
+  }
+}

@@ -1,0 +1,72 @@
+import type { Config } from 'tailwindcss';
+import defaultTheme from 'tailwindcss/defaultTheme';
+
+export default (<Partial<Config>>{
+  darkMode: 'selector',
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Spline Sans Mono', ...defaultTheme.fontFamily.sans],
+        'jersey-ten': ['"Jersey 10"', ...defaultTheme.fontFamily.sans],
+        franchise: ['franchise', ...defaultTheme.fontFamily.sans],
+        franchiseFilled: ['franchiseFilled', ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        shark: {
+          '50': '#f6f7f9',
+          '100': '#eceff2',
+          '200': '#d4dbe3',
+          '300': '#aebccb',
+          '400': '#8297ae',
+          '500': '#637b94',
+          '600': '#4e637b',
+          '700': '#405064',
+          '800': '#384454',
+          '900': '#323c48',
+          '950': '#222831',
+        },
+        tuna: {
+          '50': '#f6f7f9',
+          '100': '#edeef1',
+          '200': '#d6dae1',
+          '300': '#b3bbc6',
+          '400': '#8996a7',
+          '500': '#6a788d',
+          '600': '#556074',
+          '700': '#464f5e',
+          '800': '#3c4350',
+          '900': '#31363f',
+          '950': '#23272e',
+        },
+        tertiary: {
+          '50': '#f3f8f8',
+          '100': '#dfedee',
+          '200': '#c3ddde',
+          '300': '#9ac4c6',
+          '400': '#76abae',
+          '500': '#4e888c',
+          '600': '#447176',
+          '700': '#3c5d62',
+          '800': '#374e53',
+          '900': '#314448',
+          '950': '#1d2b2f',
+        },
+        gallery: {
+          '50': '#f8f8f8',
+          '100': '#eeeeee',
+          '200': '#dcdcdc',
+          '300': '#bdbdbd',
+          '400': '#989898',
+          '500': '#7c7c7c',
+          '600': '#656565',
+          '700': '#525252',
+          '800': '#464646',
+          '900': '#3d3d3d',
+          '950': '#292929',
+        },
+      },
+    },
+  },
+  plugins: [],
+});

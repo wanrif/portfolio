@@ -1,0 +1,48 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bunx --bun vite --host",
+    "build": "tsc -b && bunx --bun vite build",
+    "lint": "bunx biome lint --write ./src",
+    "format": "bunx biome format --write ./src",
+    "biome:explain": "bunx biome explain daemon-logs",
+    "biome:clean": "bunx biome clean",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.1",
+    "@reduxjs/toolkit": "^2.3.0",
+    "@types/bun": "^1.1.13",
+    "framer-motion": "^11.11.15",
+    "gsap": "^3.12.5",
+    "lodash": "^4.17.21",
+    "lz-string": "^1.5.0",
+    "moment": "^2.30.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.1.1",
+    "react-icons": "^5.3.0",
+    "react-particles": "^2.12.2",
+    "react-redux": "^9.1.2",
+    "redux-persist": "^6.0.0",
+    "tsparticles-slim": "^2.12.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@types/lodash": "^4.17.13",
+    "@types/moment": "^2.13.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react-swc": "^3.7.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "tailwindcss": "^3.4.14",
+    "terser": "^5.36.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
