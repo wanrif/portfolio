@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite --host",
-    "build": "tsc -b && bunx --bun vite build",
+    "build": "tsc -b && vite build",
     "lint": "bunx biome lint --write ./src",
     "format": "bunx biome format --write ./src",
     "biome:explain": "bunx biome explain daemon-logs",
