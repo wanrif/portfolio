@@ -1,13 +1,22 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { GiCat, GiLinkedRings } from 'react-icons/gi';
+import { GiAce, GiCat, GiLinkedRings } from 'react-icons/gi';
 import { GoMention } from 'react-icons/go';
+
+interface IContactLink {
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+  value: string;
+  delay: number;
+  gradientColors: string;
+}
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
 
-  const contactLinks = [
+  const contactLinks: IContactLink[] = [
     {
       icon: <GoMention className='w-6 h-6' />,
       label: 'Email',
@@ -32,35 +41,40 @@ const Contact: React.FC = () => {
       delay: 0.3,
       gradientColors: 'from-purple-400 to-purple-600',
     },
+    {
+      icon: <GiAce className='w-5 h-5' />,
+      label: 'CV',
+      href: 'https://drive.proton.me/urls/BR24YA9V6M#Ggg6OmLV3baa',
+      value: 'View CV or Download',
+      delay: 0.3,
+      gradientColors: 'from-yellow-400 to-yellow-600',
+    },
   ];
 
   return (
     <section
       id='contacts'
-      className='bg-gradient-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-[1px] sm:mt-0 py-16 min-h-[40dvh]'
-    >
-      <div className='container mx-auto px-4 max-w-4xl'>
+      className='bg-gradient-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-[1px] sm:mt-0 py-16 min-h-[40dvh]'>
+      <div className='container mx-auto px-4 max-w-6xl'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className='text-center mb-12'
-        >
+          className='text-center mb-12'>
           <h2 className='text-3xl md:text-4xl font-bold text-gallery-950 dark:text-tertiary-300 mb-4'>
             {t('contact_title')}
           </h2>
           <p className='text-lg text-gallery-800 dark:text-tertiary-400 max-w-2xl mx-auto'>{t('contact_subtitle')}</p>
         </motion.div>
 
-        <div className='grid gap-6 md:grid-cols-3'>
+        <div className='grid gap-6 md:grid-cols-4'>
           {contactLinks.map((link) => (
             <motion.div
               key={link.label}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: link.delay, duration: 0.3 }}
-              className='group relative'
-            >
+              className='group relative'>
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${link.gradientColors} opacity-0 
                   group-hover:opacity-10 dark:group-hover:opacity-20 rounded-xl transition-opacity duration-300`}
@@ -76,21 +90,18 @@ const Contact: React.FC = () => {
                   shadow-lg hover:shadow-xl
                   transition-all duration-300 ease-in-out
                   border border-tertiary-400/10 dark:border-tertiary-500/10
-                  hover:border-tertiary-400/30 dark:hover:border-tertiary-500/30'
-              >
+                  hover:border-tertiary-400/30 dark:hover:border-tertiary-500/30'>
                 <div className='flex flex-col items-center'>
                   <div
                     className='mb-4 p-3 rounded-xl bg-tertiary-400 dark:bg-tertiary-500 
                     group-hover:bg-gradient-to-br group-hover:scale-110
-                    transition-all duration-300'
-                  >
+                    transition-all duration-300'>
                     {link.icon}
                   </div>
                   <h3 className='text-lg font-semibold text-tertiary-600 dark:text-tertiary-300 mb-2'>{link.label}</h3>
                   <p
                     className='text-sm text-tertiary-500 dark:text-tertiary-400 text-center
-                    group-hover:text-tertiary-600 dark:group-hover:text-tertiary-300 transition-colors'
-                  >
+                    group-hover:text-tertiary-600 dark:group-hover:text-tertiary-300 transition-colors'>
                     {link.value}
                   </p>
 
@@ -98,8 +109,7 @@ const Contact: React.FC = () => {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     className='absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100
-                      text-tertiary-500 dark:text-tertiary-400 transition-opacity duration-300'
-                  >
+                      text-tertiary-500 dark:text-tertiary-400 transition-opacity duration-300'>
                     →
                   </motion.span>
                 </div>

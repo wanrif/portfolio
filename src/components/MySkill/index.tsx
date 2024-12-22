@@ -3,10 +3,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { GiBackpack, GiConfrontation, GiToolbox, GiTripleYin } from 'react-icons/gi';
 
+interface ISkill {
+  title: string;
+  skills: string[];
+  icon: React.ReactNode;
+}
+
 const MySkill: React.FC = () => {
   const { t } = useTranslation();
 
-  const skillData = [
+  const skillData: ISkill[] = [
     {
       title: t('my_skill_frontend'),
       skills: ['React', 'Next.js', 'Vue', 'Nuxt', 'Tailwind CSS', 'SCSS'],
@@ -32,15 +38,13 @@ const MySkill: React.FC = () => {
   return (
     <section
       id='skills'
-      className='py-16 bg-gradient-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 min-h-[50dvh]'
-    >
+      className='py-16 bg-gradient-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 min-h-[50dvh]'>
       <div className='container mx-auto px-4 max-w-6xl'>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className='text-3xl font-bold text-center text-gallery-950 dark:text-tertiary-300 mb-12'
-        >
+          className='text-3xl font-bold text-center text-gallery-950 dark:text-tertiary-300 mb-12'>
           {t('my_skill_title')}
         </motion.h2>
 
@@ -53,13 +57,11 @@ const MySkill: React.FC = () => {
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               className='group relative bg-tuna-50/80 dark:bg-shark-950/80 backdrop-blur-sm rounded-2xl p-6 
                 hover:shadow-lg hover:shadow-tertiary-400/20 dark:hover:shadow-tertiary-500/20 
-                transition-all duration-300 ease-in-out'
-            >
+                transition-all duration-300 ease-in-out'>
               <div className='flex items-center gap-3 mb-6'>
                 <div
                   className='p-3 rounded-xl bg-tertiary-400 dark:bg-tertiary-500 
-                  group-hover:bg-tertiary-500 dark:group-hover:bg-tertiary-600 transition-colors'
-                >
+                  group-hover:bg-tertiary-500 dark:group-hover:bg-tertiary-600 transition-colors'>
                   {category.icon}
                 </div>
                 <h3 className='text-xl font-semibold text-tertiary-600 dark:text-tertiary-300'>{category.title}</h3>
@@ -77,8 +79,7 @@ const MySkill: React.FC = () => {
                       text-tertiary-600 dark:text-tertiary-300
                       hover:bg-tertiary-400/20 dark:hover:bg-tertiary-500/20
                       border border-tertiary-400/20 dark:border-tertiary-500/20
-                      transition-all duration-300'
-                  >
+                      transition-all duration-300'>
                     {skill}
                   </motion.span>
                 ))}

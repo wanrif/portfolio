@@ -3,13 +3,22 @@ import { useAppSelector } from '@stores/hooks';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { GiOfficeChair } from 'react-icons/gi'; // Add this import
+import { GiOfficeChair } from 'react-icons/gi';
+
+interface IExperience {
+  title: string;
+  company: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  skills: string[];
+}
 
 const Experiences: React.FC = () => {
   const { t } = useTranslation();
   const locale = useAppSelector(selectLocale);
 
-  const experiences = [
+  const experiences: IExperience[] = [
     {
       title: 'Fullstack Developer',
       company: 'PT Phincon',
@@ -46,8 +55,7 @@ const Experiences: React.FC = () => {
   return (
     <section
       id='experiences'
-      className='bg-gradient-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-[1px] sm:mt-0 pb-10 min-h-[50dvh]'
-    >
+      className='bg-gradient-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-[1px] sm:mt-0 pb-10 min-h-[50dvh]'>
       <div className='container mx-auto p-4 max-w-4xl'>
         <div className='flex flex-col mb-8 space-y-2'>
           <h2 className='text-3xl font-bold text-center text-gallery-950 dark:text-tertiary-300'>
@@ -69,8 +77,7 @@ const Experiences: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className='relative mb-8 last:mb-0'
-              >
+                className='relative mb-8 last:mb-0'>
                 {/* Timeline dot */}
                 <div
                   className={`absolute w-4 h-4 bg-tertiary-400 dark:bg-tertiary-500 rounded-full border-4 border-tuna-50 dark:border-shark-950
@@ -85,8 +92,7 @@ const Experiences: React.FC = () => {
                     hover:shadow-tertiary-400/20 dark:hover:shadow-tertiary-500/20 
                     transition-all duration-300 ease-in-out
                     md:w-[calc(50%-20px)]
-                    ${index % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}
-                >
+                    ${index % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}>
                   <div className='flex items-start gap-4'>
                     <div className='w-12 h-12 rounded-lg bg-tertiary-400 dark:bg-tertiary-500 p-2 flex items-center justify-center shrink-0'>
                       <GiOfficeChair className='w-8 h-8 text-white' />
@@ -114,8 +120,7 @@ const Experiences: React.FC = () => {
                           <span
                             key={idx}
                             className='px-3 py-1 text-sm rounded-full bg-tertiary-400/20 dark:bg-tertiary-500/20 
-                              text-tertiary-600 dark:text-tertiary-300'
-                          >
+                              text-tertiary-600 dark:text-tertiary-300'>
                             {skill}
                           </span>
                         ))}
