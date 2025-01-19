@@ -56,10 +56,10 @@ export default defineConfig({
     },
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console logs for production
+        drop_console: true,
         drop_debugger: true,
       },
     },
-    reportCompressedSize: true, // Report compressed size in the build summary
+    reportCompressedSize: true,
   },
 });

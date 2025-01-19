@@ -1,70 +1,54 @@
 import ThemeMode from '@components/ThemeMode';
-import { selectLocale } from '@containers/app/selectors';
+import { setTheme } from '@containers/app/reducer';
+import { selectLocale, selectTheme } from '@containers/app/selectors';
 import Language from '@containers/language';
 import { useGSAP } from '@gsap/react';
-import { useAppSelector } from '@stores/hooks';
+import { useAppDispatch, useAppSelector } from '@stores/hooks';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { GiAngelWings, GiBugleCall, GiJetFighter, GiSkills } from 'react-icons/gi';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import Tooltip from './Tooltip';
 import { animateTooltip, containerVariants, menuItemVariants } from './animations';
+import { MENU_ITEMS, SCROLL_OBSERVER_OPTIONS } from './config';
 
 const FloatingMenu: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector(selectTheme);
   const locale = useAppSelector(selectLocale);
+
   const [isScrolled, setIsScrolled] = useState(false);
-  const [tooltipIndex, setTooltipIndex] = useState(0);
-  const tooltipRef = useRef<HTMLDivElement>(null);
-  const tooltipAnimationRef = useRef<GSAPTween | null>(null);
+  const [tooltipState, setTooltipState] = useState({ index: 0, isActive: false });
 
-  const scrollObserver = useRef<IntersectionObserver | null>(null);
+  const refs = {
+    tooltip: useRef<HTMLDivElement>(null),
+    menu: useRef<HTMLDivElement>(null),
+    tooltipAnimation: useRef<GSAPTween | null>(null),
+    scrollObserver: useRef<IntersectionObserver | null>(null),
+  };
 
-  useEffect(() => {
-    const options = {
-      threshold: 0,
-      rootMargin: '0px',
-    };
-
-    scrollObserver.current = new IntersectionObserver(([entry]) => {
-      setIsScrolled(!entry.isIntersecting);
-    }, options);
-
-    const target = document.getElementById('header') || document.body;
-    scrollObserver.current.observe(target);
-
-    return () => scrollObserver.current?.disconnect();
-  }, []);
-
-  const scrollToSection = useCallback((id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSection = (id: string) => {
+    if (id === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
-  }, []);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const toggleTheme = () => {
+    dispatch(setTheme(theme === 'dark' ? 'light' : 'dark'));
+    document.documentElement.classList.toggle('dark');
+  };
 
   const menuList = useMemo(
     () => [
+      ...MENU_ITEMS.map(({ icon: Icon, sectionId, tooltip }) => ({
+        component: <Icon className='w-7 h-7' />,
+        handleClick: () => scrollToSection(sectionId),
+        tooltip,
+      })),
       {
-        component: <GiAngelWings className='w-7 h-7' />,
-        handleClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-        tooltip: 'About',
-      },
-      {
-        component: <GiJetFighter className='w-7 h-7' />,
-        handleClick: () => scrollToSection('experiences'),
-        tooltip: 'Experiences',
-      },
-      {
-        component: <GiSkills className='w-7 h-7' />,
-        handleClick: () => scrollToSection('skills'),
-        tooltip: 'My Skills',
-      },
-      {
-        component: <GiBugleCall className='w-7 h-7' />,
-        handleClick: () => scrollToSection('contacts'),
-        tooltip: 'Contacts',
-      },
-      {
-        component: <ThemeMode />,
+        component: <ThemeMode theme={theme} />,
+        handleClick: toggleTheme,
         tooltip: 'Theme',
       },
       {
@@ -72,28 +56,40 @@ const FloatingMenu: React.FC = () => {
         tooltip: locale,
       },
     ],
-    [locale, scrollToSection]
+    [theme, locale]
   );
 
-  const handleMouseEnter = useCallback((index: number) => {
-    setTooltipIndex(index);
-    if (tooltipRef.current) {
-      tooltipAnimationRef.current?.kill();
-      tooltipAnimationRef.current = animateTooltip(tooltipRef.current, true);
-    }
+  // Scroll observer effect
+  useEffect(() => {
+    refs.scrollObserver.current = new IntersectionObserver(
+      ([entry]) => setIsScrolled(!entry.isIntersecting),
+      SCROLL_OBSERVER_OPTIONS
+    );
+
+    const target = document.getElementById('header') || document.body;
+    refs.scrollObserver.current.observe(target);
+
+    return () => refs.scrollObserver.current?.disconnect();
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    if (tooltipRef.current) {
-      tooltipAnimationRef.current?.kill();
-      tooltipAnimationRef.current = animateTooltip(tooltipRef.current, false);
-    }
+  // Click outside effect
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!refs.menu.current?.contains(event.target as Node)) {
+        setTooltipState((prev) => ({ ...prev, isActive: false }));
+        refs.tooltipAnimation.current?.kill();
+        refs.tooltip.current && (refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, false));
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // GSAP animation
   useGSAP(() => {
     const items = gsap.utils.toArray('.menu-item');
     gsap.set(items, { opacity: 0, y: 50 });
-
     gsap.to(items, {
       opacity: 1,
       y: 0,
@@ -107,6 +103,7 @@ const FloatingMenu: React.FC = () => {
   return (
     <div className='fixed bottom-0 py-4 w-screen flex justify-center items-center'>
       <motion.div
+        ref={refs.menu}
         initial='hidden'
         animate='visible'
         exit='exit'
@@ -114,39 +111,13 @@ const FloatingMenu: React.FC = () => {
         className={`${
           isScrolled ? 'backdrop-blur-lg bg-white/30 dark:bg-black/30' : 'bg-gallery-50 dark:bg-tuna-950'
         } shadow-md rounded-full py-2 px-4 w-fit flex items-center gap-x-4 relative`}
-        id='floating-menu-container'
       >
-        <div
-          id='tooltip'
-          ref={tooltipRef}
-          className='absolute bottom-full px-3 py-1 bg-shark-200/50 dark:bg-tuna-900/50 backdrop-blur text-sm rounded-full border border-shark-500 pointer-events-none opacity-0 capitalize'
-          style={{
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '120px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            id='tooltip-track'
-            style={{
-              transform: `translateX(${-tooltipIndex * 100}px)`,
-              transition: 'transform 0.3s ease-in-out',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {menuList.map((item, index) => (
-              <span
-                id='tooltip-text'
-                key={index}
-                style={{ display: 'inline-block', width: '100px', textAlign: 'center' }}
-                className='text-tertiary-500 dark:text-gallery-100'
-              >
-                {item.tooltip}
-              </span>
-            ))}
-          </div>
-        </div>
+        <Tooltip
+          ref={refs.tooltip}
+          isActive={tooltipState.isActive}
+          tooltipIndex={tooltipState.index}
+          items={menuList}
+        />
         {menuList.map((item, index) => (
           <motion.div
             key={index}
@@ -156,8 +127,16 @@ const FloatingMenu: React.FC = () => {
             whileTap={{ scale: 1.1, rotate: 0 }}
             className='font-semibold cursor-pointer select-none text-tertiary-500 dark:text-gallery-100'
             onClick={item.handleClick}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={() => {
+              setTooltipState({ index, isActive: true });
+              refs.tooltipAnimation.current?.kill();
+              refs.tooltip.current && (refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, true));
+            }}
+            onMouseLeave={() => {
+              setTooltipState((prev) => ({ ...prev, isActive: false }));
+              refs.tooltipAnimation.current?.kill();
+              refs.tooltip.current && (refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, false));
+            }}
           >
             {item.component}
           </motion.div>
