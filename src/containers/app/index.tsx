@@ -1,9 +1,9 @@
-import Banner from '@components/Banner';
+import BannerRevamp from '@components/BannerRevamp';
 import Contact from '@components/Contact';
 import Experiences from '@components/Experiences';
-import FloatingMenu from '@components/FloatingMenu';
+import FloatingMenuRevamp from '@components/FloatingMenuRevamp';
 import MySkill from '@components/MySkill';
-import Navbar from '@components/Navbar';
+import NavbarRevamp from '@components/NavbarRevamp';
 import { useAppDispatch, useAppSelector } from '@stores/hooks';
 import isEmpty from 'lodash/isEmpty';
 import { useEffect } from 'react';
@@ -26,14 +26,14 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <NavbarRevamp />
       <main className='box-border relative antialiased transition-all scroll-smooth'>
-        <Banner />
+        <BannerRevamp />
         <Experiences />
-        <MySkill />
-        <Contact />
+        {/* <MySkill />
+        <Contact /> */}
       </main>
-      <FloatingMenu />
+      <FloatingMenuRevamp />
     </>
   );
 }
