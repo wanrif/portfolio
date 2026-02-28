@@ -20,7 +20,7 @@ persistor.subscribe(() => {
   if (isRehydrated) {
     const locale = selectLocale(store.getState());
 
-    i18n
+    void i18n
       .use(initReactI18next) // passes i18n down to react-i18next
       .init({
         resources,

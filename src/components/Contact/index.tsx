@@ -54,7 +54,7 @@ const Contact: React.FC = () => {
   return (
     <section
       id='contacts'
-      className='bg-gradient-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-[1px] sm:mt-0 py-16 min-h-[40dvh]'
+      className='bg-linear-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-px sm:mt-0 py-16 min-h-[40dvh]'
     >
       <div className='container mx-auto px-4 max-w-6xl'>
         <motion.div
@@ -79,7 +79,7 @@ const Contact: React.FC = () => {
               className='group relative'
             >
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${link.gradientColors} opacity-0 
+                className={`absolute inset-0 bg-linear-to-br ${link.gradientColors} opacity-0 
                   group-hover:opacity-10 dark:group-hover:opacity-20 rounded-xl transition-opacity duration-300`}
               />
 
@@ -98,7 +98,7 @@ const Contact: React.FC = () => {
                 <div className='flex flex-col items-center'>
                   <div
                     className='mb-4 p-3 rounded-xl bg-tertiary-400 dark:bg-tertiary-500 
-                    group-hover:bg-gradient-to-br group-hover:scale-110
+                    group-hover:bg-linear-to-br group-hover:scale-110
                     transition-all duration-300'
                   >
                     {link.icon}

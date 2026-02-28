@@ -1,22 +1,23 @@
 import { gsap } from 'gsap';
+import type { Variants } from 'framer-motion';
 
-export const containerVariants = {
+export const containerVariants: Variants = {
   hidden: { opacity: 0, y: 100, scale: 0.9 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.8, ease: 'easeOut' },
+    transition: { duration: 0.8, ease: 'easeOut' as const },
   },
   exit: {
     opacity: 0,
     y: 100,
     scale: 0.9,
-    transition: { duration: 0.5, ease: 'easeIn' },
+    transition: { duration: 0.5, ease: 'easeIn' as const },
   },
 };
 
-export const menuItemVariants = {
+export const menuItemVariants: Variants = {
   hidden: { opacity: 0, y: 50, scale: 0.8, rotate: 0 },
   visible: (i: number) => ({
     opacity: 1,
@@ -26,8 +27,8 @@ export const menuItemVariants = {
     transition: {
       delay: i * 0.2,
       duration: 0.6,
-      ease: 'easeOut',
-      type: 'spring',
+      ease: 'easeOut' as const,
+      type: 'spring' as const,
       stiffness: 200,
     },
   }),

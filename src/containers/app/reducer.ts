@@ -2,7 +2,7 @@
 import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface AppState {
-  theme: 'light' | 'dark' | string;
+  theme: 'light' | 'dark' | '';
   locale: string;
 }
 

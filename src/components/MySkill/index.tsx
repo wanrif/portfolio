@@ -38,7 +38,7 @@ const MySkill: React.FC = () => {
   return (
     <section
       id='skills'
-      className='py-16 bg-gradient-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 min-h-[50dvh]'>
+      className='py-16 bg-linear-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 min-h-[50dvh]'>
       <div className='container mx-auto px-4 max-w-6xl'>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

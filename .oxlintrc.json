@@ -1,0 +1,13 @@
+{
+  "plugins": null,
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "rules": {},
+  "env": {
+    "builtin": true
+  },
+  "globals": {},
+  "ignorePatterns": ["dist"]
+}

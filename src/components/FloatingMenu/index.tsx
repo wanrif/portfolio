@@ -11,6 +11,14 @@ import Tooltip from './Tooltip';
 import { animateTooltip, containerVariants, menuItemVariants } from './animations';
 import { MENU_ITEMS, SCROLL_OBSERVER_OPTIONS } from './config';
 
+const scrollToSection = (id: string) => {
+  if (id === 'top') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+};
+
 const FloatingMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector(selectTheme);
@@ -24,14 +32,6 @@ const FloatingMenu: React.FC = () => {
     menu: useRef<HTMLDivElement>(null),
     tooltipAnimation: useRef<GSAPTween | null>(null),
     scrollObserver: useRef<IntersectionObserver | null>(null),
-  };
-
-  const scrollToSection = (id: string) => {
-    if (id === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const toggleTheme = () => {
@@ -56,14 +56,14 @@ const FloatingMenu: React.FC = () => {
         tooltip: locale,
       },
     ],
-    [theme, locale]
+    [theme, locale],
   );
 
   // Scroll observer effect
   useEffect(() => {
     refs.scrollObserver.current = new IntersectionObserver(
       ([entry]) => setIsScrolled(!entry.isIntersecting),
-      SCROLL_OBSERVER_OPTIONS
+      SCROLL_OBSERVER_OPTIONS,
     );
 
     const target = document.getElementById('header') || document.body;
@@ -75,10 +75,12 @@ const FloatingMenu: React.FC = () => {
   // Click outside effect
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (!refs.menu.current?.contains(event.target as Node)) {
+      if (!(event.target instanceof Node) || !refs.menu.current?.contains(event.target)) {
         setTooltipState((prev) => ({ ...prev, isActive: false }));
         refs.tooltipAnimation.current?.kill();
-        refs.tooltip.current && (refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, false));
+        if (refs.tooltip.current) {
+          refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, false);
+        }
       }
     };
 
@@ -110,8 +112,7 @@ const FloatingMenu: React.FC = () => {
         variants={containerVariants}
         className={`${
           isScrolled ? 'backdrop-blur-lg bg-white/30 dark:bg-black/30' : 'bg-gallery-50 dark:bg-tuna-950'
-        } shadow-md rounded-full py-2 px-4 w-fit flex items-center gap-x-4 relative`}
-      >
+        } shadow-md rounded-full py-2 px-4 w-fit flex items-center gap-x-4 relative`}>
         <Tooltip
           ref={refs.tooltip}
           isActive={tooltipState.isActive}
@@ -130,14 +131,17 @@ const FloatingMenu: React.FC = () => {
             onMouseEnter={() => {
               setTooltipState({ index, isActive: true });
               refs.tooltipAnimation.current?.kill();
-              refs.tooltip.current && (refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, true));
+              if (refs.tooltip.current) {
+                refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, true);
+              }
             }}
             onMouseLeave={() => {
               setTooltipState((prev) => ({ ...prev, isActive: false }));
               refs.tooltipAnimation.current?.kill();
-              refs.tooltip.current && (refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, false));
-            }}
-          >
+              if (refs.tooltip.current) {
+                refs.tooltipAnimation.current = animateTooltip(refs.tooltip.current, false);
+              }
+            }}>
             {item.component}
           </motion.div>
         ))}

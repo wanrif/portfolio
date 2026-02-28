@@ -2,12 +2,13 @@ import { URL, fileURLToPath } from 'url';
 import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
 
 const prefix = 'portreez';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), visualizer()],
+  plugins: [react(), visualizer(), tailwindcss()],
   css: {
     modules: {
       localsConvention: 'camelCase',
@@ -15,6 +16,7 @@ export default defineConfig({
       generateScopedName: '_[folder]_[local]_[sha256:hash:base64:5]_[sha512:hash:base64:4]',
     },
   },
+  define: { 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) },
   resolve: {
     alias: {
       '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
@@ -29,13 +31,13 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 5173,
     hmr: {
       path: 'ws',
     },
   },
   preview: {
-    port: 3000,
+    port: 5174,
   },
   build: {
     outDir: 'dist',

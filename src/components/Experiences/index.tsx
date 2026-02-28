@@ -62,7 +62,7 @@ const Experiences: React.FC = () => {
   return (
     <section
       id='experiences'
-      className='bg-gradient-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-[1px] sm:mt-0 pb-10 min-h-[50dvh]'
+      className='bg-linear-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-px sm:mt-0 pb-10 min-h-[50dvh]'
     >
       <div className='container mx-auto p-4 max-w-4xl'>
         <div className='flex flex-col mb-8 space-y-2'>

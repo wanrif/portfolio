@@ -16,7 +16,7 @@ const Language: React.FC = () => {
     const nextLocale = locales[(currentIndex + 1) % locales.length];
 
     dispatch(setLocale(nextLocale));
-    i18n.changeLanguage(nextLocale);
+    void i18n.changeLanguage(nextLocale);
   }, [dispatch, i18n, locales, currentLocale]);
 
   return (
@@ -26,8 +26,7 @@ const Language: React.FC = () => {
       type='button'
       className='font-medium cursor-pointer'
       onClick={switchLocale}
-      data-testid='locale-toggle'
-    >
+      data-testid='locale-toggle'>
       {currentLocale === 'id' ? (
         <span className='text-tertiary-500 dark:text-gallery-100'>ID</span>
       ) : (

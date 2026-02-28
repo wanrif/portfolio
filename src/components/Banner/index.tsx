@@ -31,7 +31,7 @@ const Banner: React.FC = () => {
   ];
 
   return (
-    <section className='relative flex items-center justify-center min-h-[calc(100dvh-64px)] bg-gradient-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 overflow-hidden'>
+    <section className='relative flex items-center justify-center min-h-[calc(100dvh-64px)] bg-linear-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 overflow-hidden'>
       <ParticleBackground />
 
       <motion.div
