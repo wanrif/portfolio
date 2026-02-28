@@ -52,6 +52,7 @@ const Projects: React.FC = () => {
           {caseStudies.map((entry: CaseStudyModule, index) => {
             const { meta, default: CaseStudyBody } = entry;
             const isOpen = activeSlug === meta.slug;
+            const hasBackendRepo = meta.demo.includes('github.com');
             const projectStatus = meta.status ?? (meta.inProgress ? 'in-progress' : undefined);
 
             const badgeConfig =
@@ -128,7 +129,7 @@ const Projects: React.FC = () => {
                         target='_blank'
                         rel='noreferrer'
                         className='terminal-btn-secondary rounded-xl corner-bevel px-3 py-1.5'>
-                        {t('projects_repo_backend')}
+                        {hasBackendRepo ? t('projects_repo_backend') : t('projects_live_demo')}
                       </a>
                       <button
                         type='button'

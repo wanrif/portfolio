@@ -49,6 +49,7 @@ export default {
   projects_kasir_tradeoffs: 'Chose eventual consistency for resilience over strict real-time totals.',
   projects_repo_frontend: 'frontend repo',
   projects_repo_backend: 'backend repo',
+  projects_live_demo: 'live demo',
   projects_open_case_study: 'open case study',
   projects_close_case_study: 'close case study',
 

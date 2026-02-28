@@ -1,0 +1,47 @@
+export const meta = {
+  slug: 'vuetreez',
+  name: 'VueTreez',
+  status: 'completed',
+  summary:
+    'Frontend-only Vue 3 + TypeScript starter template focused on production-ready defaults: routing, i18n, theme modes, persisted state, and clean developer experience.',
+  problem:
+    'New Vue projects often spend too much time repeating setup work for routing, localization, theming, and state persistence before product features can begin.',
+  architecture:
+    'Single frontend repository architecture with Vue Router + MainLayout, Vue I18n for locale switching, Pinia persisted state (zipson serialization), and Tailwind CSS v4 tokenized styling.',
+  stack: [
+    'Vue 3',
+    'TypeScript',
+    'Vite 7',
+    'Vue Router',
+    'Vue I18n',
+    'Pinia',
+    'pinia-plugin-persistedstate',
+    'VueUse',
+    'Tailwind CSS v4',
+    'Bun',
+    'Oxlint',
+    'Prettier',
+  ],
+  tradeoffs:
+    'Optimized for fast project bootstrap and consistency over highly opinionated domain-specific abstractions, keeping the template easy to extend for different product contexts.',
+  repo: 'https://github.com/wanrif/vuetreez',
+  demo: 'https://vuetreez.redwans.com/',
+};
+
+### Context
+
+VueTreez was created as a reusable frontend starter to remove repetitive boilerplate and give teams a stable baseline for modern Vue product development.
+
+### Solution
+
+- Pre-wired routing structure with `MainLayout` and dedicated Home/About/Not Found routes.
+- Built-in internationalization with English and Indonesian locales and quick language switching.
+- Theme switching (`light`, `dark`, `auto`) with persisted preference and predictable UI behavior.
+- Persisted app state with Pinia + plugin-based storage and key prefix conventions.
+- Public production deployment is available at `https://vuetreez.redwans.com/`.
+
+### Architecture Notes
+
+- CSS-first Tailwind v4 setup with design tokens defined in `src/assets/css/main.css`.
+- Clean folder segmentation (`components`, `layouts`, `pages`, `router`, `stores`, `i18n`) to support maintainability.
+- Bun-first scripts for install/dev/build/preview with Oxlint + Prettier for code quality.

@@ -49,6 +49,7 @@ export default {
   projects_kasir_tradeoffs: 'Memilih eventual consistency untuk ketahanan dibanding total real-time ketat.',
   projects_repo_frontend: 'repo frontend',
   projects_repo_backend: 'repo backend',
+  projects_live_demo: 'demo live',
   projects_open_case_study: 'buka case study',
   projects_close_case_study: 'tutup case study',
 
