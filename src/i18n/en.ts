@@ -6,7 +6,7 @@ export default {
   banner_tagline: 'From Pixel to Protocol: Weaving Web Wonders',
   banner_statement: 'I build systems end-to-end, from frontend interfaces to backend logic.',
   hero_available: 'Open for impactful product engineering work',
-  hero_terminal_line: 'fullstack operator • indonesia • open to collaboration',
+  hero_terminal_line: 'fullstack developer • indonesia • open to collaboration',
   hero_role: 'Fullstack Developer',
   hero_intro:
     'I design, ship, and maintain end-to-end products with a terminal mindset: clear logs, stable systems, and pragmatic delivery over hype.',
@@ -87,4 +87,10 @@ export default {
   palette_contact: 'open contact section',
   palette_theme: 'toggle theme mode',
   palette_lang: 'switch language',
+
+  boot_title: 'wanrif-os boot sequence',
+  boot_line_1: '[OK] loading kernel modules...',
+  boot_line_2: '[OK] mounting workspace filesystem...',
+  boot_line_3: '[OK] starting portfolio services...',
+  boot_line_4: '[READY] launching terminal session',
 };

@@ -189,8 +189,8 @@ const FloatingMenu: React.FC = () => {
         exit='exit'
         variants={containerVariants}
         className={`hidden sm:flex ${
-          isScrolled ? 'bg-shark-900/85' : 'bg-shark-950/95'
-        } relative flex w-fit max-w-[calc(100vw-2rem)] items-center gap-x-2 overflow-x-auto rounded-3xl corner-superellipse/2 border border-gallery-700 px-2 py-2 backdrop-blur-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:max-w-none sm:px-3`}>
+          isScrolled ? 'bg-shark-900/86' : 'bg-shark-950/95'
+        } relative flex w-fit max-w-[calc(100vw-2rem)] items-center gap-x-2 overflow-x-auto rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:max-w-none sm:px-3 sm:py-2`}>
         <Tooltip
           ref={refs.tooltip}
           isActive={tooltipState.isActive}
@@ -204,7 +204,7 @@ const FloatingMenu: React.FC = () => {
             variants={menuItemVariants}
             whileHover={{ scale: 1.08, rotate: 0, transition: { type: 'spring', stiffness: 300 } }}
             whileTap={{ scale: 0.95, rotate: 0 }}
-            className='cursor-pointer select-none rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 px-2 font-semibold text-tertiary-300 hover:border-tertiary-500 flex h-9 min-w-9 items-center justify-center sm:h-10 sm:min-w-10'
+            className='cursor-pointer select-none rounded-xl border border-gallery-700/90 bg-shark-950/75 px-2 font-semibold text-tertiary-300 hover:border-tertiary-400 flex h-9 min-w-9 items-center justify-center sm:h-9.5 sm:min-w-9.5'
             onClick={item.handleClick}
             onMouseEnter={() => {
               setTooltipState({ index, isActive: true });
@@ -227,9 +227,9 @@ const FloatingMenu: React.FC = () => {
           type='button'
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className='ml-auto cursor-pointer rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 px-2 py-1 text-[11px] text-gallery-200 hover:border-tertiary-500 sm:ml-0 sm:text-xs'
+          className='ml-auto cursor-pointer rounded-xl border border-gallery-700/90 bg-shark-950/75 px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-gallery-200 hover:border-tertiary-400 sm:ml-0 sm:text-[11px]'
           onClick={() => setIsPaletteOpen(true)}>
-          cmd
+          exec
         </motion.button>
       </motion.div>
 
@@ -240,7 +240,7 @@ const FloatingMenu: React.FC = () => {
         variants={containerVariants}
         className={`${
           isScrolled ? 'bg-shark-900/88' : 'bg-shark-950/95'
-        } flex w-fit max-w-full items-center justify-center gap-1.5 rounded-3xl corner-superellipse/2 border border-gallery-700 px-2 py-2 backdrop-blur-xl sm:hidden`}>
+        } flex w-fit max-w-full items-center justify-center gap-1.5 rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl sm:hidden`}>
         {mobileMenuList.map((item, index) => (
           <motion.button
             key={index}
@@ -249,7 +249,7 @@ const FloatingMenu: React.FC = () => {
             whileTap={{ scale: 0.94 }}
             type='button'
             aria-label={item.tooltip}
-            className='flex h-10 w-10 items-center justify-center rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 text-tertiary-300'
+            className='flex h-10 w-10 items-center justify-center rounded-xl border border-gallery-700/90 bg-shark-950/75 text-tertiary-300'
             onClick={item.handleClick}>
             {item.component}
           </motion.button>
@@ -258,9 +258,9 @@ const FloatingMenu: React.FC = () => {
         <motion.button
           type='button'
           whileTap={{ scale: 0.94 }}
-          className='flex h-10 min-w-10 items-center justify-center rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 px-2 text-[11px] font-semibold uppercase tracking-wider text-gallery-200'
+          className='flex h-10 min-w-10 items-center justify-center rounded-xl border border-gallery-700/90 bg-shark-950/75 px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-gallery-200'
           onClick={() => setIsPaletteOpen(true)}>
-          cmd
+          exec
         </motion.button>
       </motion.div>
 
@@ -273,16 +273,16 @@ const FloatingMenu: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.14, ease: [0.33, 1, 0.68, 1] }}
-              className='fixed inset-0 z-60 flex items-end justify-center bg-shark-950/85 px-0 pt-6 sm:items-start sm:px-4 sm:pt-20'
+              className='fixed inset-0 z-60 flex items-end justify-center bg-shark-950/90 px-0 pt-6 sm:items-start sm:px-4 sm:pt-20'
               onClick={() => setIsPaletteOpen(false)}>
               <motion.div
                 initial={{ opacity: 0, y: 24, scale: 0.985 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 16, scale: 0.99 }}
                 transition={{ type: 'spring', stiffness: 420, damping: 34, mass: 0.9 }}
-                className='max-h-[calc(100dvh-1rem)] w-full max-w-xl overflow-hidden rounded-t-3xl border border-gallery-700 bg-shark-950 sm:max-h-[calc(100dvh-3rem)] sm:rounded-3xl corner-superellipse/2'
+                className='max-h-[calc(100dvh-1rem)] w-full max-w-xl overflow-hidden rounded-t-3xl border border-tertiary-700/55 bg-shark-950 sm:max-h-[calc(100dvh-3rem)] sm:rounded-3xl corner-superellipse/2'
                 onClick={(event) => event.stopPropagation()}>
-                <div className='px-4 py-3 border-b border-gallery-700 text-sm text-gallery-300'>
+                <div className='px-4 py-3 border-b border-gallery-700 text-xs uppercase tracking-wider text-gallery-300'>
                   {'>'} {t('palette_title')}
                 </div>
                 <input
@@ -302,12 +302,12 @@ const FloatingMenu: React.FC = () => {
                       <button
                         key={command}
                         type='button'
-                        className={`w-full text-left px-4 py-2 cursor-pointer ${
-                          activeCommandIndex === index ? 'bg-shark-900/90' : 'hover:bg-shark-900'
+                        className={`w-full text-left px-4 py-2.5 cursor-pointer ${
+                          activeCommandIndex === index ? 'bg-shark-900/95' : 'hover:bg-shark-900/90'
                         }`}
                         onClick={() => runCommand(command)}>
                         <div className='flex items-center justify-between gap-3'>
-                          <span className='text-tertiary-300'>
+                          <span className='text-tertiary-300 uppercase tracking-wide text-xs sm:text-sm'>
                             {'$ run '} {command}
                           </span>
                           <span className='hidden text-xs text-gallery-400 sm:inline'>{description}</span>

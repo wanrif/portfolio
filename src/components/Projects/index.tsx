@@ -37,17 +37,18 @@ const Projects: React.FC = () => {
   }, [locale]);
 
   return (
-    <section id='projects' className='border-b border-gallery-800 bg-shark-950 px-4 py-16'>
-      <div className='container mx-auto max-w-5xl'>
-        <p className='terminal-prompt mb-2'>{'>'} section: projects</p>
+    <section id='projects' className='terminal-section relative px-4 py-16'>
+      <div className='terminal-grid-bg' />
+      <div className='container relative z-10 mx-auto max-w-6xl'>
+        <p className='terminal-prompt mb-2'>module: project.registry</p>
         <motion.h2 className='terminal-heading mb-2 font-display text-3xl font-bold' {...sectionInViewMotion()}>
           {t('projects_title')}
         </motion.h2>
-        <motion.p className='text-gallery-300 mb-10' {...sectionInViewMotion()}>
+        <motion.p className='mb-8 text-gallery-300' {...sectionInViewMotion()}>
           {t('projects_subtitle')}
         </motion.p>
 
-        <div className='space-y-8'>
+        <div className='space-y-5'>
           {caseStudies.map((entry: CaseStudyModule, index) => {
             const { meta, default: CaseStudyBody } = entry;
             const isOpen = activeSlug === meta.slug;
@@ -69,58 +70,78 @@ const Projects: React.FC = () => {
             return (
               <motion.article
                 key={meta.slug}
-                className='terminal-window rounded-3xl corner-superellipse/2 p-5'
+                className='terminal-window overflow-hidden rounded-2xl corner-superellipse/2'
                 {...makeStaggerInViewMotion(index)}
                 {...cardInteractionMotion()}>
-                <div className='mb-4 flex flex-wrap items-center gap-3'>
-                  <h3 className='font-display text-xl font-semibold text-gallery-100 terminal-caret'>{meta.name}</h3>
+                <div className='terminal-titlebar'>
+                  <div className='flex items-center gap-2'>
+                    <span className='terminal-chip'>unit-{String(index + 1).padStart(2, '0')}</span>
+                    <h3 className='font-display text-sm font-semibold tracking-wider text-gallery-100 terminal-caret'>
+                      {meta.name}
+                    </h3>
+                  </div>
                   {badgeConfig && (
                     <span
-                      className={`rounded-2xl corner-bevel border px-2 py-0.5 text-xs font-medium uppercase ${badgeConfig.className}`}>
+                      className={`rounded-xl border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${badgeConfig.className}`}>
                       {badgeConfig.label}
                     </span>
                   )}
                 </div>
-                <p className='text-gallery-300 mb-4'>{meta.summary}</p>
-                <ul className='space-y-2 text-gallery-300 leading-relaxed text-sm sm:text-base'>
-                  <li>
-                    <span className='text-tertiary-300'>[problem]</span> {meta.problem}
-                  </li>
-                  <li>
-                    <span className='text-tertiary-300'>[architecture]</span> {meta.architecture}
-                  </li>
-                  <li>
-                    <span className='text-tertiary-300'>[stack]</span> {meta.stack.join(', ')}
-                  </li>
-                  <li>
-                    <span className='text-tertiary-300'>[tradeoffs]</span> {meta.tradeoffs}
-                  </li>
-                </ul>
-                <div className='flex flex-wrap gap-4 mt-4'>
-                  <a
-                    href={meta.repo}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='terminal-btn-secondary rounded-2xl corner-bevel px-3 py-1'>
-                    {t('projects_repo_frontend')}
-                  </a>
-                  <a
-                    href={meta.demo}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='terminal-btn-secondary rounded-2xl corner-bevel px-3 py-1'>
-                    {t('projects_repo_backend')}
-                  </a>
-                  <button
-                    type='button'
-                    onClick={() => setActiveSlug(isOpen ? null : meta.slug)}
-                    className='terminal-btn-secondary rounded-2xl corner-bevel px-3 py-1'>
-                    {isOpen ? t('projects_close_case_study') : t('projects_open_case_study')}
-                  </button>
+                <div className='grid gap-4 p-4 md:grid-cols-[0.9fr_1.1fr] md:p-5'>
+                  <div className='space-y-3'>
+                    <p className='text-gallery-300'>{meta.summary}</p>
+                    <div className='terminal-subcard rounded-xl p-3 text-sm text-gallery-200'>
+                      <p className='terminal-prompt mb-1'>problem</p>
+                      <p>{meta.problem}</p>
+                    </div>
+                    <div className='terminal-subcard rounded-xl p-3 text-sm text-gallery-200'>
+                      <p className='terminal-prompt mb-1'>tradeoffs</p>
+                      <p>{meta.tradeoffs}</p>
+                    </div>
+                  </div>
+
+                  <div className='space-y-3'>
+                    <div className='terminal-subcard rounded-xl p-3 text-sm text-gallery-200'>
+                      <p className='terminal-prompt mb-1'>architecture</p>
+                      <p>{meta.architecture}</p>
+                    </div>
+                    <div className='terminal-subcard rounded-xl p-3'>
+                      <p className='terminal-prompt mb-2'>stack</p>
+                      <div className='flex flex-wrap gap-2'>
+                        {meta.stack.map((item) => (
+                          <span key={item} className='terminal-chip'>
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className='flex flex-wrap gap-2'>
+                      <a
+                        href={meta.repo}
+                        target='_blank'
+                        rel='noreferrer'
+                        className='terminal-btn-secondary rounded-xl corner-bevel px-3 py-1.5'>
+                        {t('projects_repo_frontend')}
+                      </a>
+                      <a
+                        href={meta.demo}
+                        target='_blank'
+                        rel='noreferrer'
+                        className='terminal-btn-secondary rounded-xl corner-bevel px-3 py-1.5'>
+                        {t('projects_repo_backend')}
+                      </a>
+                      <button
+                        type='button'
+                        onClick={() => setActiveSlug(isOpen ? null : meta.slug)}
+                        className='terminal-btn-primary rounded-xl corner-bevel px-3 py-1.5'>
+                        {isOpen ? t('projects_close_case_study') : t('projects_open_case_study')}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 {isOpen && (
-                  <div className='mt-5 border-t border-gallery-800 pt-4 text-gallery-300 space-y-3'>
+                  <div className='mx-4 mb-4 rounded-xl border border-gallery-700/80 bg-shark-950/55 p-4 text-gallery-300 md:mx-5 md:mb-5'>
                     <CaseStudyBody />
                   </div>
                 )}

@@ -107,80 +107,80 @@ const Experiences: React.FC = () => {
   };
 
   return (
-    <section id='now' className='border-b border-gallery-800 bg-shark-950 px-4 py-16'>
-      <div className='container mx-auto max-w-5xl'>
-        <div className='flex flex-col mb-8 space-y-2'>
-          <p className='terminal-prompt'>{'>'} section: now</p>
+    <section id='now' className='terminal-section relative px-4 py-16'>
+      <div className='terminal-grid-bg' />
+      <div className='container relative z-10 mx-auto max-w-6xl'>
+        <div className='mb-7 space-y-2'>
+          <p className='terminal-prompt'>module: career.timeline</p>
           <h2 className='terminal-heading font-display text-3xl font-bold'>{t('now_title')}</h2>
-          <h3 className='text-lg font-semibold text-gallery-300'>
+          <h3 className='text-base font-semibold text-gallery-300 sm:text-lg'>
             {countExperience('2023-07-01', new Date().toISOString().split('T')[0])}
           </h3>
         </div>
 
-        <div className='relative'>
-          <div className='absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-px h-full bg-gallery-700' />
-          <div className='relative'>
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                {...makeStaggerInViewMotion(index)}
-                className='relative mb-8 last:mb-0'>
-                <div
-                  className={`absolute w-4 h-4 bg-tertiary-400 rounded-full border-4 border-shark-950
-                    left-2 md:left-1/2 transform md:-translate-x-1/2 mt-6`}
-                />
+        <div className='grid gap-4 lg:grid-cols-[1.25fr_0.75fr]'>
+          <div className='terminal-window overflow-hidden rounded-2xl'>
+            <div className='terminal-titlebar'>
+              <span>log / employment.events</span>
+              <span className='terminal-chip'>{experiences.length} entries</span>
+            </div>
+            <div className='space-y-3 p-4'>
+              {experiences.map((exp, index) => (
                 <motion.div
+                  key={index}
+                  {...makeStaggerInViewMotion(index)}
                   {...cardInteractionMotion()}
-                  className={`terminal-window rounded-3xl corner-superellipse/2 ml-10 p-6 md:ml-0 md:w-[calc(50%-20px)] ${index % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}>
-                  <div className='flex items-start gap-4'>
-                    <div className='rounded-2xl corner-bevel flex h-12 w-12 shrink-0 items-center justify-center border border-gallery-700 p-2'>
-                      <GiOfficeChair className='w-8 h-8 text-tertiary-300' />
+                  className='terminal-subcard rounded-xl p-4'>
+                  <div className='mb-3 flex items-start gap-3'>
+                    <div className='rounded-xl border border-gallery-700 p-2'>
+                      <GiOfficeChair className='h-5 w-5 text-tertiary-300' />
                     </div>
-                    <div className='flex-1 min-w-0'>
-                      <h3 className='text-xl font-semibold text-gallery-100'>{exp.title}</h3>
-                      <p className='text-tertiary-300 font-medium'>{exp.company}</p>
-                      <p className='text-sm text-gallery-400 mb-2'>
+                    <div>
+                      <h3 className='text-base font-semibold text-gallery-100 sm:text-lg'>{exp.title}</h3>
+                      <p className='text-sm font-medium text-tertiary-300'>{exp.company}</p>
+                      <p className='text-xs text-gallery-400 sm:text-sm'>
                         {new Date(exp.startDate).toLocaleDateString(locale, { year: 'numeric', month: 'long' })} -{' '}
                         {exp.endDate === 'present'
                           ? t('experiences_present')
                           : new Date(exp.endDate).toLocaleDateString(locale, { year: 'numeric', month: 'long' })}
                       </p>
-                      <p className='text-gallery-300 mb-3'>{exp.description}</p>
-                      <div className='flex flex-wrap gap-2'>
-                        {exp.skills.map((skill, idx) => (
-                          <span
-                            key={idx}
-                            className='rounded-2xl corner-bevel border border-gallery-700 px-3 py-1 text-sm text-tertiary-300'>
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   </div>
+                  <p className='mb-3 text-sm text-gallery-300 sm:text-base'>{exp.description}</p>
+                  <div className='flex flex-wrap gap-2'>
+                    {exp.skills.map((skill, idx) => (
+                      <span key={idx} className='terminal-chip'>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </motion.div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        <motion.div className='terminal-window rounded-3xl corner-superellipse/2 mt-10 p-5' {...sectionInViewMotion()}>
-          <h4 className='terminal-prompt mb-4'>{'>'} {t('now_changelog_title')}</h4>
-          <div className='space-y-3'>
-            {nowContent.entries.map((entry) => (
-              <div key={`${entry.date}-${entry.title}`} className='terminal-subcard rounded-2xl corner-bevel p-3'>
-                <p className='text-tertiary-300 text-sm'>{entry.date}</p>
-                <p className='text-gallery-100 font-medium'>{entry.title}</p>
-                <p className='text-gallery-300'>{entry.detail}</p>
-              </div>
-            ))}
-          </div>
-
-          {nowContent.Body && (
-            <div className='mt-5 border-t border-gallery-800 pt-4 text-gallery-300 space-y-3'>
-              <nowContent.Body />
+              ))}
             </div>
-          )}
-        </motion.div>
+          </div>
+
+          <motion.div className='terminal-window overflow-hidden rounded-2xl' {...sectionInViewMotion()}>
+            <div className='terminal-titlebar'>
+              <span>feed / now.updates</span>
+              <span className='terminal-chip terminal-chip-accent'>{t('now_changelog_title')}</span>
+            </div>
+            <div className='space-y-3 p-4'>
+              {nowContent.entries.map((entry) => (
+                <div key={`${entry.date}-${entry.title}`} className='terminal-subcard rounded-xl p-3'>
+                  <p className='text-xs text-tertiary-300'>{entry.date}</p>
+                  <p className='font-medium text-gallery-100'>{entry.title}</p>
+                  <p className='text-sm text-gallery-300'>{entry.detail}</p>
+                </div>
+              ))}
+
+              {nowContent.Body && (
+                <div className='rounded-xl border border-gallery-700/70 bg-shark-950/55 p-3 text-sm text-gallery-300'>
+                  <nowContent.Body />
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

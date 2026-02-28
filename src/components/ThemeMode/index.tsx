@@ -5,7 +5,11 @@ interface ThemeModeProps {
 }
 
 const ThemeMode: React.FC<ThemeModeProps> = ({ theme }) => {
-  return <span className='text-sm font-semibold'>{theme === 'dark' ? 'DARK' : 'LIGHT'}</span>;
+  return (
+    <span className='text-xs font-semibold uppercase tracking-wider'>
+      {theme === 'dark' ? 'mode:cyber' : 'mode:amber-crt'}
+    </span>
+  );
 };
 
 export default ThemeMode;

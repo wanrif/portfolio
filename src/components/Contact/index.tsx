@@ -48,46 +48,68 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <section id='contacts' className='bg-shark-950 py-16 min-h-[40dvh]'>
-      <div className='container mx-auto px-4 max-w-6xl'>
-        <motion.div {...sectionInViewMotion()} className='mb-12'>
-          <p className='terminal-prompt mb-2'>{'>'} section: contacts</p>
-          <h2 className='terminal-heading mb-4 font-display text-3xl font-bold md:text-4xl'>{t('contact_title')}</h2>
-          <p className='text-lg text-gallery-300 max-w-2xl'>{t('contact_subtitle')}</p>
-          <p className='text-gallery-400 mt-3'>
+    <section id='contacts' className='terminal-section relative min-h-[40dvh] px-4'>
+      <div className='terminal-grid-bg' />
+      <div className='container relative z-10 mx-auto max-w-6xl'>
+        <motion.div {...sectionInViewMotion()} className='mb-7'>
+          <p className='terminal-prompt mb-2'>module: contact.endpoints</p>
+          <h2 className='terminal-heading mb-2.5 font-display text-3xl font-bold md:text-4xl'>{t('contact_title')}</h2>
+          <p className='max-w-2xl text-lg text-gallery-300'>{t('contact_subtitle')}</p>
+          <p className='mt-3 text-gallery-400'>
             {'>'} {t('contact_palette_hint')}
           </p>
         </motion.div>
 
-        <div className='grid gap-6 md:grid-cols-4'>
-          {contactLinks.map((link) => (
-            <motion.div key={link.label} {...makeStaggerInViewMotion(link.delay * 10, 0.03)} className='group relative'>
-              <motion.a
-                href={link.href}
-                target='_blank'
-                rel='noreferrer'
-                {...cardInteractionMotion()}
-                className='terminal-window terminal-subcard corner-superellipse/2 relative block rounded-3xl p-6 transition-all duration-300 ease-in-out hover:border-tertiary-400'>
-                <div className='flex flex-col items-center'>
-                  <div className='rounded-2xl corner-bevel mb-4 border border-gallery-700 bg-shark-950/70 p-3 transition-all duration-300 group-hover:scale-110'>
+        <div className='grid gap-4 lg:grid-cols-[1.2fr_0.8fr]'>
+          <div className='terminal-window overflow-hidden rounded-2xl'>
+            <div className='terminal-titlebar'>
+              <span>network / external.links</span>
+              <span className='terminal-chip terminal-chip-accent'>online</span>
+            </div>
+            <div className='space-y-2.5 p-4 sm:p-5'>
+              {contactLinks.map((link) => (
+                <motion.a
+                  key={link.label}
+                  href={link.href}
+                  target='_blank'
+                  rel='noreferrer'
+                  {...makeStaggerInViewMotion(link.delay * 10, 0.03)}
+                  {...cardInteractionMotion()}
+                  className='group grid items-center gap-3 rounded-xl border border-gallery-700/80 bg-shark-950/60 p-3 sm:grid-cols-[44px_160px_1fr_24px] sm:gap-3.5'>
+                  <div className='flex h-11 w-11 items-center justify-center rounded-xl border border-gallery-700 bg-shark-950/70 text-tertiary-300'>
                     {link.icon}
                   </div>
-                  <h3 className='text-lg font-semibold text-tertiary-300 mb-2'>{link.label}</h3>
-                  <p className='text-sm text-gallery-300 text-center group-hover:text-gallery-100 transition-colors'>
-                    {link.value}
+                  <p className='text-xs font-semibold uppercase tracking-[0.12em] text-tertiary-300 sm:text-sm'>
+                    {link.label}
                   </p>
-
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className='absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100
-                      text-tertiary-300 transition-opacity duration-300'>
+                  <p className='break-all text-sm text-gallery-300'>{link.value}</p>
+                  <span className='text-tertiary-300 transition-transform duration-300 group-hover:translate-x-1'>
                     →
-                  </motion.span>
-                </div>
-              </motion.a>
-            </motion.div>
-          ))}
+                  </span>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+
+          <div className='terminal-window overflow-hidden rounded-2xl'>
+            <div className='terminal-titlebar'>
+              <span>help / quick.commands</span>
+            </div>
+            <div className='space-y-2.5 p-4 sm:p-5'>
+              <div className='terminal-command-row'>
+                <span className='text-tertiary-300'>$</span>
+                <span>open --channel email</span>
+              </div>
+              <div className='terminal-command-row'>
+                <span className='text-tertiary-300'>$</span>
+                <span>open --channel linkedin</span>
+              </div>
+              <div className='terminal-command-row'>
+                <span className='text-tertiary-300'>$</span>
+                <span>download --resource cv</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

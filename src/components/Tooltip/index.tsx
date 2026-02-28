@@ -25,14 +25,14 @@ const Tooltip: React.FC<TooltipProps> = ({ text, children, position = 'bottom' }
       {children}
       <div
         className={cn(
-          'absolute left-1/2 -translate-x-1/2 px-2 py-1 bg-shark-900 text-tertiary-300 text-xs rounded border border-gallery-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap',
+          'absolute left-1/2 -translate-x-1/2 px-2 py-1 bg-shark-900 text-tertiary-300 text-[11px] uppercase tracking-wide rounded border border-tertiary-700/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap',
           tooltipStyles[position],
         )}>
         {'$ '}
         {text}
         <div
           className={cn(
-            'absolute left-1/2 -translate-x-1/2 w-2 h-2 bg-shark-900 border border-gallery-700',
+            'absolute left-1/2 -translate-x-1/2 w-2 h-2 bg-shark-900 border border-tertiary-700/55',
             arrowStyles[position],
           )}></div>
       </div>

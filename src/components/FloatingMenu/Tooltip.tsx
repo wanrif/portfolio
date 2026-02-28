@@ -11,7 +11,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(({ isActive, tooltipInd
   <div
     ref={ref}
     className={cn(
-      'hidden sm:block rounded-2xl corner-superellipse/2 pointer-events-none absolute bottom-full border border-gallery-700 bg-shark-950/95 px-3 py-1 text-xs opacity-0 backdrop-blur',
+      'hidden sm:block rounded-2xl corner-superellipse/2 pointer-events-none absolute bottom-full border border-tertiary-700/45 bg-shark-950/95 px-3 py-1 text-[11px] uppercase tracking-wider opacity-0 backdrop-blur',
       !isActive ? 'hidden' : '',
     )}
     style={{

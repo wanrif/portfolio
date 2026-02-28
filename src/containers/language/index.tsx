@@ -23,13 +23,13 @@ const Language: React.FC = () => {
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.98 }}
       type='button'
-      className='font-medium cursor-pointer text-sm'
+      className='font-medium cursor-pointer text-xs uppercase tracking-wider'
       onClick={switchLocale}
       data-testid='locale-toggle'>
       {currentLocale === 'id' ? (
-        <span className='text-tertiary-300'>ID</span>
+        <span className='text-tertiary-300'>id_ID</span>
       ) : (
-        <span className='text-tertiary-300'>EN</span>
+        <span className='text-tertiary-300'>en_US</span>
       )}
     </motion.button>
   );

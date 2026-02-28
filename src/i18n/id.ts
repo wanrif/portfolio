@@ -6,7 +6,7 @@ export default {
   banner_tagline: 'Dari Pixel ke Protokol: Menenun Keajaiban Web',
   banner_statement: 'Saya membangun sistem end-to-end, dari antarmuka frontend hingga logika backend.',
   hero_available: 'Terbuka untuk pekerjaan engineering produk berdampak',
-  hero_terminal_line: 'operator fullstack • indonesia • terbuka untuk kolaborasi',
+  hero_terminal_line: 'fullstack developer • indonesia • terbuka untuk kolaborasi',
   hero_role: 'Fullstack Developer',
   hero_intro:
     'Saya merancang, merilis, dan merawat produk end-to-end dengan pola pikir terminal: log yang jelas, sistem stabil, dan delivery pragmatis tanpa gimmick.',
@@ -87,4 +87,10 @@ export default {
   palette_contact: 'buka bagian kontak',
   palette_theme: 'ubah mode tema',
   palette_lang: 'ganti bahasa',
+
+  boot_title: 'wanrif-os urutan boot',
+  boot_line_1: '[OK] memuat modul kernel...',
+  boot_line_2: '[OK] me-mount filesystem workspace...',
+  boot_line_3: '[OK] menjalankan layanan portfolio...',
+  boot_line_4: '[SIAP] membuka sesi terminal',
 };
