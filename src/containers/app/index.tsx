@@ -4,37 +4,31 @@ import Experiences from '@components/Experiences';
 import FloatingMenu from '@components/FloatingMenu';
 import MySkill from '@components/MySkill';
 import Navbar from '@components/Navbar';
-import { useAppDispatch, useAppSelector } from '@stores/hooks';
-import isEmpty from 'lodash/isEmpty';
+import Projects from '@components/Projects';
+import { selectTheme, useAppStore } from '@stores/app/store';
 import { useEffect } from 'react';
-import { setTheme } from './reducer';
-import { selectTheme } from './selectors';
 
 function App() {
-  const dispatch = useAppDispatch();
-  const theme = useAppSelector(selectTheme);
+  const theme = useAppStore(selectTheme);
 
   useEffect(() => {
-    if (theme === 'dark' || (isEmpty(theme) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      dispatch(setTheme('dark'));
-      document.documentElement.classList.add('dark');
-    } else {
-      dispatch(setTheme('light'));
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
 
   return (
-    <>
-      <Navbar />
-      <main className='box-border relative antialiased transition-all scroll-smooth'>
-        <Banner />
-        <Experiences />
-        <MySkill />
-        <Contact />
-      </main>
+    <div className='relative min-h-dvh bg-shark-950 px-2 pb-24 pt-2 text-gallery-100 sm:px-4 sm:pt-4'>
+      <div className='mx-auto w-full max-w-7xl terminal-shell overflow-hidden'>
+        <Navbar />
+        <main className='box-border relative font-sans antialiased transition-all scroll-smooth'>
+          <Banner />
+          <Projects />
+          <Experiences />
+          <MySkill />
+          <Contact />
+        </main>
+      </div>
       <FloatingMenu />
-    </>
+    </div>
   );
 }
 

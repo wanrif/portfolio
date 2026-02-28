@@ -1,36 +1,35 @@
-import { setLocale } from '@containers/app/reducer';
-import { useAppDispatch } from '@stores/hooks';
+import { selectLocale, useAppStore } from '@stores/app/store';
 import { motion } from 'framer-motion';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Language: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const currentLocale = useAppStore(selectLocale);
+  const setLocale = useAppStore((state) => state.setLocale);
   const { i18n } = useTranslation();
 
-  const locales = useMemo(() => i18n.languages, [i18n.languages]);
-  const currentLocale = i18n.language;
+  const locales = useMemo(() => ['en', 'id'] as const, []);
 
   const switchLocale = useCallback(() => {
     const currentIndex = locales.indexOf(currentLocale);
-    const nextLocale = locales[(currentIndex + 1) % locales.length];
+    const nextLocale = locales[(currentIndex + 1) % locales.length] ?? 'en';
 
-    dispatch(setLocale(nextLocale));
+    setLocale(nextLocale);
     void i18n.changeLanguage(nextLocale);
-  }, [dispatch, i18n, locales, currentLocale]);
+  }, [i18n, locales, currentLocale, setLocale]);
 
   return (
     <motion.button
-      whileHover={{ scale: 1.2 }}
-      whileTap={{ scale: 1.1 }}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.98 }}
       type='button'
-      className='font-medium cursor-pointer'
+      className='font-medium cursor-pointer text-sm'
       onClick={switchLocale}
       data-testid='locale-toggle'>
       {currentLocale === 'id' ? (
-        <span className='text-tertiary-500 dark:text-gallery-100'>ID</span>
+        <span className='text-tertiary-300'>ID</span>
       ) : (
-        <span className='text-tertiary-500 dark:text-gallery-100'>EN</span>
+        <span className='text-tertiary-300'>EN</span>
       )}
     </motion.button>
   );

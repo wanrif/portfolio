@@ -1,12 +1,10 @@
 import ThemeMode from '@components/ThemeMode';
-import { setTheme } from '@containers/app/reducer';
-import { selectLocale, selectTheme } from '@containers/app/selectors';
 import Language from '@containers/language';
-import { useGSAP } from '@gsap/react';
-import { useAppDispatch, useAppSelector } from '@stores/hooks';
-import { motion } from 'framer-motion';
-import gsap from 'gsap';
+import { selectLocale, selectTheme, useAppStore } from '@stores/app/store';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import Tooltip from './Tooltip';
 import { animateTooltip, containerVariants, menuItemVariants } from './animations';
 import { MENU_ITEMS, SCROLL_OBSERVER_OPTIONS } from './config';
@@ -20,23 +18,22 @@ const scrollToSection = (id: string) => {
 };
 
 const FloatingMenu: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const theme = useAppSelector(selectTheme);
-  const locale = useAppSelector(selectLocale);
+  const { t } = useTranslation();
+  const theme = useAppStore(selectTheme);
+  const locale = useAppStore(selectLocale);
+  const toggleTheme = useAppStore((state) => state.toggleTheme);
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [commandInput, setCommandInput] = useState('');
+  const [activeCommandIndex, setActiveCommandIndex] = useState(0);
   const [tooltipState, setTooltipState] = useState({ index: 0, isActive: false });
 
   const refs = {
     tooltip: useRef<HTMLDivElement>(null),
     menu: useRef<HTMLDivElement>(null),
-    tooltipAnimation: useRef<GSAPTween | null>(null),
+    tooltipAnimation: useRef<ReturnType<typeof animateTooltip> | null>(null),
     scrollObserver: useRef<IntersectionObserver | null>(null),
-  };
-
-  const toggleTheme = () => {
-    dispatch(setTheme(theme === 'dark' ? 'light' : 'dark'));
-    document.documentElement.classList.toggle('dark');
   };
 
   const menuList = useMemo(
@@ -49,14 +46,42 @@ const FloatingMenu: React.FC = () => {
       {
         component: <ThemeMode theme={theme} />,
         handleClick: toggleTheme,
-        tooltip: 'Theme',
+        tooltip: 'theme',
       },
       {
         component: <Language />,
+        handleClick: () => undefined,
         tooltip: locale,
       },
     ],
-    [theme, locale],
+    [theme, locale, toggleTheme],
+  );
+
+  const mobileMenuList = useMemo(
+    () =>
+      MENU_ITEMS.map(({ icon: Icon, sectionId, tooltip }) => ({
+        component: <Icon className='h-5 w-5' />,
+        handleClick: () => scrollToSection(sectionId),
+        tooltip,
+      })),
+    [],
+  );
+
+  const commandList = useMemo(
+    () => [
+      { command: 'home', description: t('palette_home'), action: () => scrollToSection('top') },
+      { command: 'projects', description: t('palette_projects'), action: () => scrollToSection('projects') },
+      { command: 'now', description: t('palette_now'), action: () => scrollToSection('now') },
+      { command: 'skills', description: t('palette_skills'), action: () => scrollToSection('skills') },
+      { command: 'contact', description: t('palette_contact'), action: () => scrollToSection('contacts') },
+      { command: 'theme', description: t('palette_theme'), action: () => toggleTheme() },
+      {
+        command: 'lang',
+        description: t('palette_lang'),
+        action: () => document.querySelector<HTMLElement>('[data-testid="locale-toggle"]')?.click(),
+      },
+    ],
+    [t, toggleTheme],
   );
 
   // Scroll observer effect
@@ -88,31 +113,84 @@ const FloatingMenu: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // GSAP animation
-  useGSAP(() => {
-    const items = gsap.utils.toArray('.menu-item');
-    gsap.set(items, { opacity: 0, y: 50 });
-    gsap.to(items, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'elastic.out(1, 0.5)',
-      rotation: (i: number) => (i % 2 === 0 ? 15 : -15),
-    });
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setIsPaletteOpen((prev) => !prev);
+      }
+
+      if (event.key === 'Escape') {
+        setIsPaletteOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleShortcut);
+    return () => document.removeEventListener('keydown', handleShortcut);
   }, []);
 
+  useEffect(() => {
+    if (!isPaletteOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isPaletteOpen]);
+
+  const filteredCommands = commandList.filter(({ command }) => command.includes(commandInput.trim().toLowerCase()));
+
+  useEffect(() => {
+    setActiveCommandIndex(0);
+  }, [commandInput, isPaletteOpen]);
+
+  const runCommand = (command: string) => {
+    const selectedCommand = commandList.find((item) => item.command === command);
+    selectedCommand?.action();
+    setCommandInput('');
+    setIsPaletteOpen(false);
+  };
+
+  const handlePaletteKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!filteredCommands.length) {
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveCommandIndex((prev) => (prev + 1) % filteredCommands.length);
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveCommandIndex((prev) => (prev - 1 + filteredCommands.length) % filteredCommands.length);
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const activeCommand = filteredCommands[activeCommandIndex];
+      if (activeCommand) {
+        runCommand(activeCommand.command);
+      }
+    }
+  };
+
   return (
-    <div className='fixed bottom-0 py-4 w-screen flex justify-center items-center'>
+    <div className='fixed bottom-3 left-1/2 z-50 flex w-[calc(100vw-1rem)] -translate-x-1/2 items-center justify-center sm:bottom-4 sm:w-auto'>
       <motion.div
         ref={refs.menu}
         initial='hidden'
         animate='visible'
         exit='exit'
         variants={containerVariants}
-        className={`${
-          isScrolled ? 'backdrop-blur-lg bg-white/30 dark:bg-black/30' : 'bg-gallery-50 dark:bg-tuna-950'
-        } shadow-md rounded-full py-2 px-4 w-fit flex items-center gap-x-4 relative`}>
+        className={`hidden sm:flex ${
+          isScrolled ? 'bg-shark-900/85' : 'bg-shark-950/95'
+        } relative flex w-fit max-w-[calc(100vw-2rem)] items-center gap-x-2 overflow-x-auto rounded-3xl corner-superellipse/2 border border-gallery-700 px-2 py-2 backdrop-blur-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:max-w-none sm:px-3`}>
         <Tooltip
           ref={refs.tooltip}
           isActive={tooltipState.isActive}
@@ -124,9 +202,9 @@ const FloatingMenu: React.FC = () => {
             key={index}
             custom={index}
             variants={menuItemVariants}
-            whileHover={{ scale: 1.2, rotate: 0, transition: { type: 'spring', stiffness: 300 } }}
-            whileTap={{ scale: 1.1, rotate: 0 }}
-            className='font-semibold cursor-pointer select-none text-tertiary-500 dark:text-gallery-100'
+            whileHover={{ scale: 1.08, rotate: 0, transition: { type: 'spring', stiffness: 300 } }}
+            whileTap={{ scale: 0.95, rotate: 0 }}
+            className='cursor-pointer select-none rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 px-2 font-semibold text-tertiary-300 hover:border-tertiary-500 flex h-9 min-w-9 items-center justify-center sm:h-10 sm:min-w-10'
             onClick={item.handleClick}
             onMouseEnter={() => {
               setTooltipState({ index, isActive: true });
@@ -145,7 +223,107 @@ const FloatingMenu: React.FC = () => {
             {item.component}
           </motion.div>
         ))}
+        <motion.button
+          type='button'
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className='ml-auto cursor-pointer rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 px-2 py-1 text-[11px] text-gallery-200 hover:border-tertiary-500 sm:ml-0 sm:text-xs'
+          onClick={() => setIsPaletteOpen(true)}>
+          cmd
+        </motion.button>
       </motion.div>
+
+      <motion.div
+        initial='hidden'
+        animate='visible'
+        exit='exit'
+        variants={containerVariants}
+        className={`${
+          isScrolled ? 'bg-shark-900/88' : 'bg-shark-950/95'
+        } flex w-fit max-w-full items-center justify-center gap-1.5 rounded-3xl corner-superellipse/2 border border-gallery-700 px-2 py-2 backdrop-blur-xl sm:hidden`}>
+        {mobileMenuList.map((item, index) => (
+          <motion.button
+            key={index}
+            custom={index}
+            variants={menuItemVariants}
+            whileTap={{ scale: 0.94 }}
+            type='button'
+            aria-label={item.tooltip}
+            className='flex h-10 w-10 items-center justify-center rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 text-tertiary-300'
+            onClick={item.handleClick}>
+            {item.component}
+          </motion.button>
+        ))}
+
+        <motion.button
+          type='button'
+          whileTap={{ scale: 0.94 }}
+          className='flex h-10 min-w-10 items-center justify-center rounded-2xl corner-bevel border border-gallery-700 bg-shark-950/70 px-2 text-[11px] font-semibold uppercase tracking-wider text-gallery-200'
+          onClick={() => setIsPaletteOpen(true)}>
+          cmd
+        </motion.button>
+      </motion.div>
+
+      {createPortal(
+        <AnimatePresence>
+          {isPaletteOpen && (
+            <motion.div
+              key='palette-overlay'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.14, ease: [0.33, 1, 0.68, 1] }}
+              className='fixed inset-0 z-60 flex items-end justify-center bg-shark-950/85 px-0 pt-6 sm:items-start sm:px-4 sm:pt-20'
+              onClick={() => setIsPaletteOpen(false)}>
+              <motion.div
+                initial={{ opacity: 0, y: 24, scale: 0.985 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 16, scale: 0.99 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 34, mass: 0.9 }}
+                className='max-h-[calc(100dvh-1rem)] w-full max-w-xl overflow-hidden rounded-t-3xl border border-gallery-700 bg-shark-950 sm:max-h-[calc(100dvh-3rem)] sm:rounded-3xl corner-superellipse/2'
+                onClick={(event) => event.stopPropagation()}>
+                <div className='px-4 py-3 border-b border-gallery-700 text-sm text-gallery-300'>
+                  {'>'} {t('palette_title')}
+                </div>
+                <input
+                  value={commandInput}
+                  onChange={(event) => setCommandInput(event.target.value)}
+                  onKeyDown={handlePaletteKeyDown}
+                  placeholder={t('palette_placeholder')}
+                  className='w-full bg-transparent px-4 py-3 text-gallery-100 border-b border-gallery-800 terminal-input-caret focus-visible:terminal-focus'
+                  autoFocus
+                />
+                <div className='border-b border-gallery-800 px-4 py-2 text-[11px] uppercase tracking-wider text-gallery-400'>
+                  {t('palette_hint')}
+                </div>
+                <div className='max-h-60 overflow-y-auto py-1'>
+                  {filteredCommands.length ? (
+                    filteredCommands.map(({ command, description }, index) => (
+                      <button
+                        key={command}
+                        type='button'
+                        className={`w-full text-left px-4 py-2 cursor-pointer ${
+                          activeCommandIndex === index ? 'bg-shark-900/90' : 'hover:bg-shark-900'
+                        }`}
+                        onClick={() => runCommand(command)}>
+                        <div className='flex items-center justify-between gap-3'>
+                          <span className='text-tertiary-300'>
+                            {'$ run '} {command}
+                          </span>
+                          <span className='hidden text-xs text-gallery-400 sm:inline'>{description}</span>
+                        </div>
+                      </button>
+                    ))
+                  ) : (
+                    <p className='px-4 py-3 text-gallery-400 text-sm'>{t('palette_empty')}</p>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </div>
   );
 };

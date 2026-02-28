@@ -1,4 +1,4 @@
-import { GiAngelWings, GiBugleCall, GiJetFighter, GiSkills } from 'react-icons/gi';
+import { GiAngelWings, GiBugleCall, GiJetFighter, GiSkills, GiSpellBook } from 'react-icons/gi';
 
 export const SCROLL_OBSERVER_OPTIONS = {
   threshold: 0,
@@ -9,21 +9,26 @@ export const MENU_ITEMS = [
   {
     icon: GiAngelWings,
     sectionId: 'top',
-    tooltip: 'About',
+    tooltip: 'home',
   },
   {
     icon: GiJetFighter,
-    sectionId: 'experiences',
-    tooltip: 'Experiences',
+    sectionId: 'projects',
+    tooltip: 'projects',
+  },
+  {
+    icon: GiSpellBook,
+    sectionId: 'now',
+    tooltip: 'now',
   },
   {
     icon: GiSkills,
     sectionId: 'skills',
-    tooltip: 'My Skills',
+    tooltip: 'skills',
   },
   {
     icon: GiBugleCall,
     sectionId: 'contacts',
-    tooltip: 'Contacts',
+    tooltip: 'contact',
   },
 ] as const;

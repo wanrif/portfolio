@@ -1,5 +1,6 @@
 import { URL, fileURLToPath } from 'url';
 import react from '@vitejs/plugin-react-swc';
+import mdx from '@mdx-js/rollup';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
@@ -8,7 +9,7 @@ const prefix = 'portreez';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), visualizer(), tailwindcss()],
+  plugins: [mdx(), react(), visualizer(), tailwindcss()],
   css: {
     modules: {
       localsConvention: 'camelCase',
@@ -21,6 +22,7 @@ export default defineConfig({
     alias: {
       '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
       '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '@content': fileURLToPath(new URL('./src/content', import.meta.url)),
       '@containers': fileURLToPath(new URL('./src/containers', import.meta.url)),
       '@i18n': fileURLToPath(new URL('./src/i18n', import.meta.url)),
       '@layouts': fileURLToPath(new URL('./src/layouts', import.meta.url)),

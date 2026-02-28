@@ -11,29 +11,27 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(({ isActive, tooltipInd
   <div
     ref={ref}
     className={cn(
-      'absolute bottom-full px-3 py-1 bg-shark-200/50 dark:bg-tuna-900/50 backdrop-blur text-sm rounded-full border border-shark-500 pointer-events-none opacity-0 capitalize',
-      !isActive ? 'hidden' : ''
+      'hidden sm:block rounded-2xl corner-superellipse/2 pointer-events-none absolute bottom-full border border-gallery-700 bg-shark-950/95 px-3 py-1 text-xs opacity-0 backdrop-blur',
+      !isActive ? 'hidden' : '',
     )}
     style={{
       left: '50%',
       transform: 'translateX(-50%)',
-      width: '120px',
+      width: '126px',
       overflow: 'hidden',
-    }}
-  >
+    }}>
     <div
       style={{
-        transform: `translateX(${-tooltipIndex * 100}px)`,
+        transform: `translateX(${-tooltipIndex * 106}px)`,
         transition: 'transform 0.3s ease-in-out',
         whiteSpace: 'nowrap',
-      }}
-    >
+      }}>
       {items.map((item, index) => (
         <span
           key={index}
-          style={{ display: 'inline-block', width: '100px', textAlign: 'center' }}
-          className='text-tertiary-500 dark:text-gallery-100'
-        >
+          style={{ display: 'inline-block', width: '106px', textAlign: 'center' }}
+          className='text-tertiary-300'>
+          {'$ '}
           {item.tooltip}
         </span>
       ))}

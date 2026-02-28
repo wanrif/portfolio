@@ -2,34 +2,35 @@ import { gsap } from 'gsap';
 import type { Variants } from 'framer-motion';
 
 export const containerVariants: Variants = {
-  hidden: { opacity: 0, y: 100, scale: 0.9 },
+  hidden: { opacity: 0, y: 30, scale: 0.96 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.8, ease: 'easeOut' as const },
+    transition: { duration: 0.35, ease: 'easeOut' as const },
   },
   exit: {
     opacity: 0,
-    y: 100,
-    scale: 0.9,
-    transition: { duration: 0.5, ease: 'easeIn' as const },
+    y: 30,
+    scale: 0.96,
+    transition: { duration: 0.2, ease: 'easeIn' as const },
   },
 };
 
 export const menuItemVariants: Variants = {
-  hidden: { opacity: 0, y: 50, scale: 0.8, rotate: 0 },
+  hidden: { opacity: 0, y: 8, scale: 0.95, rotate: 0 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    rotate: i % 2 === 0 ? 15 : -15,
+    rotate: 0,
     transition: {
-      delay: i * 0.2,
-      duration: 0.6,
+      delay: i * 0.03,
+      duration: 0.22,
       ease: 'easeOut' as const,
       type: 'spring' as const,
-      stiffness: 200,
+      stiffness: 260,
+      damping: 20,
     },
   }),
 };

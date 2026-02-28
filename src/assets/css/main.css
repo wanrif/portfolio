@@ -1,12 +1,16 @@
-@import url(https://fonts.bunny.net/css?family=spline-sans-mono:300,300i,400,400i,500,500i,600,600i,700,700i);
-@import url(https://fonts.bunny.net/css?family=jersey-10:400);
+@import url(https://fonts.bunny.net/css?family=jetbrains-mono:300,300i,400,400i,500,500i,600,600i,700,700i);
+@import url(https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800);
 @import 'tailwindcss';
+@plugin "@toolwind/corner-shape";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans:
-    'Spline Sans Mono', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'JetBrains Mono', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  --font-display:
+    'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
   --font-jersey-ten:
     'Jersey 10', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
@@ -18,53 +22,53 @@
     franchiseFilled, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
 
-  --color-shark-50: #f6f7f9;
-  --color-shark-100: #eceff2;
-  --color-shark-200: #d4dbe3;
-  --color-shark-300: #aebccb;
-  --color-shark-400: #8297ae;
-  --color-shark-500: #637b94;
-  --color-shark-600: #4e637b;
-  --color-shark-700: #405064;
-  --color-shark-800: #384454;
-  --color-shark-900: #323c48;
-  --color-shark-950: #222831;
+  --color-shark-50: #f7f9ff;
+  --color-shark-100: #e9eefb;
+  --color-shark-200: #cfd9f3;
+  --color-shark-300: #a8b9e0;
+  --color-shark-400: #7c93c8;
+  --color-shark-500: #5b72a8;
+  --color-shark-600: #465987;
+  --color-shark-700: #364468;
+  --color-shark-800: #232d47;
+  --color-shark-900: #131b2f;
+  --color-shark-950: #0b0b0c;
 
-  --color-tuna-50: #f6f7f9;
-  --color-tuna-100: #edeef1;
-  --color-tuna-200: #d6dae1;
-  --color-tuna-300: #b3bbc6;
-  --color-tuna-400: #8996a7;
-  --color-tuna-500: #6a788d;
-  --color-tuna-600: #556074;
-  --color-tuna-700: #464f5e;
-  --color-tuna-800: #3c4350;
-  --color-tuna-900: #31363f;
-  --color-tuna-950: #23272e;
+  --color-tuna-50: #eff4ff;
+  --color-tuna-100: #dce7ff;
+  --color-tuna-200: #bdd2ff;
+  --color-tuna-300: #95b3ff;
+  --color-tuna-400: #6f90f5;
+  --color-tuna-500: #4e70d6;
+  --color-tuna-600: #3f59b5;
+  --color-tuna-700: #32468f;
+  --color-tuna-800: #253368;
+  --color-tuna-900: #191f41;
+  --color-tuna-950: #0f1226;
 
-  --color-tertiary-50: #f3f8f8;
-  --color-tertiary-100: #dfedee;
-  --color-tertiary-200: #c3ddde;
-  --color-tertiary-300: #9ac4c6;
-  --color-tertiary-400: #76abae;
-  --color-tertiary-500: #4e888c;
-  --color-tertiary-600: #447176;
-  --color-tertiary-700: #3c5d62;
-  --color-tertiary-800: #374e53;
-  --color-tertiary-900: #314448;
-  --color-tertiary-950: #1d2b2f;
+  --color-tertiary-50: #e9ffff;
+  --color-tertiary-100: #c9ffff;
+  --color-tertiary-200: #93ffff;
+  --color-tertiary-300: #5cffff;
+  --color-tertiary-400: #22ffff;
+  --color-tertiary-500: #00ffff;
+  --color-tertiary-600: #00ced1;
+  --color-tertiary-700: #00a6ae;
+  --color-tertiary-800: #0d7a84;
+  --color-tertiary-900: #145f67;
+  --color-tertiary-950: #083a41;
 
-  --color-gallery-50: #f8f8f8;
-  --color-gallery-100: #eeeeee;
-  --color-gallery-200: #dcdcdc;
-  --color-gallery-300: #bdbdbd;
-  --color-gallery-400: #989898;
-  --color-gallery-500: #7c7c7c;
-  --color-gallery-600: #656565;
-  --color-gallery-700: #525252;
-  --color-gallery-800: #464646;
-  --color-gallery-900: #3d3d3d;
-  --color-gallery-950: #292929;
+  --color-gallery-50: #f5f7fa;
+  --color-gallery-100: #e8edf3;
+  --color-gallery-200: #cfd8e3;
+  --color-gallery-300: #a9b8cb;
+  --color-gallery-400: #8094ad;
+  --color-gallery-500: #647a93;
+  --color-gallery-600: #4f6178;
+  --color-gallery-700: #3d4b5f;
+  --color-gallery-800: #2b3648;
+  --color-gallery-900: #182130;
+  --color-gallery-950: #0b111b;
 }
 
 /* Fonts */
@@ -78,4 +82,267 @@
   font-family: franchiseFilled;
   src: url('@assets/fonts/franchise/FranchiseFilled.ttf') format('truetype');
   font-size: medium;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --color-shark-950: #f6f9ff;
+    --color-shark-900: #edf3ff;
+    --color-shark-800: #dfe8f8;
+    --color-shark-700: #c8d6ec;
+    --color-shark-600: #a6b8d4;
+
+    --color-gallery-100: #1d2738;
+    --color-gallery-200: #2b3a52;
+    --color-gallery-300: #3c4b63;
+    --color-gallery-400: #5a6b86;
+    --color-gallery-500: #73849d;
+    --color-gallery-600: #8c9bb0;
+    --color-gallery-700: #b8c2d1;
+    --color-gallery-800: #d4dbe7;
+    --color-gallery-900: #e8edf5;
+    --color-gallery-950: #f2f5fa;
+
+    --color-tuna-950: #e8f0ff;
+    --color-tuna-900: #d8e3f7;
+    --color-tuna-800: #c8d6ef;
+
+    --color-tertiary-50: #eefbfc;
+    --color-tertiary-100: #d9f4f6;
+    --color-tertiary-200: #b6e8ec;
+    --color-tertiary-300: #2b7f88;
+    --color-tertiary-400: #1f6f78;
+    --color-tertiary-500: #165f67;
+    --color-tertiary-600: #11525a;
+    --color-tertiary-700: #0d444b;
+    --color-tertiary-800: #0a373d;
+    --color-tertiary-900: #07292f;
+    --color-tertiary-950: #041b20;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --color-shark-950: #0b0b0c;
+    --color-shark-900: #131b2f;
+    --color-shark-800: #232d47;
+    --color-shark-700: #364468;
+    --color-shark-600: #465987;
+
+    --color-gallery-100: #e8edf3;
+    --color-gallery-200: #cfd8e3;
+    --color-gallery-300: #a9b8cb;
+    --color-gallery-400: #8094ad;
+    --color-gallery-500: #647a93;
+    --color-gallery-600: #4f6178;
+    --color-gallery-700: #3d4b5f;
+    --color-gallery-800: #2b3648;
+    --color-gallery-900: #182130;
+    --color-gallery-950: #0b111b;
+
+    --color-tuna-950: #0f1226;
+    --color-tuna-900: #191f41;
+    --color-tuna-800: #253368;
+
+    --color-tertiary-50: #e9ffff;
+    --color-tertiary-100: #c9ffff;
+    --color-tertiary-200: #93ffff;
+    --color-tertiary-300: #5cffff;
+    --color-tertiary-400: #22ffff;
+    --color-tertiary-500: #00ffff;
+    --color-tertiary-600: #00ced1;
+    --color-tertiary-700: #00a6ae;
+    --color-tertiary-800: #0d7a84;
+    --color-tertiary-900: #145f67;
+    --color-tertiary-950: #083a41;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: linear-gradient(
+      180deg,
+      var(--color-shark-950) 0%,
+      color-mix(in oklab, var(--color-shark-900) 88%, white) 100%
+    );
+    color: var(--color-gallery-100);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  .dark body {
+    background: linear-gradient(180deg, var(--color-shark-950) 0%, #030606 100%);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-tertiary-500) 30%, transparent);
+    color: var(--color-gallery-50);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-tertiary-700) var(--color-shark-900);
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--color-shark-900);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--color-tertiary-700), var(--color-tertiary-900));
+  }
+}
+
+@layer components {
+  .terminal-shell {
+    position: relative;
+    border: 1px solid color-mix(in oklab, var(--color-gallery-800) 75%, transparent);
+    border-radius: 20px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-shark-900) 86%, transparent),
+      color-mix(in oklab, var(--color-shark-950) 90%, transparent)
+    );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 60%),
+      0 8px 24px rgb(40 69 110 / 12%);
+  }
+
+  .dark .terminal-shell {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 5%),
+      0 20px 50px rgb(0 0 0 / 45%);
+  }
+
+  .terminal-window {
+    border: 1px solid color-mix(in oklab, var(--color-gallery-700) 65%, transparent);
+    border-radius: 16px;
+    background: color-mix(in oklab, var(--color-shark-900) 84%, white);
+  }
+
+  .terminal-subcard {
+    border: 1px solid color-mix(in oklab, var(--color-gallery-700) 55%, transparent);
+    background: color-mix(in oklab, var(--color-shark-950) 70%, white);
+  }
+
+  .terminal-heading {
+    color: color-mix(in oklab, var(--color-tertiary-500) 58%, var(--color-gallery-100));
+  }
+
+  .terminal-btn-primary {
+    border: 1px solid color-mix(in oklab, var(--color-tertiary-500) 70%, transparent);
+    background: color-mix(in oklab, var(--color-tertiary-500) 18%, white);
+    color: var(--color-tertiary-700);
+  }
+
+  .terminal-btn-primary:hover {
+    background: color-mix(in oklab, var(--color-tertiary-500) 24%, white);
+  }
+
+  .terminal-btn-secondary {
+    border: 1px solid color-mix(in oklab, var(--color-gallery-600) 70%, transparent);
+    background: color-mix(in oklab, var(--color-shark-900) 78%, white);
+    color: var(--color-gallery-200);
+  }
+
+  .terminal-btn-secondary:hover {
+    background: color-mix(in oklab, var(--color-shark-800) 78%, white);
+  }
+
+  .dark .terminal-window {
+    background: color-mix(in oklab, var(--color-shark-900) 86%, black);
+  }
+
+  .dark .terminal-subcard {
+    border-color: color-mix(in oklab, var(--color-gallery-700) 70%, transparent);
+    background: color-mix(in oklab, var(--color-shark-950) 86%, black);
+  }
+
+  .dark .terminal-heading {
+    color: var(--color-tertiary-300);
+  }
+
+  .dark .terminal-btn-primary {
+    border-color: var(--color-tertiary-400);
+    background: color-mix(in oklab, var(--color-tertiary-950) 65%, transparent);
+    color: var(--color-tertiary-300);
+  }
+
+  .dark .terminal-btn-primary:hover {
+    background: color-mix(in oklab, var(--color-tertiary-500) 20%, transparent);
+  }
+
+  .dark .terminal-btn-secondary {
+    border-color: var(--color-gallery-600);
+    background: color-mix(in oklab, var(--color-gallery-950) 50%, transparent);
+    color: var(--color-gallery-200);
+  }
+
+  .dark .terminal-btn-secondary:hover {
+    background: color-mix(in oklab, var(--color-gallery-800) 45%, transparent);
+  }
+
+  .terminal-prompt {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-tertiary-300);
+  }
+
+  .terminal-caret::after {
+    content: '_';
+    margin-left: 2px;
+    animation: blink-caret 1s steps(2, start) infinite;
+  }
+
+  .terminal-input-caret {
+    caret-color: var(--color-tertiary-400);
+  }
+
+  .terminal-focus {
+    outline: none;
+    border-color: color-mix(in oklab, var(--color-tertiary-500) 68%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-tertiary-500) 24%, transparent);
+  }
+
+  .scanline-overlay {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(22 255 240 / 5%) 0,
+      rgb(22 255 240 / 5%) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+    mix-blend-mode: soft-light;
+    opacity: 0.18;
+  }
+
+  .dark .scanline-overlay {
+    opacity: 0.6;
+  }
+}
+
+@keyframes blink-caret {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  46%,
+  100% {
+    opacity: 0;
+  }
 }

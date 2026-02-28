@@ -1,4 +1,5 @@
 import Tooltip from '@components/Tooltip';
+import { iconInteractionMotion, pageEnterMotion, sectionInViewMotion } from '@utils/motion';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,62 +32,88 @@ const Banner: React.FC = () => {
   ];
 
   return (
-    <section className='relative flex items-center justify-center min-h-[calc(100dvh-64px)] bg-linear-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 overflow-hidden'>
+    <section
+      id='top'
+      className='relative flex items-center justify-center min-h-[calc(100dvh-72px)] overflow-hidden border-b border-gallery-800 bg-shark-950'>
       <ParticleBackground />
 
       <motion.div
-        className='relative z-10 flex flex-col items-center justify-center text-center max-w-4xl px-4'
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <motion.div
-          className='mb-8'
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <img
-            src='/personal_photo.jpg'
-            alt='Redwan'
-            className='rounded-full w-32 h-32 object-cover shadow-lg ring-4 ring-tertiary-400/30 dark:ring-tertiary-500/30'
-          />
-        </motion.div>
+        className='relative z-10 grid w-full max-w-6xl gap-8 px-4 py-12 md:grid-cols-[1.2fr_0.8fr] md:px-6'
+        {...pageEnterMotion()}>
+        <div className='terminal-window p-5 sm:p-6'>
+          <p className='terminal-prompt'>{t('hero_available')}</p>
 
-        <motion.div
-          className='space-y-4 mb-8'
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <h1 className='text-5xl font-bold text-tuna-950 dark:text-gallery-100'>Redwan Sarif</h1>
-          <p className='text-2xl font-medium text-tuna-800 dark:text-gallery-200'>Fullstack Developer</p>
-          <p className='text-lg italic text-tuna-700 dark:text-gallery-300 max-w-2xl mx-auto'>
-            "{t('banner_tagline')}"
+          <motion.div className='mb-7 mt-4 space-y-4 text-left' {...sectionInViewMotion()}>
+            <p className='text-tertiary-300'>
+              {'>'} {t('hero_terminal_line')}
+            </p>
+            <h1 className='font-display text-4xl font-bold leading-tight text-gallery-100 sm:text-6xl'>
+              Redwan Sarif
+              <br />
+              <span className='text-tertiary-400'>{t('hero_role')}</span>
+            </h1>
+            <p className='max-w-3xl text-lg text-gallery-300'>{t('hero_intro')}</p>
+          </motion.div>
+
+          <motion.div className='flex flex-wrap items-center gap-3' {...sectionInViewMotion()}>
+            <a href='#projects' className='terminal-btn-primary rounded-2xl corner-bevel px-4 py-2 transition-colors'>
+              {t('hero_primary_cta')}
+            </a>
+            <a
+              href='https://github.com/wanrif'
+              target='_blank'
+              rel='noreferrer'
+              className='terminal-btn-secondary rounded-2xl corner-bevel px-4 py-2 transition-colors'>
+              {t('hero_secondary_cta')}
+            </a>
+
+            {socialLinks.map((link, index) => (
+              <Tooltip key={index} text={link.tooltipText}>
+                <motion.a
+                  href={link.href}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='rounded-2xl corner-bevel flex h-10 w-10 items-center justify-center border border-gallery-700 bg-shark-950/70 text-tertiary-300 transition-colors duration-300 hover:border-tertiary-400'
+                  {...iconInteractionMotion()}>
+                  {link.icon}
+                </motion.a>
+              </Tooltip>
+            ))}
+          </motion.div>
+        </div>
+
+        <div className='terminal-window p-5'>
+          <p className='terminal-prompt mb-3'>
+            {'>'} {t('hero_panel_title')}
           </p>
-        </motion.div>
 
-        <motion.div
-          className='flex gap-4'
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
-          {socialLinks.map((link, index) => (
-            <Tooltip key={index} text={link.tooltipText}>
-              <motion.a
-                href={link.href}
-                target='_blank'
-                rel='noreferrer'
-                className='flex items-center justify-center w-10 h-10 rounded-xl bg-tertiary-400/20 hover:bg-tertiary-400/40 dark:bg-tertiary-500/20 dark:hover:bg-tertiary-500/40 text-tertiary-600 dark:text-tertiary-300 transition-all duration-300'
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {link.icon}
-              </motion.a>
-            </Tooltip>
-          ))}
-        </motion.div>
+          <div className='space-y-3'>
+            <div className='terminal-subcard rounded-2xl corner-bevel px-3 py-2'>
+              <p className='text-xs uppercase tracking-wide text-gallery-400'>{t('hero_current_role_label')}</p>
+              <p className='text-gallery-100'>{t('hero_current_role_value')}</p>
+            </div>
+
+            <div className='terminal-subcard rounded-2xl corner-bevel px-3 py-2'>
+              <p className='text-xs uppercase tracking-wide text-gallery-400'>{t('hero_focus_label')}</p>
+              <p className='text-gallery-100'>{t('hero_focus_value')}</p>
+            </div>
+
+            <div className='terminal-subcard rounded-2xl corner-bevel px-3 py-2'>
+              <p className='text-xs uppercase tracking-wide text-gallery-400'>{t('hero_open_to_label')}</p>
+              <p className='text-gallery-100'>{t('hero_open_to_value')}</p>
+            </div>
+          </div>
+
+          <div className='mt-4 flex flex-wrap gap-2'>
+            {['Next.js', 'TypeScript', 'React', 'Tailwind CSS', 'Material UI', 'Express.js', 'Hono'].map((item) => (
+              <span
+                key={item}
+                className='rounded-2xl corner-bevel border border-gallery-700 px-2.5 py-1 text-xs text-tertiary-300'>
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </motion.div>
     </section>
   );

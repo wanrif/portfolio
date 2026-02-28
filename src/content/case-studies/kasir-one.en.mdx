@@ -1,0 +1,44 @@
+export const meta = {
+  slug: 'kasir-one',
+  name: 'Kasir One',
+  inProgress: true,
+  summary: 'Web POS platform for MSMEs with a modern frontend and secure, modular backend foundation.',
+  problem:
+    'Operational workflows needed to cover authentication, role-based access, product and transaction data, and future reporting growth without slowing delivery.',
+  architecture:
+    'Two-repo architecture: React 19 + Vite frontend (TanStack Router/Query/Form, Zustand) consuming a Bun + Hono backend with Drizzle, PostgreSQL, Better Auth, RBAC guards, rate limiting, and structured logging.',
+  stack: [
+    'React 19',
+    'TypeScript',
+    'Vite 7',
+    'TanStack Router',
+    'TanStack Query',
+    'Zustand',
+    'Bun',
+    'Hono',
+    'Drizzle ORM',
+    'PostgreSQL',
+    'Better Auth',
+    'Zod',
+  ],
+  tradeoffs:
+    'Chose explicit module boundaries and type-safe infrastructure (frontend API wrappers, backend guards/middleware) over quick shortcuts to keep long-term maintainability and extensibility.',
+  repo: 'https://github.com/wanrif/kasir-one-web',
+  demo: 'https://github.com/wanrif/kasir-one-service',
+};
+
+### Context
+
+Kasir One is positioned as a Web POS product for MSMEs, requiring a scalable foundation for cashier flow, product catalog, transactions, payments, customer/debt, and inventory movement.
+
+### Solution
+
+- Frontend foundation with file-based routing, typed API wrapper, and predictable server-state patterns using TanStack Query.
+- Backend foundation with Better Auth session flows, RBAC guards (`authGuard`, `roleGuard`, `permissionGuard`), global rate limit, configurable CORS, and structured logging.
+- POS schema prepared for stores, members, categories, products, transactions, transaction items, payment methods (CASH/QRIS/TRANSFER/CARD), customers/debts, and stock movements.
+
+### Architecture Notes
+
+- Frontend: alias-driven imports (`@/`), reusable layout/providers, and Bun-first tooling.
+- Backend: middleware pipeline order (`logger` → `rate limit` → `cors` → `pretty json` → `auth middleware`) with route modules under `/api`.
+- Deployment-ready path via local Bun workflows and Docker profiles for dev/prod.

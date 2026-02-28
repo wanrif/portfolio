@@ -1,5 +1,4 @@
-import { selectLocale } from '@containers/app/selectors';
-import store, { persistor } from '@stores/configureStore';
+import { useAppStore } from '@stores/app/store';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
@@ -15,23 +14,14 @@ const resources = {
   },
 };
 
-persistor.subscribe(() => {
-  const isRehydrated = persistor.getState().bootstrapped;
-  if (isRehydrated) {
-    const locale = selectLocale(store.getState());
-
-    void i18n
-      .use(initReactI18next) // passes i18n down to react-i18next
-      .init({
-        resources,
-        lng: locale,
-        fallbackLng: ['en', 'id'],
-        interpolation: {
-          escapeValue: false, // react already safes from xss
-        },
-        lowerCaseLng: true,
-      });
-  }
+void i18n.use(initReactI18next).init({
+  resources,
+  lng: useAppStore.getState().locale,
+  fallbackLng: ['en', 'id'],
+  interpolation: {
+    escapeValue: false,
+  },
+  lowerCaseLng: true,
 });
 
 export default i18n;

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { GiAce, GiCat, GiLinkedRings } from 'react-icons/gi';
@@ -10,7 +11,6 @@ interface IContactLink {
   href: string;
   value: string;
   delay: number;
-  gradientColors: string;
 }
 
 const Contact: React.FC = () => {
@@ -19,95 +19,61 @@ const Contact: React.FC = () => {
   const contactLinks: IContactLink[] = [
     {
       icon: <GoMention className='w-6 h-6' />,
-      label: 'Email',
+      label: t('contact_label_email'),
       href: 'mailto:redwan_work@pm.me',
       value: 'redwan_work@pm.me',
       delay: 0.1,
-      gradientColors: 'from-blue-400 to-blue-600',
     },
     {
       icon: <GiLinkedRings className='w-6 h-6' />,
-      label: 'LinkedIn',
+      label: t('contact_label_linkedin'),
       href: 'https://www.linkedin.com/in/wanrif/',
       value: 'linkedin.com/in/wanrif',
       delay: 0.2,
-      gradientColors: 'from-cyan-400 to-cyan-600',
     },
     {
       icon: <GiCat className='w-6 h-6' />,
-      label: 'GitHub',
+      label: t('contact_label_github'),
       href: 'https://github.com/wanrif',
       value: 'github.com/wanrif',
       delay: 0.3,
-      gradientColors: 'from-purple-400 to-purple-600',
     },
     {
       icon: <GiAce className='w-5 h-5' />,
-      label: 'CV',
+      label: t('contact_label_cv'),
       href: 'https://drive.proton.me/urls/253KWW5VM4#Tw7dKlEuPOPr',
-      value: 'View CV or Download',
+      value: t('contact_value_cv'),
       delay: 0.3,
-      gradientColors: 'from-yellow-400 to-yellow-600',
     },
   ];
 
   return (
-    <section
-      id='contacts'
-      className='bg-linear-to-b from-shark-300 to-tuna-50 dark:from-tuna-700 dark:to-shark-950 -mt-px sm:mt-0 py-16 min-h-[40dvh]'
-    >
+    <section id='contacts' className='bg-shark-950 py-16 min-h-[40dvh]'>
       <div className='container mx-auto px-4 max-w-6xl'>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className='text-center mb-12'
-        >
-          <h2 className='text-3xl md:text-4xl font-bold text-gallery-950 dark:text-tertiary-300 mb-4'>
-            {t('contact_title')}
-          </h2>
-          <p className='text-lg text-gallery-800 dark:text-tertiary-400 max-w-2xl mx-auto'>{t('contact_subtitle')}</p>
+        <motion.div {...sectionInViewMotion()} className='mb-12'>
+          <p className='terminal-prompt mb-2'>{'>'} section: contacts</p>
+          <h2 className='terminal-heading mb-4 font-display text-3xl font-bold md:text-4xl'>{t('contact_title')}</h2>
+          <p className='text-lg text-gallery-300 max-w-2xl'>{t('contact_subtitle')}</p>
+          <p className='text-gallery-400 mt-3'>
+            {'>'} {t('contact_palette_hint')}
+          </p>
         </motion.div>
 
         <div className='grid gap-6 md:grid-cols-4'>
           {contactLinks.map((link) => (
-            <motion.div
-              key={link.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: link.delay, duration: 0.3 }}
-              className='group relative'
-            >
-              <div
-                className={`absolute inset-0 bg-linear-to-br ${link.gradientColors} opacity-0 
-                  group-hover:opacity-10 dark:group-hover:opacity-20 rounded-xl transition-opacity duration-300`}
-              />
-
+            <motion.div key={link.label} {...makeStaggerInViewMotion(link.delay * 10, 0.03)} className='group relative'>
               <motion.a
                 href={link.href}
                 target='_blank'
                 rel='noreferrer'
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className='relative block p-6 rounded-xl bg-tuna-50/50 dark:bg-shark-950/50 backdrop-blur-sm
-                  shadow-lg hover:shadow-xl
-                  transition-all duration-300 ease-in-out
-                  border border-tertiary-400/10 dark:border-tertiary-500/10
-                  hover:border-tertiary-400/30 dark:hover:border-tertiary-500/30'
-              >
+                {...cardInteractionMotion()}
+                className='terminal-window terminal-subcard corner-superellipse/2 relative block rounded-3xl p-6 transition-all duration-300 ease-in-out hover:border-tertiary-400'>
                 <div className='flex flex-col items-center'>
-                  <div
-                    className='mb-4 p-3 rounded-xl bg-tertiary-400 dark:bg-tertiary-500 
-                    group-hover:bg-linear-to-br group-hover:scale-110
-                    transition-all duration-300'
-                  >
+                  <div className='rounded-2xl corner-bevel mb-4 border border-gallery-700 bg-shark-950/70 p-3 transition-all duration-300 group-hover:scale-110'>
                     {link.icon}
                   </div>
-                  <h3 className='text-lg font-semibold text-tertiary-600 dark:text-tertiary-300 mb-2'>{link.label}</h3>
-                  <p
-                    className='text-sm text-tertiary-500 dark:text-tertiary-400 text-center
-                    group-hover:text-tertiary-600 dark:group-hover:text-tertiary-300 transition-colors'
-                  >
+                  <h3 className='text-lg font-semibold text-tertiary-300 mb-2'>{link.label}</h3>
+                  <p className='text-sm text-gallery-300 text-center group-hover:text-gallery-100 transition-colors'>
                     {link.value}
                   </p>
 
@@ -115,8 +81,7 @@ const Contact: React.FC = () => {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     className='absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100
-                      text-tertiary-500 dark:text-tertiary-400 transition-opacity duration-300'
-                  >
+                      text-tertiary-300 transition-opacity duration-300'>
                     →
                   </motion.span>
                 </div>
