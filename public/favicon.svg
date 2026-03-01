@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PortTreez icon">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2b0a40" />
+      <stop offset="1" stop-color="#041a22" />
+    </linearGradient>
+    <linearGradient id="accent" x1="14" y1="12" x2="46" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#16dff1" />
+      <stop offset="1" stop-color="#efc05e" />
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bg)" />
+  <path
+    d="M24 14h10.4c8.3 0 14.1 5.1 14.1 12.8 0 7.6-5.8 12.8-14.1 12.8H24V14zm9.7 19.2c4.3 0 7.1-2.4 7.1-6.4 0-4-2.8-6.4-7.1-6.4h-2.8v12.8h2.8z"
+    fill="url(#accent)" />
+  <path d="M31 37.5h2.4v13.6H31z" fill="#16dff1" />
+  <path d="M27.8 45.7 32.2 40l4.4 5.7z" fill="#efc05e" />
+  <path d="M26.2 50.6 32.2 42.9l6 7.7z" fill="#16dff1" />
+</svg>
