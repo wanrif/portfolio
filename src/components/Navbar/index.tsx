@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
+
+import { motion } from 'framer-motion';
 
 const typingVariants = {
   hidden: { opacity: 0 },
@@ -40,19 +41,21 @@ const Navbar: React.FC = () => {
   return (
     <header
       id='header'
-      className='sticky top-0 z-40 border-b border-gallery-800/80 bg-shark-950/94 px-3 py-2.5 backdrop-blur-xl sm:px-5 sm:py-3'>
+      className='sticky top-0 z-40 border-b border-gallery-800/80 bg-shark-950/94 px-3 py-2.5 backdrop-blur-xl sm:px-5 sm:py-3'
+    >
       <div className='mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-2.5 md:grid-cols-[1fr_auto]'>
         <motion.div
           initial='hidden'
           animate='visible'
           variants={typingVariants}
-          className='flex flex-wrap items-center gap-2.5'>
+          className='flex flex-wrap items-center gap-2.5'
+        >
           <div className='flex items-center gap-1.5 rounded-xl border border-gallery-700/85 bg-shark-900/80 px-2 py-1'>
             <span className='h-2 w-2 rounded-full bg-tuna-400/90' />
             <span className='h-2 w-2 rounded-full bg-tertiary-300/85' />
             <span className='h-2 w-2 rounded-full bg-tertiary-500/80' />
           </div>
-          <p className='font-display text-xs sm:text-sm font-semibold tracking-[0.14em] text-gallery-100 terminal-caret'>
+          <p className='terminal-caret font-display text-xs font-semibold tracking-[0.14em] text-gallery-100 sm:text-sm'>
             /sys/users/{displayText}
           </p>
           <span className='terminal-chip terminal-chip-accent'>tty0</span>
@@ -60,10 +63,10 @@ const Navbar: React.FC = () => {
         </motion.div>
 
         <div className='hidden items-center gap-2.5 md:flex'>
-          <div className='rounded-xl border border-gallery-700/85 bg-shark-900/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-gallery-300'>
+          <div className='rounded-xl border border-gallery-700/85 bg-shark-900/85 px-3 py-1.5 text-[10px] tracking-[0.12em] text-gallery-300 uppercase'>
             <span className='text-tertiary-300'>proc</span> portfolio-ui
           </div>
-          <p className='rounded-xl border border-tertiary-700/50 bg-shark-900/85 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-gallery-300'>
+          <p className='rounded-xl border border-tertiary-700/50 bg-shark-900/85 px-3 py-1.5 text-[10px] tracking-[0.12em] text-gallery-300 uppercase'>
             <span className='text-tertiary-300'>$</span> run session --layout terminal-os
           </p>
         </div>

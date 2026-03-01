@@ -2,7 +2,8 @@ export const meta = {
   slug: 'kasir-one',
   name: 'Kasir One',
   inProgress: true,
-  summary: 'Platform Web POS untuk UMKM dengan fondasi frontend modern dan backend modular yang aman.',
+  summary:
+    'Platform Web POS untuk UMKM dengan fondasi frontend modern dan backend modular yang aman.',
   problem:
     'Alur operasional perlu mencakup autentikasi, akses berbasis peran, data produk/transaksi, dan kesiapan pengembangan fitur lanjutan tanpa menghambat delivery.',
   architecture:
@@ -29,16 +30,26 @@ export const meta = {
 
 ### Konteks
 
-Kasir One diposisikan sebagai produk Web POS untuk UMKM, sehingga membutuhkan fondasi yang siap berkembang untuk alur kasir, katalog produk, transaksi, pembayaran, pelanggan/piutang, dan pergerakan stok.
+Kasir One diposisikan sebagai produk Web POS untuk UMKM, sehingga membutuhkan
+fondasi yang siap berkembang untuk alur kasir, katalog produk, transaksi,
+pembayaran, pelanggan/piutang, dan pergerakan stok.
 
 ### Solusi
 
-- Fondasi frontend dengan file-based routing, API wrapper bertipe, dan pola server-state yang konsisten menggunakan TanStack Query.
-- Fondasi backend dengan flow session Better Auth, guard RBAC (`authGuard`, `roleGuard`, `permissionGuard`), global rate limit, CORS terkonfigurasi, dan structured logging.
-- Skema POS disiapkan untuk store, member, kategori, produk, transaksi, item transaksi, metode pembayaran (CASH/QRIS/TRANSFER/CARD), pelanggan/piutang, dan pergerakan stok.
+- Fondasi frontend dengan file-based routing, API wrapper bertipe, dan pola
+  server-state yang konsisten menggunakan TanStack Query.
+- Fondasi backend dengan flow session Better Auth, guard RBAC (`authGuard`,
+  `roleGuard`, `permissionGuard`), global rate limit, CORS terkonfigurasi, dan
+  structured logging.
+- Skema POS disiapkan untuk store, member, kategori, produk, transaksi, item
+  transaksi, metode pembayaran (CASH/QRIS/TRANSFER/CARD), pelanggan/piutang, dan
+  pergerakan stok.
 
 ### Catatan Arsitektur
 
-- Frontend: import berbasis alias (`@/`), layout/providers reusable, dan tooling Bun-first.
-- Backend: urutan middleware global (`logger` → `rate limit` → `cors` → `pretty json` → `auth middleware`) dengan route module di bawah prefix `/api`.
-- Jalur deploy siap pakai melalui workflow Bun lokal dan profil Docker untuk dev/prod.
+- Frontend: import berbasis alias (`@/`), layout/providers reusable, dan tooling
+  Bun-first.
+- Backend: urutan middleware global (`logger` → `rate limit` → `cors` →
+  `pretty json` → `auth middleware`) dengan route module di bawah prefix `/api`.
+- Jalur deploy siap pakai melalui workflow Bun lokal dan profil Docker untuk
+  dev/prod.

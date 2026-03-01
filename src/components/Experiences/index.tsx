@@ -1,9 +1,11 @@
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { selectLocale, useAppStore } from '@stores/app/store';
 import { getLocalizedModule } from '@utils/mdxLocale';
 import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
+
 import { motion } from 'framer-motion';
-import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { GiOfficeChair } from 'react-icons/gi';
 
 interface IExperience {
@@ -70,7 +72,9 @@ const Experiences: React.FC = () => {
   ];
 
   const nowContent = useMemo(() => {
-    const modules = import.meta.glob<NowChangelogModule>('../../content/now/*.mdx', { eager: true });
+    const modules = import.meta.glob<NowChangelogModule>('../../content/now/*.mdx', {
+      eager: true,
+    });
     const firstModule = getLocalizedModule(modules, locale);
 
     return {
@@ -109,7 +113,7 @@ const Experiences: React.FC = () => {
   return (
     <section id='now' className='terminal-section relative px-4 py-16'>
       <div className='terminal-grid-bg' />
-      <div className='container relative z-10 mx-auto max-w-6xl'>
+      <div className='relative z-10 container mx-auto max-w-6xl'>
         <div className='mb-7 space-y-2'>
           <p className='terminal-prompt'>module: career.timeline</p>
           <h2 className='terminal-heading font-display text-3xl font-bold'>{t('now_title')}</h2>
@@ -130,19 +134,29 @@ const Experiences: React.FC = () => {
                   key={index}
                   {...makeStaggerInViewMotion(index)}
                   {...cardInteractionMotion()}
-                  className='terminal-subcard rounded-xl p-4'>
+                  className='terminal-subcard rounded-xl p-4'
+                >
                   <div className='mb-3 flex items-start gap-3'>
                     <div className='rounded-xl border border-gallery-700 p-2'>
                       <GiOfficeChair className='h-5 w-5 text-tertiary-300' />
                     </div>
                     <div>
-                      <h3 className='text-base font-semibold text-gallery-100 sm:text-lg'>{exp.title}</h3>
+                      <h3 className='text-base font-semibold text-gallery-100 sm:text-lg'>
+                        {exp.title}
+                      </h3>
                       <p className='text-sm font-medium text-tertiary-300'>{exp.company}</p>
                       <p className='text-xs text-gallery-400 sm:text-sm'>
-                        {new Date(exp.startDate).toLocaleDateString(locale, { year: 'numeric', month: 'long' })} -{' '}
+                        {new Date(exp.startDate).toLocaleDateString(locale, {
+                          year: 'numeric',
+                          month: 'long',
+                        })}{' '}
+                        -{' '}
                         {exp.endDate === 'present'
                           ? t('experiences_present')
-                          : new Date(exp.endDate).toLocaleDateString(locale, { year: 'numeric', month: 'long' })}
+                          : new Date(exp.endDate).toLocaleDateString(locale, {
+                              year: 'numeric',
+                              month: 'long',
+                            })}
                       </p>
                     </div>
                   </div>
@@ -159,14 +173,20 @@ const Experiences: React.FC = () => {
             </div>
           </div>
 
-          <motion.div className='terminal-window overflow-hidden rounded-2xl' {...sectionInViewMotion()}>
+          <motion.div
+            className='terminal-window overflow-hidden rounded-2xl'
+            {...sectionInViewMotion()}
+          >
             <div className='terminal-titlebar'>
               <span>feed / now.updates</span>
               <span className='terminal-chip terminal-chip-accent'>{t('now_changelog_title')}</span>
             </div>
             <div className='space-y-3 p-4'>
               {nowContent.entries.map((entry) => (
-                <div key={`${entry.date}-${entry.title}`} className='terminal-subcard rounded-xl p-3'>
+                <div
+                  key={`${entry.date}-${entry.title}`}
+                  className='terminal-subcard rounded-xl p-3'
+                >
                   <p className='text-xs text-tertiary-300'>{entry.date}</p>
                   <p className='font-medium text-gallery-100'>{entry.title}</p>
                   <p className='text-sm text-gallery-300'>{entry.detail}</p>

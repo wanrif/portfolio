@@ -7,20 +7,20 @@
 
 @theme {
   --font-sans:
-    'JetBrains Mono', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+    'JetBrains Mono', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   --font-display:
-    'JetBrains Mono', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+    'JetBrains Mono', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   --font-jersey-ten:
-    'Jersey 10', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+    'Jersey 10', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   --font-franchise:
-    franchise, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+    franchise, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   --font-franchiseFilled:
-    franchiseFilled, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+    franchiseFilled, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 
   --color-shark-50: #b1fff6;
   --color-shark-100: #8ff8ef;
@@ -176,7 +176,11 @@
         color-mix(in oklab, var(--color-tuna-400) 12%, transparent) 0,
         transparent 34%
       ),
-      linear-gradient(180deg, var(--color-shark-950) 0%, color-mix(in oklab, var(--color-shark-900) 90%, black) 100%);
+      linear-gradient(
+        180deg,
+        var(--color-shark-950) 0%,
+        color-mix(in oklab, var(--color-shark-900) 90%, black) 100%
+      );
     color: var(--color-gallery-100);
     font-family: var(--font-sans);
     line-height: 1.55;
@@ -400,8 +404,16 @@
     inset: 0;
     pointer-events: none;
     background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--color-gallery-700) 20%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--color-gallery-700) 16%, transparent) 1px, transparent 1px);
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--color-gallery-700) 20%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--color-gallery-700) 16%, transparent) 1px,
+        transparent 1px
+      );
     background-size: 36px 36px;
     opacity: 0.32;
   }

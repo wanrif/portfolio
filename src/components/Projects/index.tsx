@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+
 import { selectLocale, useAppStore } from '@stores/app/store';
 import { getLocalizedModules, stableSortByName } from '@utils/mdxLocale';
+import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
+
+import { motion } from 'framer-motion';
 
 interface CaseStudyMeta {
   slug: string;
@@ -31,7 +33,9 @@ const Projects: React.FC = () => {
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
 
   const caseStudies = useMemo(() => {
-    const modules = import.meta.glob<CaseStudyModule>('../../content/case-studies/*.mdx', { eager: true });
+    const modules = import.meta.glob<CaseStudyModule>('../../content/case-studies/*.mdx', {
+      eager: true,
+    });
     const selectedModules = getLocalizedModules(modules, locale);
     return stableSortByName(selectedModules);
   }, [locale]);
@@ -39,9 +43,12 @@ const Projects: React.FC = () => {
   return (
     <section id='projects' className='terminal-section relative px-4 py-16'>
       <div className='terminal-grid-bg' />
-      <div className='container relative z-10 mx-auto max-w-6xl'>
+      <div className='relative z-10 container mx-auto max-w-6xl'>
         <p className='terminal-prompt mb-2'>module: project.registry</p>
-        <motion.h2 className='terminal-heading mb-2 font-display text-3xl font-bold' {...sectionInViewMotion()}>
+        <motion.h2
+          className='terminal-heading mb-2 font-display text-3xl font-bold'
+          {...sectionInViewMotion()}
+        >
           {t('projects_title')}
         </motion.h2>
         <motion.p className='mb-8 text-gallery-300' {...sectionInViewMotion()}>
@@ -73,17 +80,19 @@ const Projects: React.FC = () => {
                 key={meta.slug}
                 className='terminal-window overflow-hidden rounded-2xl corner-superellipse/2'
                 {...makeStaggerInViewMotion(index)}
-                {...cardInteractionMotion()}>
+                {...cardInteractionMotion()}
+              >
                 <div className='terminal-titlebar'>
                   <div className='flex items-center gap-2'>
                     <span className='terminal-chip'>unit-{String(index + 1).padStart(2, '0')}</span>
-                    <h3 className='font-display text-sm font-semibold tracking-wider text-gallery-100 terminal-caret'>
+                    <h3 className='terminal-caret font-display text-sm font-semibold tracking-wider text-gallery-100'>
                       {meta.name}
                     </h3>
                   </div>
                   {badgeConfig && (
                     <span
-                      className={`rounded-xl border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${badgeConfig.className}`}>
+                      className={`rounded-xl border px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase ${badgeConfig.className}`}
+                    >
                       {badgeConfig.label}
                     </span>
                   )}
@@ -121,20 +130,23 @@ const Projects: React.FC = () => {
                         href={meta.repo}
                         target='_blank'
                         rel='noreferrer'
-                        className='terminal-btn-secondary rounded-xl corner-bevel px-3 py-1.5'>
+                        className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
+                      >
                         {t('projects_repo_frontend')}
                       </a>
                       <a
                         href={meta.demo}
                         target='_blank'
                         rel='noreferrer'
-                        className='terminal-btn-secondary rounded-xl corner-bevel px-3 py-1.5'>
+                        className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
+                      >
                         {hasBackendRepo ? t('projects_repo_backend') : t('projects_live_demo')}
                       </a>
                       <button
                         type='button'
                         onClick={() => setActiveSlug(isOpen ? null : meta.slug)}
-                        className='terminal-btn-primary rounded-xl corner-bevel px-3 py-1.5'>
+                        className='terminal-btn-primary rounded-xl px-3 py-1.5 corner-bevel'
+                      >
                         {isOpen ? t('projects_close_case_study') : t('projects_open_case_study')}
                       </button>
                     </div>

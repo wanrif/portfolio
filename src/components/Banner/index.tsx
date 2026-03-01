@@ -1,10 +1,14 @@
-import Tooltip from '@components/Tooltip';
-import { iconInteractionMotion, pageEnterMotion, sectionInViewMotion } from '@utils/motion';
-import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import Tooltip from '@components/Tooltip';
+import { iconInteractionMotion, pageEnterMotion, sectionInViewMotion } from '@utils/motion';
+import scrollToSection from '@utils/scrollToSection';
+
+import { motion } from 'framer-motion';
 import { GiAce, GiCat, GiLinkedRings } from 'react-icons/gi';
 import { GoMention } from 'react-icons/go';
+
 import ParticleBackground from './ParticleBackground';
 
 interface ISocialLink {
@@ -17,13 +21,21 @@ const Banner: React.FC = () => {
   const { t } = useTranslation();
 
   const socialLinks: ISocialLink[] = [
-    { href: 'mailto:redwan_work@pm.me', icon: <GoMention className='h-5 w-5' />, tooltipText: 'redwan_work@pm.me' },
+    {
+      href: 'mailto:redwan_work@pm.me',
+      icon: <GoMention className='h-5 w-5' />,
+      tooltipText: 'redwan_work@pm.me',
+    },
     {
       href: 'https://www.linkedin.com/in/wanrif/',
       icon: <GiLinkedRings className='h-5 w-5' />,
       tooltipText: 'linkedIn',
     },
-    { href: 'https://github.com/wanrif', icon: <GiCat className='h-5 w-5' />, tooltipText: 'Github' },
+    {
+      href: 'https://github.com/wanrif',
+      icon: <GiCat className='h-5 w-5' />,
+      tooltipText: 'Github',
+    },
     {
       href: 'https://drive.proton.me/urls/253KWW5VM4#Tw7dKlEuPOPr',
       icon: <GiAce className='h-5 w-5' />,
@@ -37,7 +49,8 @@ const Banner: React.FC = () => {
 
       <motion.div
         className='relative z-10 mx-auto grid w-full max-w-6xl gap-4 lg:grid-cols-[1.34fr_0.66fr]'
-        {...pageEnterMotion()}>
+        {...pageEnterMotion()}
+      >
         <div className='terminal-window overflow-hidden'>
           <div className='terminal-titlebar'>
             <span>workspace / hero.session</span>
@@ -51,24 +64,28 @@ const Banner: React.FC = () => {
                 <span>{t('hero_terminal_line')}</span>
               </div>
 
-              <h1 className='font-display text-3xl font-bold leading-[1.1] text-gallery-100 sm:text-5xl'>
+              <h1 className='font-display text-3xl leading-[1.1] font-bold text-gallery-100 sm:text-5xl'>
                 Redwan Sarif
-                <span className='mt-1.5 block text-xl text-tertiary-300 sm:text-3xl'>{t('hero_role')}</span>
+                <span className='mt-1.5 block text-xl text-tertiary-300 sm:text-3xl'>
+                  {t('hero_role')}
+                </span>
               </h1>
 
               <p className='max-w-2xl text-gallery-300'>{t('hero_intro')}</p>
 
               <div className='flex flex-wrap items-center gap-2 pt-1'>
-                <a
-                  href='#projects'
-                  className='terminal-btn-primary rounded-xl corner-bevel px-4 py-2 transition-colors'>
+                <div
+                  onClick={() => scrollToSection('projects')}
+                  className='terminal-btn-primary rounded-xl px-4 py-2 transition-colors corner-bevel'
+                >
                   {t('hero_primary_cta')}
-                </a>
+                </div>
                 <a
                   href='https://github.com/wanrif'
                   target='_blank'
                   rel='noreferrer'
-                  className='terminal-btn-secondary rounded-xl corner-bevel px-4 py-2 transition-colors'>
+                  className='terminal-btn-secondary rounded-xl px-4 py-2 transition-colors corner-bevel'
+                >
                   {t('hero_secondary_cta')}
                 </a>
               </div>
@@ -80,8 +97,9 @@ const Banner: React.FC = () => {
                       href={link.href}
                       target='_blank'
                       rel='noreferrer'
-                      className='terminal-subcard rounded-xl corner-bevel flex h-11 items-center justify-center text-tertiary-300 transition-colors duration-300 hover:border-tertiary-400'
-                      {...iconInteractionMotion()}>
+                      className='terminal-subcard flex h-11 items-center justify-center rounded-xl text-tertiary-300 transition-colors duration-300 corner-bevel hover:border-tertiary-400'
+                      {...iconInteractionMotion()}
+                    >
                       {link.icon}
                     </motion.a>
                   </Tooltip>
@@ -91,20 +109,34 @@ const Banner: React.FC = () => {
 
             <div className='space-y-3.5'>
               <p className='terminal-prompt'>module :: profile.meta</p>
-              <div className='terminal-subcard rounded-2xl corner-bevel p-3'>
-                <p className='text-xs uppercase tracking-wide text-gallery-400'>{t('hero_current_role_label')}</p>
+              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                  {t('hero_current_role_label')}
+                </p>
                 <p className='text-gallery-100'>{t('hero_current_role_value')}</p>
               </div>
-              <div className='terminal-subcard rounded-2xl corner-bevel p-3'>
-                <p className='text-xs uppercase tracking-wide text-gallery-400'>{t('hero_focus_label')}</p>
+              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                  {t('hero_focus_label')}
+                </p>
                 <p className='text-gallery-100'>{t('hero_focus_value')}</p>
               </div>
-              <div className='terminal-subcard rounded-2xl corner-bevel p-3'>
-                <p className='text-xs uppercase tracking-wide text-gallery-400'>{t('hero_open_to_label')}</p>
+              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                  {t('hero_open_to_label')}
+                </p>
                 <p className='text-gallery-100'>{t('hero_open_to_value')}</p>
               </div>
               <div className='flex flex-wrap gap-2 pt-1'>
-                {['Next.js', 'TypeScript', 'React', 'Tailwind CSS', 'Material UI', 'Express.js', 'Hono'].map((item) => (
+                {[
+                  'Next.js',
+                  'TypeScript',
+                  'React',
+                  'Tailwind CSS',
+                  'Material UI',
+                  'Express.js',
+                  'Hono',
+                ].map((item) => (
                   <span key={item} className='terminal-chip'>
                     {item}
                   </span>

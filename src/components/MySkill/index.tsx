@@ -1,7 +1,9 @@
-import { motion } from 'framer-motion';
-import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
+
+import { motion } from 'framer-motion';
 
 interface ISkill {
   title: string;
@@ -18,7 +20,16 @@ const MySkill: React.FC = () => {
     },
     {
       title: t('skill_backend'),
-      skills: ['Express', 'Hono', 'Laravel', 'MySQL', 'PostgreSQL', 'Redis', 'MongoDB', 'Drizzle ORM'],
+      skills: [
+        'Express',
+        'Hono',
+        'Laravel',
+        'MySQL',
+        'PostgreSQL',
+        'Redis',
+        'MongoDB',
+        'Drizzle ORM',
+      ],
     },
     {
       title: t('skill_frontend'),
@@ -48,9 +59,12 @@ const MySkill: React.FC = () => {
   return (
     <section id='skills' className='terminal-section relative px-4 py-16'>
       <div className='terminal-grid-bg' />
-      <div className='container relative z-10 mx-auto max-w-6xl'>
+      <div className='relative z-10 container mx-auto max-w-6xl'>
         <p className='terminal-prompt mb-2'>module: capability.matrix</p>
-        <motion.h2 {...sectionInViewMotion()} className='terminal-heading mb-2 font-display text-3xl font-bold'>
+        <motion.h2
+          {...sectionInViewMotion()}
+          className='terminal-heading mb-2 font-display text-3xl font-bold'
+        >
           {t('my_skill_title')}
         </motion.h2>
         <p className='mb-8 text-gallery-300'>{t('skills_subtitle')}</p>
@@ -67,8 +81,9 @@ const MySkill: React.FC = () => {
                 key={idx}
                 {...makeStaggerInViewMotion(idx)}
                 {...cardInteractionMotion()}
-                className='grid gap-3 rounded-xl border border-gallery-700/80 bg-shark-950/65 p-3 sm:grid-cols-[180px_1fr] sm:items-start'>
-                <h3 className='flex items-center text-sm font-semibold uppercase tracking-wider text-tertiary-300 sm:text-base'>
+                className='grid gap-3 rounded-xl border border-gallery-700/80 bg-shark-950/65 p-3 sm:grid-cols-[180px_1fr] sm:items-start'
+              >
+                <h3 className='flex items-center text-sm font-semibold tracking-wider text-tertiary-300 uppercase sm:text-base'>
                   {category.title}
                 </h3>
 
@@ -79,7 +94,8 @@ const MySkill: React.FC = () => {
                       {...makeStaggerInViewMotion(idx + index * 0.15)}
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.98 }}
-                      className='terminal-chip transition-all duration-300'>
+                      className='terminal-chip transition-all duration-300'
+                    >
                       {skill}
                     </motion.span>
                   ))}

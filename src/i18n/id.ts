@@ -4,7 +4,8 @@ export default {
 
   // banner_tagline: 'Kode, Kopi, dan Kreativitas',
   banner_tagline: 'Dari Pixel ke Protokol: Menenun Keajaiban Web',
-  banner_statement: 'Saya membangun sistem end-to-end, dari antarmuka frontend hingga logika backend.',
+  banner_statement:
+    'Saya membangun sistem end-to-end, dari antarmuka frontend hingga logika backend.',
   hero_available: 'Terbuka untuk pekerjaan engineering produk berdampak',
   hero_terminal_line: 'fullstack developer • indonesia • terbuka untuk kolaborasi',
   hero_role: 'Fullstack Developer',
@@ -29,7 +30,8 @@ export default {
   experiences_since: '{{since}}',
 
   my_skill_title: 'Kemampuan Saya',
-  skills_subtitle: 'Dikelompokkan berdasarkan layer engineering untuk menunjukkan kemampuan delivery.',
+  skills_subtitle:
+    'Dikelompokkan berdasarkan layer engineering untuk menunjukkan kemampuan delivery.',
   skill_runtime: 'Runtime',
   skill_backend: 'Backend',
   skill_frontend: 'Frontend',
@@ -44,9 +46,12 @@ export default {
   projects_subtitle: 'Masalah → arsitektur → stack → tradeoff',
   projects_in_progress: 'Dalam Pengembangan',
   projects_completed: 'Selesai',
-  projects_kasir_problem: 'Kasir cabang membutuhkan transaksi latensi rendah dengan toleransi offline.',
-  projects_kasir_architecture: 'Lapisan SPA + API dengan sinkronisasi berbasis antrian dan cache-aware reads.',
-  projects_kasir_tradeoffs: 'Memilih eventual consistency untuk ketahanan dibanding total real-time ketat.',
+  projects_kasir_problem:
+    'Kasir cabang membutuhkan transaksi latensi rendah dengan toleransi offline.',
+  projects_kasir_architecture:
+    'Lapisan SPA + API dengan sinkronisasi berbasis antrian dan cache-aware reads.',
+  projects_kasir_tradeoffs:
+    'Memilih eventual consistency untuk ketahanan dibanding total real-time ketat.',
   projects_repo_frontend: 'repo frontend',
   projects_repo_backend: 'repo backend',
   projects_live_demo: 'demo live',
@@ -63,7 +68,8 @@ export default {
   now_title: 'Saat Ini',
   now_changelog_title: 'changelog',
   philosophy_title: 'Filosofi Engineering',
-  philosophy_item_ownership: 'Memiliki tanggung jawab atas sistem penuh, bukan hanya ruang lingkup tiket.',
+  philosophy_item_ownership:
+    'Memiliki tanggung jawab atas sistem penuh, bukan hanya ruang lingkup tiket.',
   philosophy_item_simple: 'Memilih arsitektur yang sederhana dan mudah dirawat dibanding hal baru.',
   philosophy_item_metrics: 'Dasarkan keputusan pada performa dan metrik produk.',
   philosophy_item_tradeoffs: 'Dokumentasikan tradeoff sejak awal untuk menyamakan persepsi tim.',

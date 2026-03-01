@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import Banner from '@components/Banner';
 import Contact from '@components/Contact';
 import Experiences from '@components/Experiences';
@@ -6,8 +9,6 @@ import MySkill from '@components/MySkill';
 import Navbar from '@components/Navbar';
 import Projects from '@components/Projects';
 import { selectTheme, useAppStore } from '@stores/app/store';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 function App() {
   const { t } = useTranslation();
@@ -31,13 +32,14 @@ function App() {
   }, []);
 
   return (
-    <div className='relative min-h-dvh bg-shark-950 px-2 pb-24 pt-2 text-gallery-100 sm:px-4 sm:pt-4'>
+    <div className='relative min-h-dvh bg-shark-950 px-2 pt-2 pb-24 text-gallery-100 sm:px-4 sm:pt-4'>
       {showBootOverlay && (
         <div
           aria-live='polite'
           className={`boot-overlay fixed inset-0 z-120 flex items-center justify-center px-4 transition-opacity duration-500 ${
             isBootFading ? 'opacity-0' : 'opacity-100'
-          }`}>
+          }`}
+        >
           <div className='boot-panel terminal-window w-full max-w-2xl overflow-hidden rounded-2xl'>
             <div className='terminal-titlebar'>
               <span>{t('boot_title')}</span>
@@ -57,7 +59,7 @@ function App() {
       )}
 
       <div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_5%,rgba(59,255,196,0.12),transparent_28%),radial-gradient(circle_at_85%_0%,rgba(255,180,48,0.09),transparent_34%)]' />
-      <div className='mx-auto w-full max-w-7xl terminal-shell overflow-hidden'>
+      <div className='terminal-shell mx-auto w-full max-w-7xl overflow-hidden'>
         <div className='terminal-topbar'>
           <span className='terminal-dot bg-tuna-400' />
           <span className='terminal-dot bg-tertiary-300' />
@@ -65,7 +67,7 @@ function App() {
           <span className='ml-2 truncate'>wanrif-os :: workspace / portfolio.terminal</span>
         </div>
         <Navbar />
-        <main className='box-border relative font-sans antialiased transition-all scroll-smooth'>
+        <main className='relative box-border scroll-smooth font-sans antialiased transition-all'>
           <Banner />
           <Projects />
           <Experiences />

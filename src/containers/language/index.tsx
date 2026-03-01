@@ -1,7 +1,9 @@
-import { selectLocale, useAppStore } from '@stores/app/store';
-import { motion } from 'framer-motion';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { selectLocale, useAppStore } from '@stores/app/store';
+
+import { motion } from 'framer-motion';
 
 const Language: React.FC = () => {
   const currentLocale = useAppStore(selectLocale);
@@ -23,9 +25,10 @@ const Language: React.FC = () => {
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.98 }}
       type='button'
-      className='font-medium cursor-pointer text-xs uppercase tracking-wider'
+      className='cursor-pointer text-xs font-medium tracking-wider uppercase'
       onClick={switchLocale}
-      data-testid='locale-toggle'>
+      data-testid='locale-toggle'
+    >
       {currentLocale === 'id' ? (
         <span className='text-tertiary-300'>id_ID</span>
       ) : (

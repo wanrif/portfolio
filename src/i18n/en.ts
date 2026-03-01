@@ -46,7 +46,8 @@ export default {
   projects_completed: 'Completed',
   projects_kasir_problem: 'Branch cashiers needed low-latency transactions with offline tolerance.',
   projects_kasir_architecture: 'SPA + API layers with queue-backed sync and cache-aware reads.',
-  projects_kasir_tradeoffs: 'Chose eventual consistency for resilience over strict real-time totals.',
+  projects_kasir_tradeoffs:
+    'Chose eventual consistency for resilience over strict real-time totals.',
   projects_repo_frontend: 'frontend repo',
   projects_repo_backend: 'backend repo',
   projects_live_demo: 'live demo',

@@ -2,7 +2,8 @@ export const meta = {
   slug: 'kasir-one',
   name: 'Kasir One',
   inProgress: true,
-  summary: 'Web POS platform for MSMEs with a modern frontend and secure, modular backend foundation.',
+  summary:
+    'Web POS platform for MSMEs with a modern frontend and secure, modular backend foundation.',
   problem:
     'Operational workflows needed to cover authentication, role-based access, product and transaction data, and future reporting growth without slowing delivery.',
   architecture:
@@ -29,16 +30,26 @@ export const meta = {
 
 ### Context
 
-Kasir One is positioned as a Web POS product for MSMEs, requiring a scalable foundation for cashier flow, product catalog, transactions, payments, customer/debt, and inventory movement.
+Kasir One is positioned as a Web POS product for MSMEs, requiring a scalable
+foundation for cashier flow, product catalog, transactions, payments,
+customer/debt, and inventory movement.
 
 ### Solution
 
-- Frontend foundation with file-based routing, typed API wrapper, and predictable server-state patterns using TanStack Query.
-- Backend foundation with Better Auth session flows, RBAC guards (`authGuard`, `roleGuard`, `permissionGuard`), global rate limit, configurable CORS, and structured logging.
-- POS schema prepared for stores, members, categories, products, transactions, transaction items, payment methods (CASH/QRIS/TRANSFER/CARD), customers/debts, and stock movements.
+- Frontend foundation with file-based routing, typed API wrapper, and
+  predictable server-state patterns using TanStack Query.
+- Backend foundation with Better Auth session flows, RBAC guards (`authGuard`,
+  `roleGuard`, `permissionGuard`), global rate limit, configurable CORS, and
+  structured logging.
+- POS schema prepared for stores, members, categories, products, transactions,
+  transaction items, payment methods (CASH/QRIS/TRANSFER/CARD), customers/debts,
+  and stock movements.
 
 ### Architecture Notes
 
-- Frontend: alias-driven imports (`@/`), reusable layout/providers, and Bun-first tooling.
-- Backend: middleware pipeline order (`logger` → `rate limit` → `cors` → `pretty json` → `auth middleware`) with route modules under `/api`.
-- Deployment-ready path via local Bun workflows and Docker profiles for dev/prod.
+- Frontend: alias-driven imports (`@/`), reusable layout/providers, and
+  Bun-first tooling.
+- Backend: middleware pipeline order (`logger` → `rate limit` → `cors` →
+  `pretty json` → `auth middleware`) with route modules under `/api`.
+- Deployment-ready path via local Bun workflows and Docker profiles for
+  dev/prod.

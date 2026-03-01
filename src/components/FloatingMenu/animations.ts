@@ -1,5 +1,6 @@
-import { gsap } from 'gsap';
 import type { Variants } from 'framer-motion';
+
+import { gsap } from 'gsap';
 
 export const containerVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.96 },

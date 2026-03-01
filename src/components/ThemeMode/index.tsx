@@ -6,7 +6,7 @@ interface ThemeModeProps {
 
 const ThemeMode: React.FC<ThemeModeProps> = ({ theme }) => {
   return (
-    <span className='text-xs font-semibold uppercase tracking-wider'>
+    <span className='text-xs font-semibold tracking-wider uppercase'>
       {theme === 'dark' ? 'mode:cyber' : 'mode:amber-crt'}
     </span>
   );

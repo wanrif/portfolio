@@ -1,5 +1,6 @@
-import cn from '@utils/cn';
 import React from 'react';
+
+import cn from '@utils/cn';
 
 type TooltipPosition = 'top' | 'bottom';
 
@@ -21,20 +22,22 @@ const Tooltip: React.FC<TooltipProps> = ({ text, children, position = 'bottom' }
   };
 
   return (
-    <div className='relative group'>
+    <div className='group relative'>
       {children}
       <div
         className={cn(
-          'absolute left-1/2 -translate-x-1/2 px-2 py-1 bg-shark-900 text-tertiary-300 text-[11px] uppercase tracking-wide rounded border border-tertiary-700/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap',
+          'absolute left-1/2 -translate-x-1/2 rounded border border-tertiary-700/55 bg-shark-900 px-2 py-1 text-[11px] tracking-wide whitespace-nowrap text-tertiary-300 uppercase opacity-0 transition-opacity duration-300 group-hover:opacity-100',
           tooltipStyles[position],
-        )}>
+        )}
+      >
         {'$ '}
         {text}
         <div
           className={cn(
-            'absolute left-1/2 -translate-x-1/2 w-2 h-2 bg-shark-900 border border-tertiary-700/55',
+            'absolute left-1/2 h-2 w-2 -translate-x-1/2 border border-tertiary-700/55 bg-shark-900',
             arrowStyles[position],
-          )}></div>
+          )}
+        ></div>
       </div>
     </div>
   );
