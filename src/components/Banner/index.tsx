@@ -1,9 +1,14 @@
-import Tooltip from '@components/Tooltip';
-import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
+import Tooltip from '@components/Tooltip';
+import { iconInteractionMotion, pageEnterMotion, sectionInViewMotion } from '@utils/motion';
+import scrollToSection from '@utils/scrollToSection';
+
+import { motion } from 'framer-motion';
 import { GiAce, GiCat, GiLinkedRings } from 'react-icons/gi';
 import { GoMention } from 'react-icons/go';
+
 import ParticleBackground from './ParticleBackground';
 
 interface ISocialLink {
@@ -16,77 +21,155 @@ const Banner: React.FC = () => {
   const { t } = useTranslation();
 
   const socialLinks: ISocialLink[] = [
-    { href: 'mailto:redwan_work@pm.me', icon: <GoMention className='w-5 h-5' />, tooltipText: 'redwan_work@pm.me' },
+    {
+      href: 'mailto:redwan_work@pm.me',
+      icon: <GoMention className='h-5 w-5' />,
+      tooltipText: 'redwan_work@pm.me',
+    },
     {
       href: 'https://www.linkedin.com/in/wanrif/',
-      icon: <GiLinkedRings className='w-5 h-5' />,
+      icon: <GiLinkedRings className='h-5 w-5' />,
       tooltipText: 'linkedIn',
     },
-    { href: 'https://github.com/wanrif', icon: <GiCat className='w-5 h-5' />, tooltipText: 'Github' },
+    {
+      href: 'https://github.com/wanrif',
+      icon: <GiCat className='h-5 w-5' />,
+      tooltipText: 'Github',
+    },
     {
       href: 'https://drive.proton.me/urls/253KWW5VM4#Tw7dKlEuPOPr',
-      icon: <GiAce className='w-5 h-5' />,
+      icon: <GiAce className='h-5 w-5' />,
       tooltipText: 'CV',
     },
   ];
 
   return (
-    <section className='relative flex items-center justify-center min-h-[calc(100dvh-64px)] bg-gradient-to-b from-tuna-50 to-shark-300 dark:from-shark-950 dark:to-tuna-700 overflow-hidden'>
+    <section id='top' className='terminal-section relative overflow-hidden px-4 sm:px-6'>
       <ParticleBackground />
 
       <motion.div
-        className='relative z-10 flex flex-col items-center justify-center text-center max-w-4xl px-4'
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        className='relative z-10 mx-auto grid w-full max-w-6xl gap-4 lg:grid-cols-[1.34fr_0.66fr]'
+        {...pageEnterMotion()}
       >
-        <motion.div
-          className='mb-8'
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <img
-            src='/personal_photo.jpg'
-            alt='Redwan'
-            className='rounded-full w-32 h-32 object-cover shadow-lg ring-4 ring-tertiary-400/30 dark:ring-tertiary-500/30'
-          />
-        </motion.div>
+        <div className='terminal-window overflow-hidden'>
+          <div className='terminal-titlebar'>
+            <span>workspace / hero.session</span>
+            <span className='terminal-chip terminal-chip-accent'>{t('hero_available')}</span>
+          </div>
 
-        <motion.div
-          className='space-y-4 mb-8'
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <h1 className='text-5xl font-bold text-tuna-950 dark:text-gallery-100'>Redwan Sarif</h1>
-          <p className='text-2xl font-medium text-tuna-800 dark:text-gallery-200'>Fullstack Developer</p>
-          <p className='text-lg italic text-tuna-700 dark:text-gallery-300 max-w-2xl mx-auto'>
-            "{t('banner_tagline')}"
-          </p>
-        </motion.div>
+          <div className='grid gap-4 p-4 sm:p-5 md:grid-cols-[1.18fr_0.82fr] md:p-6'>
+            <motion.div className='space-y-4.5' {...sectionInViewMotion()}>
+              <div className='terminal-command-row'>
+                <span className='text-tertiary-300'>$</span>
+                <span>{t('hero_terminal_line')}</span>
+              </div>
 
-        <motion.div
-          className='flex gap-4'
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
-          {socialLinks.map((link, index) => (
-            <Tooltip key={index} text={link.tooltipText}>
-              <motion.a
-                href={link.href}
-                target='_blank'
-                rel='noreferrer'
-                className='flex items-center justify-center w-10 h-10 rounded-xl bg-tertiary-400/20 hover:bg-tertiary-400/40 dark:bg-tertiary-500/20 dark:hover:bg-tertiary-500/40 text-tertiary-600 dark:text-tertiary-300 transition-all duration-300'
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {link.icon}
-              </motion.a>
-            </Tooltip>
-          ))}
-        </motion.div>
+              <h1 className='font-display text-3xl leading-[1.1] font-bold text-gallery-100 sm:text-5xl'>
+                Redwan Sarif
+                <span className='mt-1.5 block text-xl text-tertiary-300 sm:text-3xl'>
+                  {t('hero_role')}
+                </span>
+              </h1>
+
+              <p className='max-w-2xl text-gallery-300'>{t('hero_intro')}</p>
+
+              <div className='flex flex-wrap items-center gap-2 pt-1'>
+                <div
+                  onClick={() => scrollToSection('projects')}
+                  className='terminal-btn-primary rounded-xl px-4 py-2 transition-colors corner-bevel'
+                >
+                  {t('hero_primary_cta')}
+                </div>
+                <a
+                  href='https://github.com/wanrif'
+                  target='_blank'
+                  rel='noreferrer'
+                  className='terminal-btn-secondary rounded-xl px-4 py-2 transition-colors corner-bevel'
+                >
+                  {t('hero_secondary_cta')}
+                </a>
+              </div>
+
+              <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
+                {socialLinks.map((link, index) => (
+                  <Tooltip key={index} text={link.tooltipText}>
+                    <motion.a
+                      href={link.href}
+                      target='_blank'
+                      rel='noreferrer'
+                      className='terminal-subcard flex h-11 items-center justify-center rounded-xl text-tertiary-300 transition-colors duration-300 corner-bevel hover:border-tertiary-400'
+                      {...iconInteractionMotion()}
+                    >
+                      {link.icon}
+                    </motion.a>
+                  </Tooltip>
+                ))}
+              </div>
+            </motion.div>
+
+            <div className='space-y-3.5'>
+              <p className='terminal-prompt'>module :: profile.meta</p>
+              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                  {t('hero_current_role_label')}
+                </p>
+                <p className='text-gallery-100'>{t('hero_current_role_value')}</p>
+              </div>
+              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                  {t('hero_focus_label')}
+                </p>
+                <p className='text-gallery-100'>{t('hero_focus_value')}</p>
+              </div>
+              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                  {t('hero_open_to_label')}
+                </p>
+                <p className='text-gallery-100'>{t('hero_open_to_value')}</p>
+              </div>
+              <div className='flex flex-wrap gap-2 pt-1'>
+                {[
+                  'Next.js',
+                  'TypeScript',
+                  'React',
+                  'Tailwind CSS',
+                  'Material UI',
+                  'Express.js',
+                  'Hono',
+                ].map((item) => (
+                  <span key={item} className='terminal-chip'>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className='terminal-window overflow-hidden'>
+          <div className='terminal-titlebar'>
+            <span>runtime / signals</span>
+            <span className='terminal-chip'>live</span>
+          </div>
+          <div className='space-y-3 p-4 sm:p-5'>
+            <div className='terminal-subcard rounded-xl p-3'>
+              <p className='terminal-prompt mb-2'>system.bus</p>
+              <p className='text-sm text-gallery-200'>
+                Building scalable frontend systems with stable DX and maintainable patterns.
+              </p>
+            </div>
+            <div className='terminal-subcard rounded-xl p-3'>
+              <p className='terminal-prompt mb-2'>deploy.target</p>
+              <p className='text-sm text-gallery-200'>
+                Products for users, internal teams, and integration-heavy enterprise workflows.
+              </p>
+            </div>
+            <div className='terminal-subcard rounded-xl p-3'>
+              <p className='terminal-prompt mb-2'>ops.state</p>
+              <p className='text-sm text-tertiary-300'>ready_for_collaboration=true</p>
+            </div>
+          </div>
+        </div>
       </motion.div>
     </section>
   );

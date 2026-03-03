@@ -1,0 +1,56 @@
+export const meta = {
+  slug: 'vuetreez',
+  name: 'VueTreez',
+  status: 'completed',
+  summary:
+    'Template starter frontend-only Vue 3 + TypeScript dengan default siap pakai untuk production: routing, i18n, mode tema, persisted state, dan developer experience yang rapi.',
+  problem:
+    'Proyek Vue baru sering menghabiskan waktu terlalu lama untuk setup berulang seperti routing, lokalisasi, theming, dan persistensi state sebelum fitur utama mulai dibangun.',
+  architecture:
+    'Arsitektur single frontend repository dengan Vue Router + MainLayout, Vue I18n untuk pergantian bahasa, Pinia dengan persisted state (serialisasi zipson), serta styling tokenized lewat Tailwind CSS v4.',
+  stack: [
+    'Vue 3',
+    'TypeScript',
+    'Vite 7',
+    'Vue Router',
+    'Vue I18n',
+    'Pinia',
+    'pinia-plugin-persistedstate',
+    'VueUse',
+    'Tailwind CSS v4',
+    'Bun',
+    'Oxlint',
+    'Prettier',
+  ],
+  tradeoffs:
+    'Dioptimalkan untuk bootstrap proyek yang cepat dan konsistensi implementasi, bukan abstraksi domain yang terlalu opinionated, sehingga template tetap mudah dikembangkan sesuai konteks produk.',
+  repo: 'https://github.com/wanrif/vuetreez',
+  demo: 'https://vuetreez.redwans.com/',
+};
+
+### Konteks
+
+VueTreez dibuat sebagai starter reusable frontend untuk menghilangkan
+boilerplate berulang dan memberi baseline stabil bagi pengembangan produk Vue
+modern.
+
+### Solusi
+
+- Struktur routing siap pakai dengan `MainLayout` serta route Home/About/Not
+  Found.
+- Internationalization bawaan dengan locale Inggris dan Indonesia serta
+  pergantian bahasa yang cepat.
+- Theme switching (`light`, `dark`, `auto`) dengan preferensi tersimpan dan
+  perilaku UI yang konsisten.
+- Persisted app state menggunakan Pinia + plugin storage dengan konvensi prefix
+  key.
+- Deployment production publik tersedia di `https://vuetreez.redwans.com/`.
+
+### Catatan Arsitektur
+
+- Setup Tailwind v4 berbasis CSS-first dengan token desain di
+  `src/assets/css/main.css`.
+- Segmentasi folder yang jelas (`components`, `layouts`, `pages`, `router`,
+  `stores`, `i18n`) untuk maintainability.
+- Script berbasis Bun untuk install/dev/build/preview dengan Oxlint + Prettier
+  untuk quality gate.

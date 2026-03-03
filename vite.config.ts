@@ -1,13 +1,15 @@
-import { URL, fileURLToPath } from 'url';
+import mdx from '@mdx-js/rollup';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { URL, fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 
 const prefix = 'portreez';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), visualizer()],
+  plugins: [mdx(), react(), visualizer(), tailwindcss()],
   css: {
     modules: {
       localsConvention: 'camelCase',
@@ -15,10 +17,12 @@ export default defineConfig({
       generateScopedName: '_[folder]_[local]_[sha256:hash:base64:5]_[sha512:hash:base64:4]',
     },
   },
+  define: { 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) },
   resolve: {
     alias: {
       '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
       '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '@content': fileURLToPath(new URL('./src/content', import.meta.url)),
       '@containers': fileURLToPath(new URL('./src/containers', import.meta.url)),
       '@i18n': fileURLToPath(new URL('./src/i18n', import.meta.url)),
       '@layouts': fileURLToPath(new URL('./src/layouts', import.meta.url)),
@@ -29,13 +33,13 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 5173,
     hmr: {
       path: 'ws',
     },
   },
   preview: {
-    port: 3000,
+    port: 5174,
   },
   build: {
     outDir: 'dist',
@@ -49,7 +53,12 @@ export default defineConfig({
         assetFileNames: `[name].${prefix}.[hash].[ext]`,
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/')[1].split('/')[0].toString().replace('@', '');
+            return id
+              .toString()
+              .split('node_modules/')[1]
+              .split('/')[0]
+              .toString()
+              .replace('@', '');
           }
         },
       },

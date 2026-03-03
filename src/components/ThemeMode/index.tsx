@@ -1,12 +1,15 @@
 import React from 'react';
-import { GiEvilMoon, GiSun } from 'react-icons/gi';
 
 interface ThemeModeProps {
   theme: string;
 }
 
 const ThemeMode: React.FC<ThemeModeProps> = ({ theme }) => {
-  return theme === 'dark' ? <GiEvilMoon className='w-7 h-7' /> : <GiSun className='w-7 h-7' />;
+  return (
+    <span className='text-xs font-semibold tracking-wider uppercase'>
+      {theme === 'dark' ? 'mode:cyber' : 'mode:amber-crt'}
+    </span>
+  );
 };
 
 export default ThemeMode;

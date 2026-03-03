@@ -1,5 +1,6 @@
-import cn from '@utils/cn';
 import { forwardRef } from 'react';
+
+import cn from '@utils/cn';
 
 interface TooltipProps {
   isActive: boolean;
@@ -7,39 +8,42 @@ interface TooltipProps {
   items: { tooltip: string }[];
 }
 
-const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(({ isActive, tooltipIndex, items }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'absolute bottom-full px-3 py-1 bg-shark-200/50 dark:bg-tuna-900/50 backdrop-blur text-sm rounded-full border border-shark-500 pointer-events-none opacity-0 capitalize',
-      !isActive ? 'hidden' : ''
-    )}
-    style={{
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '120px',
-      overflow: 'hidden',
-    }}
-  >
+const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
+  ({ isActive, tooltipIndex, items }, ref) => (
     <div
+      ref={ref}
+      className={cn(
+        'pointer-events-none absolute bottom-full hidden rounded-2xl border border-tertiary-700/45 bg-shark-950/95 px-3 py-1 text-[11px] tracking-wider uppercase opacity-0 backdrop-blur corner-superellipse/2 sm:block',
+        !isActive ? 'hidden' : '',
+      )}
       style={{
-        transform: `translateX(${-tooltipIndex * 100}px)`,
-        transition: 'transform 0.3s ease-in-out',
-        whiteSpace: 'nowrap',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '126px',
+        overflow: 'hidden',
       }}
     >
-      {items.map((item, index) => (
-        <span
-          key={index}
-          style={{ display: 'inline-block', width: '100px', textAlign: 'center' }}
-          className='text-tertiary-500 dark:text-gallery-100'
-        >
-          {item.tooltip}
-        </span>
-      ))}
+      <div
+        style={{
+          transform: `translateX(${-tooltipIndex * 106}px)`,
+          transition: 'transform 0.3s ease-in-out',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {items.map((item, index) => (
+          <span
+            key={index}
+            style={{ display: 'inline-block', width: '106px', textAlign: 'center' }}
+            className='text-tertiary-300'
+          >
+            {'$ '}
+            {item.tooltip}
+          </span>
+        ))}
+      </div>
     </div>
-  </div>
-));
+  ),
+);
 
 Tooltip.displayName = 'Tooltip';
 export default Tooltip;

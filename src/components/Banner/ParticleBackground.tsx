@@ -1,51 +1,12 @@
-import React, { useCallback } from 'react';
-import Particles from 'react-particles';
-import type { Engine } from 'tsparticles-engine';
-import { loadSlim } from 'tsparticles-slim';
+import React from 'react';
 
 const ParticleBackground: React.FC = () => {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
-  }, []);
-
   return (
-    <Particles
-      id='tsparticles'
-      init={particlesInit}
-      options={{
-        particles: {
-          number: { value: 30, density: { enable: true, value_area: 800 } },
-          color: { value: '#4e888c' },
-          shape: { type: 'circle' },
-          opacity: {
-            value: 0.2,
-            random: true,
-            animation: { enable: true, speed: 1, minimumValue: 0.1, sync: false },
-          },
-          size: {
-            value: 3,
-            random: true,
-            animation: { enable: true, speed: 2, minimumValue: 0.3, sync: false },
-          },
-          move: {
-            enable: true,
-            speed: 1,
-            direction: 'none',
-            random: false,
-            straight: false,
-            outModes: { default: 'out' },
-          },
-        },
-        interactivity: {
-          detectsOn: 'canvas',
-          events: {
-            onHover: { enable: true, mode: 'repulse' },
-            resize: true,
-          },
-        },
-        background: { color: 'transparent' },
-      }}
-    />
+    <>
+      <div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(41,255,206,0.22),transparent_30%),radial-gradient(circle_at_85%_10%,rgba(255,188,45,0.2),transparent_34%),radial-gradient(circle_at_50%_100%,rgba(41,255,206,0.1),transparent_48%)]' />
+      <div className='pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(110,180,162,0.16)_1px,transparent_1px),linear-gradient(to_bottom,rgba(110,180,162,0.16)_1px,transparent_1px)] bg-size-[42px_42px] opacity-25' />
+      <div className='scanline-overlay' />
+    </>
   );
 };
 

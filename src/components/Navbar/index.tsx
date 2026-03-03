@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
+
+import { motion } from 'framer-motion';
 
 const typingVariants = {
   hidden: { opacity: 0 },
@@ -10,8 +11,8 @@ const Navbar: React.FC = () => {
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopIndex, setLoopIndex] = useState(0);
-  const fullText = 'Wanrif';
-  const typingSpeed = 200; // Typing speed in ms
+  const fullText = 'kernel@wanrif';
+  const typingSpeed = 140;
 
   useEffect(() => {
     const handleTyping = () => {
@@ -38,18 +39,39 @@ const Navbar: React.FC = () => {
   }, [displayText, isDeleting, loopIndex]);
 
   return (
-    <div className='flex justify-center p-2 bg-tuna-50 dark:bg-shark-950'>
-      <div className='flex justify-center w-full items-center min-h-[48px]'>
+    <header
+      id='header'
+      className='sticky top-0 z-40 border-b border-gallery-800/80 bg-shark-950/94 px-3 py-2.5 backdrop-blur-xl sm:px-5 sm:py-3'
+    >
+      <div className='mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-2.5 md:grid-cols-[1fr_auto]'>
         <motion.div
           initial='hidden'
           animate='visible'
           variants={typingVariants}
-          className='font-franchise text-5xl uppercase select-none tracking-wider dark:text-tuna-200 text-tertiary-500'
+          className='flex flex-wrap items-center gap-2.5'
         >
-          {displayText}
+          <div className='flex items-center gap-1.5 rounded-xl border border-gallery-700/85 bg-shark-900/80 px-2 py-1'>
+            <span className='h-2 w-2 rounded-full bg-tuna-400/90' />
+            <span className='h-2 w-2 rounded-full bg-tertiary-300/85' />
+            <span className='h-2 w-2 rounded-full bg-tertiary-500/80' />
+          </div>
+          <p className='terminal-caret font-display text-xs font-semibold tracking-[0.14em] text-gallery-100 sm:text-sm'>
+            /sys/users/{displayText}
+          </p>
+          <span className='terminal-chip terminal-chip-accent'>tty0</span>
+          <span className='terminal-chip'>shell: zsh</span>
         </motion.div>
+
+        <div className='hidden items-center gap-2.5 md:flex'>
+          <div className='rounded-xl border border-gallery-700/85 bg-shark-900/85 px-3 py-1.5 text-[10px] tracking-[0.12em] text-gallery-300 uppercase'>
+            <span className='text-tertiary-300'>proc</span> portfolio-ui
+          </div>
+          <p className='rounded-xl border border-tertiary-700/50 bg-shark-900/85 px-3 py-1.5 text-[10px] tracking-[0.12em] text-gallery-300 uppercase'>
+            <span className='text-tertiary-300'>$</span> run session --layout terminal-os
+          </p>
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 
