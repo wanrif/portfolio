@@ -18,6 +18,7 @@ export default {
   hero_focus_value: 'Engineering produk yang scalable, API, arsitektur frontend, dan performa',
   hero_open_to_label: 'Terbuka untuk',
   hero_open_to_value: 'Kesempatan Frontend / Fullstack dan kolaborasi produk',
+  hero_photo_alt: 'Foto profil Redwan Sarif',
   hero_primary_cta: 'Lihat Proyek',
   hero_secondary_cta: 'GitHub',
 

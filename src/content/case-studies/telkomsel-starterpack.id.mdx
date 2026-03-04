@@ -1,0 +1,36 @@
+export const meta = {
+  slug: 'telkomsel-starterpack',
+  name: 'Telkomsel Starter Pack',
+  image: '/esim-tellkomsel.webp',
+  status: 'completed',
+  summary:
+    'Alur landing untuk aktivasi starter pack Telkomsel yang mencakup journey produk eSIM, prepaid, dan postpaid.',
+  problem:
+    'Pengguna membutuhkan titik masuk yang sederhana untuk memilih jalur starter pack yang tepat (eSIM, prepaid, atau postpaid) tanpa kebingungan saat onboarding awal.',
+  architecture:
+    'Alur single-page marketing dan onboarding dengan hierarki informasi yang jelas, routing CTA langsung, serta pola interaksi mobile-first untuk trafik kampanye tinggi.',
+  stack: ['React', 'Redux', 'SCSS', 'Material UI', 'Express'],
+  tradeoffs:
+    'Memprioritaskan alur keputusan pengguna yang cepat dan kejelasan konversi dibanding elemen interaktif yang berat agar loading dan navigasi tetap ringan.',
+  demo: 'https://my.telkomsel.com/v2/starterpack',
+};
+
+### Konteks
+
+Halaman ini mendukung alur discovery starter pack Telkomsel agar pengguna bisa
+cepat memahami opsi yang sesuai: eSIM, prepaid, atau postpaid.
+
+### Solusi
+
+- Merancang jalur keputusan yang langsung dengan CTA menonjol untuk setiap
+  kategori starter pack.
+- Menyusun konten agar mudah dipindai di perangkat mobile dan sesuai trafik
+  berbasis kampanye.
+- Mengurangi friksi onboarding dengan menonjolkan perbedaan produk dan langkah
+  lanjutan.
+
+### Catatan Arsitektur
+
+- Hierarki informasi dioptimalkan untuk pengunjung pertama kali.
+- Penempatan CTA berfokus pada aksi berniat tinggi dengan distraksi minimal.
+- Performa dan keterbacaan diprioritaskan untuk viewport mobile yang umum.

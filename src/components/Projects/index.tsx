@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 interface CaseStudyMeta {
   slug: string;
   name: string;
+  image?: string;
   status?: 'in-progress' | 'completed';
   inProgress?: boolean;
   summary: string;
@@ -17,14 +18,20 @@ interface CaseStudyMeta {
   architecture: string;
   stack: string[];
   tradeoffs: string;
-  repo: string;
-  demo: string;
+  repo?: string;
+  demo?: string;
 }
 
 interface CaseStudyModule {
   default: React.ComponentType;
   meta: CaseStudyMeta;
 }
+
+const DEFAULT_PROJECT_IMAGE = '/project-default.svg';
+
+const getProjectImageSrc = (meta: CaseStudyMeta): string => {
+  return meta.image ?? `/${meta.slug}.webp`;
+};
 
 const Projects: React.FC = () => {
   const { t } = useTranslation();
@@ -59,7 +66,8 @@ const Projects: React.FC = () => {
           {caseStudies.map((entry: CaseStudyModule, index) => {
             const { meta, default: CaseStudyBody } = entry;
             const isOpen = activeSlug === meta.slug;
-            const hasBackendRepo = meta.demo.includes('github.com');
+            const hasFrontendRepo = Boolean(meta.repo?.includes('github.com'));
+            const hasBackendRepo = Boolean(meta.demo?.includes('github.com'));
             const projectStatus = meta.status ?? (meta.inProgress ? 'in-progress' : undefined);
 
             const badgeConfig =
@@ -99,6 +107,18 @@ const Projects: React.FC = () => {
                 </div>
                 <div className='grid gap-4 p-4 md:grid-cols-[0.9fr_1.1fr] md:p-5'>
                   <div className='space-y-3'>
+                    <img
+                      src={getProjectImageSrc(meta)}
+                      alt={`${meta.name} preview`}
+                      loading='lazy'
+                      className='h-44 w-full rounded-xl border border-gallery-700/80 bg-shark-950/55 object-cover'
+                      onError={(event) => {
+                        const imageElement = event.currentTarget;
+                        if (imageElement.dataset.fallbackApplied === 'true') return;
+                        imageElement.dataset.fallbackApplied = 'true';
+                        imageElement.src = DEFAULT_PROJECT_IMAGE;
+                      }}
+                    />
                     <p className='text-gallery-300'>{meta.summary}</p>
                     <div className='terminal-subcard rounded-xl p-3 text-sm text-gallery-200'>
                       <p className='terminal-prompt mb-1'>problem</p>
@@ -126,22 +146,26 @@ const Projects: React.FC = () => {
                       </div>
                     </div>
                     <div className='flex flex-wrap gap-2'>
-                      <a
-                        href={meta.repo}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
-                      >
-                        {t('projects_repo_frontend')}
-                      </a>
-                      <a
-                        href={meta.demo}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
-                      >
-                        {hasBackendRepo ? t('projects_repo_backend') : t('projects_live_demo')}
-                      </a>
+                      {hasFrontendRepo && (
+                        <a
+                          href={meta.repo}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
+                        >
+                          {t('projects_repo_frontend')}
+                        </a>
+                      )}
+                      {meta.demo && (
+                        <a
+                          href={meta.demo}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
+                        >
+                          {hasBackendRepo ? t('projects_repo_backend') : t('projects_live_demo')}
+                        </a>
+                      )}
                       <button
                         type='button'
                         onClick={() => setActiveSlug(isOpen ? null : meta.slug)}
