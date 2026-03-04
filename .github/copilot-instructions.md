@@ -2,66 +2,62 @@
 
 ## Big Picture Architecture
 
-- This is a Vite + React + TypeScript single-page portfolio with Redux Toolkit
-  state and persisted user preferences.
-- App bootstrapping in `src/main.tsx` wraps `App` with providers in this order:
-  Redux `Provider` → `PersistGate` → `I18nextProvider`.
-- Global app state lives in `src/containers/app/reducer.ts` (`theme`, `locale`),
-  selected via `src/containers/app/selectors.ts` and persisted through
-  `redux-persist`.
-- i18n initialization is intentionally delayed until persisted state is
-  rehydrated (`src/i18n/index.ts` subscribes to `persistor` and then calls
-  `i18n.init`).
-- Persistence is compressed via `src/utils/LZStringStorage.ts` and configured in
-  `src/stores/persistence.ts` (`keyPrefix: portreez:`).
+- Vite + React + TypeScript SPA with a terminal-style UI.
+- `src/main.tsx` wraps `App` with `I18nextProvider` + `Suspense` (no
+  Redux/PersistGate).
+- Global state is persisted Zustand in `src/stores/app/store.ts` (`theme`,
+  `locale`, storage key `portreez:app`).
+- Theme is both state and DOM-class driven in `src/containers/app/index.tsx`
+  (`dark` + `amber-crt` on `document.documentElement`).
 
-## UI Composition & Data Flow
+## UI Composition and Data Flow
 
-- Top-level layout is composed in `src/containers/app/index.tsx`: `Navbar`, then
-  content sections (`Banner`, `Experiences`, `MySkill`, `Contact`), plus
-  `FloatingMenu`.
-- Section navigation is ID-driven: `FloatingMenu` maps `MENU_ITEMS`
-  (`src/components/FloatingMenu/config.ts`) to `scrollIntoView` targets. Keep
-  `sectionId` values in sync with section `id` attributes.
-- Theme changes must update both Redux state (`setTheme`) and the DOM class
-  (`document.documentElement.classList`), as done in `App` and `FloatingMenu`.
-- Locale changes are handled in `src/containers/language/index.tsx` by
-  dispatching `setLocale` and calling `i18n.changeLanguage`.
+- `src/containers/app/index.tsx` composes: `Navbar`, `Banner` (`top`),
+  `Projects` (`projects`), `Experiences` (`now`), `MySkill` (`skills`),
+  `Contact` (`contacts`), `FloatingMenu`.
+- `FloatingMenu` navigation depends on `MENU_ITEMS`
+  (`src/components/FloatingMenu/config.ts`) and `scrollToSection`
+  (`src/utils/scrollToSection.ts`); keep `sectionId` and section `id` values
+  aligned.
+- Command palette behavior lives in `src/components/FloatingMenu/index.tsx`
+  (`Cmd/Ctrl+K` open/close, `Esc` close).
+- Language command triggers `[data-testid="locale-toggle"]`; preserve this
+  attribute if refactoring locale logic.
+
+## Content and Localization Patterns
+
+- `Projects` and `Experiences` load content via eager `import.meta.glob` from
+  `src/content/case-studies` and `src/content/now`.
+- Locale-aware MDX selection is centralized in `src/utils/mdxLocale.ts`.
+- Localized MDX files follow `*.en.mdx` / `*.id.mdx`; case studies export
+  `meta`, changelog files export `entries`.
+- Keep translation keys mirrored between `src/i18n/en.ts` and `src/i18n/id.ts`;
+  locale toggle updates store + `i18n.changeLanguage`
+  (`src/containers/language/index.tsx`).
 
 ## Project Conventions
 
-- Prefer path aliases (`@components`, `@containers`, `@stores`, etc.) over deep
-  relative imports; aliases are defined in both `vite.config.ts` and
-  `tsconfig.app.json`.
-- Use typed Redux hooks from `src/stores/hooks.ts` (`useAppDispatch`,
-  `useAppSelector`) instead of raw `react-redux` hooks.
-- Use `src/utils/cn.ts` for class composition (`clsx` + `tailwind-merge`) when
-  combining conditional Tailwind classes.
-- Keep translation keys mirrored between `src/i18n/en.ts` and `src/i18n/id.ts`;
-  new UI copy should use `t('...')` rather than hardcoded strings.
-- Animations mix Framer Motion and GSAP (example:
-  `src/components/FloatingMenu/index.tsx` + `animations.ts`); follow existing
-  local pattern in the component you are modifying.
+- Prefer path aliases (`@components`, `@containers`, `@stores`, `@utils`)
+  defined in `vite.config.ts` and `tsconfig.app.json`.
+- Tailwind is CSS-first v4 in `src/assets/css/main.css` (`@theme`,
+  `@custom-variant dark`); there is no `tailwind.config.ts`.
+- Reuse existing color tokens (`shark`, `tuna`, `tertiary`, `gallery`) and use
+  `src/utils/cn.ts` for class merging.
+- Animation split: shared Framer Motion helpers in `src/utils/motion.ts`, GSAP
+  tooltip animation in `src/components/FloatingMenu/animations.ts`.
 
-## Build, Lint, and Debug Workflow
+## Build and Validation Workflow
 
-- Use Bun-based scripts from `package.json`:
-  - `bun run dev` (Vite dev server on host, port 5173)
-  - `bun run build` (type-check with `tsc -b`, then Vite build)
-  - `bun run lint` (Oxlint, type-aware, denies warnings)
-  - `bun run lint:fix` (auto-fix lint issues)
-  - `bun run preview` (preview build on port 5174)
-- There is currently no test script; rely on lint + build for verification
-  unless tests are added.
+- Use Bun scripts in `package.json`: `bun run dev`, `bun run build`,
+  `bun run lint`, `bun run lint:fix`, `bun run fmt`, `bun run fmt:check`,
+  `bun run preview`.
+- `lint` is Oxlint type-aware with deny-warnings; `build` runs `tsc -b` then
+  Vite build.
+- No test script exists; standard verification is lint + build.
 
 ## Integration Notes
 
-- Key runtime libraries: Redux Toolkit, redux-persist, react-i18next,
-  framer-motion, GSAP (`@gsap/react`), and `react-particles`
-  (`tsparticles-slim`).
-- Tailwind theme tokens are extended in `tailwind.config.ts` and consumed across
-  components (`tuna`, `shark`, `tertiary`, `gallery`). Reuse these tokens
-  instead of introducing ad-hoc palette names.
-- Vite build is optimized with manual chunking and `terser` console/debugger
-  drops in `vite.config.ts`; avoid changes that break this bundling strategy
-  unless explicitly required.
+- `vite.config.ts` integrates MDX (`@mdx-js/rollup`), React SWC, Tailwind Vite
+  plugin, and Rollup visualizer.
+- Build output intentionally uses manual vendor chunking + Terser `drop_console`
+  / `drop_debugger`; avoid changing unless required.
