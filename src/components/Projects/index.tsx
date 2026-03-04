@@ -17,8 +17,8 @@ interface CaseStudyMeta {
   architecture: string;
   stack: string[];
   tradeoffs: string;
-  repo: string;
-  demo: string;
+  repo?: string;
+  demo?: string;
 }
 
 interface CaseStudyModule {
@@ -59,7 +59,8 @@ const Projects: React.FC = () => {
           {caseStudies.map((entry: CaseStudyModule, index) => {
             const { meta, default: CaseStudyBody } = entry;
             const isOpen = activeSlug === meta.slug;
-            const hasBackendRepo = meta.demo.includes('github.com');
+            const hasFrontendRepo = Boolean(meta.repo?.includes('github.com'));
+            const hasBackendRepo = Boolean(meta.demo?.includes('github.com'));
             const projectStatus = meta.status ?? (meta.inProgress ? 'in-progress' : undefined);
 
             const badgeConfig =
@@ -126,22 +127,26 @@ const Projects: React.FC = () => {
                       </div>
                     </div>
                     <div className='flex flex-wrap gap-2'>
-                      <a
-                        href={meta.repo}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
-                      >
-                        {t('projects_repo_frontend')}
-                      </a>
-                      <a
-                        href={meta.demo}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
-                      >
-                        {hasBackendRepo ? t('projects_repo_backend') : t('projects_live_demo')}
-                      </a>
+                      {hasFrontendRepo && (
+                        <a
+                          href={meta.repo}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
+                        >
+                          {t('projects_repo_frontend')}
+                        </a>
+                      )}
+                      {meta.demo && (
+                        <a
+                          href={meta.demo}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='terminal-btn-secondary rounded-xl px-3 py-1.5 corner-bevel'
+                        >
+                          {hasBackendRepo ? t('projects_repo_backend') : t('projects_live_demo')}
+                        </a>
+                      )}
                       <button
                         type='button'
                         onClick={() => setActiveSlug(isOpen ? null : meta.slug)}
