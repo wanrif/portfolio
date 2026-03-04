@@ -48,7 +48,7 @@ const Banner: React.FC = () => {
       <ParticleBackground />
 
       <motion.div
-        className='relative z-10 mx-auto grid w-full max-w-6xl gap-4 lg:grid-cols-[1.34fr_0.66fr]'
+        className='relative z-10 mx-auto grid w-full max-w-6xl items-start gap-4 xl:grid-cols-[minmax(0,1.34fr)_minmax(0,0.66fr)]'
         {...pageEnterMotion()}
       >
         <div className='terminal-window overflow-hidden'>
@@ -57,8 +57,8 @@ const Banner: React.FC = () => {
             <span className='terminal-chip terminal-chip-accent'>{t('hero_available')}</span>
           </div>
 
-          <div className='grid gap-4 p-4 sm:p-5 md:grid-cols-[1.18fr_0.82fr] md:p-6'>
-            <motion.div className='space-y-4.5' {...sectionInViewMotion()}>
+          <div className='grid items-start gap-4 p-4 sm:p-5 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-5 lg:p-6'>
+            <motion.div className='space-y-4' {...sectionInViewMotion()}>
               <div className='terminal-command-row'>
                 <span className='text-tertiary-300'>$</span>
                 <span>{t('hero_terminal_line')}</span>
@@ -71,15 +71,16 @@ const Banner: React.FC = () => {
                 </span>
               </h1>
 
-              <p className='max-w-2xl text-gallery-300'>{t('hero_intro')}</p>
+              <p className='max-w-xl text-gallery-300'>{t('hero_intro')}</p>
 
               <div className='flex flex-wrap items-center gap-2 pt-1'>
-                <div
+                <button
+                  type='button'
                   onClick={() => scrollToSection('projects')}
                   className='terminal-btn-primary rounded-xl px-4 py-2 transition-colors corner-bevel'
                 >
                   {t('hero_primary_cta')}
-                </div>
+                </button>
                 <a
                   href='https://github.com/wanrif'
                   target='_blank'
@@ -90,7 +91,7 @@ const Banner: React.FC = () => {
                 </a>
               </div>
 
-              <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
+              <div className='grid max-w-md grid-cols-2 gap-2 sm:grid-cols-4'>
                 {socialLinks.map((link, index) => (
                   <Tooltip key={index} text={link.tooltipText}>
                     <motion.a
@@ -105,48 +106,67 @@ const Banner: React.FC = () => {
                   </Tooltip>
                 ))}
               </div>
+
+              <div className='terminal-subcard rounded-xl p-2'>
+                <div className='flex flex-wrap gap-2'>
+                  {[
+                    'Next.js',
+                    'TypeScript',
+                    'React',
+                    'Tailwind CSS',
+                    'Material UI',
+                    'Express.js',
+                    'Hono',
+                  ].map((item) => (
+                    <span key={item} className='terminal-chip'>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </motion.div>
 
-            <div className='space-y-3.5'>
+            <div className='space-y-3 self-start'>
+              <div className='terminal-subcard rounded-2xl p-1.5 corner-bevel'>
+                <img
+                  src='/personal_photo.webp'
+                  alt={t('hero_photo_alt')}
+                  loading='eager'
+                  className='aspect-4/3 w-full rounded-xl object-cover object-center'
+                  onError={(event) => {
+                    const imageElement = event.currentTarget;
+                    if (imageElement.dataset.fallbackApplied === 'true') return;
+                    imageElement.dataset.fallbackApplied = 'true';
+                    imageElement.src = '/personal_photo.jpg';
+                  }}
+                />
+              </div>
               <p className='terminal-prompt'>module :: profile.meta</p>
-              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
-                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
-                  {t('hero_current_role_label')}
-                </p>
-                <p className='text-gallery-100'>{t('hero_current_role_value')}</p>
-              </div>
-              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
-                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
-                  {t('hero_focus_label')}
-                </p>
-                <p className='text-gallery-100'>{t('hero_focus_value')}</p>
-              </div>
-              <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
-                <p className='text-xs tracking-wide text-gallery-400 uppercase'>
-                  {t('hero_open_to_label')}
-                </p>
-                <p className='text-gallery-100'>{t('hero_open_to_value')}</p>
-              </div>
-              <div className='flex flex-wrap gap-2 pt-1'>
-                {[
-                  'Next.js',
-                  'TypeScript',
-                  'React',
-                  'Tailwind CSS',
-                  'Material UI',
-                  'Express.js',
-                  'Hono',
-                ].map((item) => (
-                  <span key={item} className='terminal-chip'>
-                    {item}
-                  </span>
-                ))}
+              <div className='grid gap-3'>
+                <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                  <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                    {t('hero_current_role_label')}
+                  </p>
+                  <p className='text-gallery-100'>{t('hero_current_role_value')}</p>
+                </div>
+                <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                  <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                    {t('hero_focus_label')}
+                  </p>
+                  <p className='text-gallery-100'>{t('hero_focus_value')}</p>
+                </div>
+                <div className='terminal-subcard rounded-2xl p-3 corner-bevel'>
+                  <p className='text-xs tracking-wide text-gallery-400 uppercase'>
+                    {t('hero_open_to_label')}
+                  </p>
+                  <p className='text-gallery-100'>{t('hero_open_to_value')}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className='terminal-window overflow-hidden'>
+        <div className='terminal-window h-fit self-start overflow-hidden'>
           <div className='terminal-titlebar'>
             <span>runtime / signals</span>
             <span className='terminal-chip'>live</span>

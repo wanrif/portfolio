@@ -17,6 +17,7 @@ export default {
   hero_focus_value: 'Scalable product engineering, APIs, frontend architecture, and performance',
   hero_open_to_label: 'Open to',
   hero_open_to_value: 'Frontend / Fullstack opportunities and product collaboration',
+  hero_photo_alt: 'Redwan Sarif profile photo',
   hero_primary_cta: 'View Projects',
   hero_secondary_cta: 'GitHub',
 

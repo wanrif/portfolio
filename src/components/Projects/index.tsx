@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 interface CaseStudyMeta {
   slug: string;
   name: string;
+  image?: string;
   status?: 'in-progress' | 'completed';
   inProgress?: boolean;
   summary: string;
@@ -25,6 +26,12 @@ interface CaseStudyModule {
   default: React.ComponentType;
   meta: CaseStudyMeta;
 }
+
+const DEFAULT_PROJECT_IMAGE = '/project-default.svg';
+
+const getProjectImageSrc = (meta: CaseStudyMeta): string => {
+  return meta.image ?? `/${meta.slug}.webp`;
+};
 
 const Projects: React.FC = () => {
   const { t } = useTranslation();
@@ -100,6 +107,18 @@ const Projects: React.FC = () => {
                 </div>
                 <div className='grid gap-4 p-4 md:grid-cols-[0.9fr_1.1fr] md:p-5'>
                   <div className='space-y-3'>
+                    <img
+                      src={getProjectImageSrc(meta)}
+                      alt={`${meta.name} preview`}
+                      loading='lazy'
+                      className='h-44 w-full rounded-xl border border-gallery-700/80 bg-shark-950/55 object-cover'
+                      onError={(event) => {
+                        const imageElement = event.currentTarget;
+                        if (imageElement.dataset.fallbackApplied === 'true') return;
+                        imageElement.dataset.fallbackApplied = 'true';
+                        imageElement.src = DEFAULT_PROJECT_IMAGE;
+                      }}
+                    />
                     <p className='text-gallery-300'>{meta.summary}</p>
                     <div className='terminal-subcard rounded-xl p-3 text-sm text-gallery-200'>
                       <p className='terminal-prompt mb-1'>problem</p>
