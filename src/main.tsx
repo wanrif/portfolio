@@ -1,10 +1,9 @@
 import { Suspense } from 'react';
+import ReactDOM from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
 
 import App from '@containers/app';
 import i18n from '@i18n/index';
-
-import ReactDOM from 'react-dom/client';
 import '@assets/css/main.css';
 
 const rootElement = document.getElementById('root');

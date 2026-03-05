@@ -1,11 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { selectLocale, useAppStore } from '@stores/app/store';
+import { getLoopTempo } from '@utils/loopTempo';
 import { getLocalizedModules, stableSortByName } from '@utils/mdxLocale';
 import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
 
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
 
 interface CaseStudyMeta {
   slug: string;
@@ -36,6 +38,7 @@ const getProjectImageSrc = (meta: CaseStudyMeta): string => {
 const Projects: React.FC = () => {
   const { t } = useTranslation();
   const locale = useAppStore(selectLocale);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
 
@@ -47,8 +50,80 @@ const Projects: React.FC = () => {
     return stableSortByName(selectedModules);
   }, [locale]);
 
+  useLayoutEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) return;
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const tempo = getLoopTempo(isMobile);
+    const cardCleanups: Array<() => void> = [];
+
+    const context = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>('.js-project-card');
+
+      cards.forEach((card) => {
+        const scanElement = card.querySelector<HTMLElement>('.js-project-scan');
+        if (!scanElement) return;
+
+        gsap.set(scanElement, {
+          x: () => -scanElement.offsetWidth,
+          opacity: 0,
+        });
+
+        const playScan = () => {
+          gsap.killTweensOf(scanElement);
+          gsap.fromTo(
+            scanElement,
+            {
+              x: -scanElement.offsetWidth,
+              opacity: 0.14,
+            },
+            {
+              x: () => card.clientWidth,
+              opacity: 0.44,
+              duration: tempo.pulseSlow,
+              ease: 'power2.out',
+              onComplete: () => {
+                gsap.to(scanElement, {
+                  opacity: 0,
+                  duration: tempo.hover,
+                  overwrite: true,
+                });
+              },
+            },
+          );
+        };
+
+        const hideScan = () => {
+          gsap.killTweensOf(scanElement);
+          gsap.to(scanElement, {
+            opacity: 0,
+            duration: tempo.hover,
+            overwrite: true,
+          });
+        };
+
+        card.addEventListener('pointerenter', playScan);
+        card.addEventListener('focusin', playScan);
+        card.addEventListener('pointerleave', hideScan);
+        card.addEventListener('focusout', hideScan);
+
+        cardCleanups.push(() => {
+          card.removeEventListener('pointerenter', playScan);
+          card.removeEventListener('focusin', playScan);
+          card.removeEventListener('pointerleave', hideScan);
+          card.removeEventListener('focusout', hideScan);
+        });
+      });
+    }, sectionRef);
+
+    return () => {
+      cardCleanups.forEach((cleanup) => cleanup());
+      context.revert();
+    };
+  }, []);
+
   return (
-    <section id='projects' className='terminal-section relative px-4 py-16'>
+    <section id='projects' ref={sectionRef} className='terminal-section relative px-4 py-16'>
       <div className='terminal-grid-bg' />
       <div className='relative z-10 container mx-auto max-w-6xl'>
         <p className='terminal-prompt mb-2'>module: project.registry</p>
@@ -86,10 +161,11 @@ const Projects: React.FC = () => {
             return (
               <motion.article
                 key={meta.slug}
-                className='terminal-window overflow-hidden rounded-2xl corner-superellipse/2'
+                className='js-project-card terminal-window relative overflow-hidden rounded-2xl corner-superellipse/2'
                 {...makeStaggerInViewMotion(index)}
                 {...cardInteractionMotion()}
               >
+                <span className='js-project-scan terminal-project-scan' aria-hidden />
                 <div className='terminal-titlebar'>
                   <div className='flex items-center gap-2'>
                     <span className='terminal-chip'>unit-{String(index + 1).padStart(2, '0')}</span>

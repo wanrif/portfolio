@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { selectLocale, useAppStore } from '@stores/app/store';
+import { getLoopTempo } from '@utils/loopTempo';
 import { getLocalizedModule } from '@utils/mdxLocale';
 import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
 
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
 import { GiOfficeChair } from 'react-icons/gi';
 
 interface IExperience {
@@ -31,6 +33,56 @@ interface NowChangelogModule {
 const Experiences: React.FC = () => {
   const { t } = useTranslation();
   const locale = useAppStore(selectLocale);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const feedPacketRef = useRef<HTMLSpanElement | null>(null);
+
+  useLayoutEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) return;
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const tempo = getLoopTempo(isMobile);
+
+    const context = gsap.context(() => {
+      if (feedPacketRef.current) {
+        const packetElement = feedPacketRef.current;
+        gsap.fromTo(
+          packetElement,
+          {
+            y: () => -packetElement.offsetHeight,
+            opacity: 0.65,
+          },
+          {
+            y: () => packetElement.parentElement?.clientHeight ?? 0,
+            opacity: 0.9,
+            duration: tempo.sweep,
+            ease: 'none',
+            repeat: -1,
+            repeatDelay: tempo.sweepPause,
+            repeatRefresh: true,
+          },
+        );
+      }
+
+      gsap.fromTo(
+        '.js-now-dot',
+        {
+          opacity: 0.35,
+          scale: 0.72,
+        },
+        {
+          opacity: 0.88,
+          scale: 0.94,
+          duration: tempo.pulseSlow,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          stagger: tempo.stagger,
+        },
+      );
+    }, sectionRef);
+
+    return () => context.revert();
+  }, []);
 
   const experiences: IExperience[] = [
     {
@@ -111,7 +163,7 @@ const Experiences: React.FC = () => {
   };
 
   return (
-    <section id='now' className='terminal-section relative px-4 py-16'>
+    <section id='now' ref={sectionRef} className='terminal-section relative px-4 py-16'>
       <div className='terminal-grid-bg' />
       <div className='relative z-10 container mx-auto max-w-6xl'>
         <div className='mb-7 space-y-2'>
@@ -181,13 +233,19 @@ const Experiences: React.FC = () => {
               <span>feed / now.updates</span>
               <span className='terminal-chip terminal-chip-accent'>{t('now_changelog_title')}</span>
             </div>
-            <div className='space-y-3 p-4'>
+            <div className='relative space-y-3 p-4'>
+              <div className='terminal-feed-track' aria-hidden>
+                <span ref={feedPacketRef} className='terminal-feed-packet' />
+              </div>
               {nowContent.entries.map((entry) => (
                 <div
                   key={`${entry.date}-${entry.title}`}
                   className='terminal-subcard rounded-xl p-3'
                 >
-                  <p className='text-xs text-tertiary-300'>{entry.date}</p>
+                  <div className='mb-1 flex items-center gap-2'>
+                    <span className='js-now-dot terminal-now-dot' aria-hidden />
+                    <p className='text-xs text-tertiary-300'>{entry.date}</p>
+                  </div>
                   <p className='font-medium text-gallery-100'>{entry.title}</p>
                   <p className='text-sm text-gallery-300'>{entry.detail}</p>
                 </div>

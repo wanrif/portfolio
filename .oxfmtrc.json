@@ -27,7 +27,7 @@
     "customGroups": [
       {
         "groupName": "react-libs",
-        "elementNamePattern": ["react", "react-**"]
+        "elementNamePattern": ["react", "react-**", "react-dom/**"]
       },
       {
         "groupName": "custom-alias",
