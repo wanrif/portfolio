@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Tooltip from '@components/Tooltip';
+import { getLoopTempo } from '@utils/loopTempo';
 import { iconInteractionMotion, pageEnterMotion, sectionInViewMotion } from '@utils/motion';
 import scrollToSection from '@utils/scrollToSection';
 
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
 import { GiAce, GiCat, GiLinkedRings } from 'react-icons/gi';
 import { GoMention } from 'react-icons/go';
 
@@ -19,6 +21,323 @@ interface ISocialLink {
 
 const Banner: React.FC = () => {
   const { t } = useTranslation();
+  const bannerRef = useRef<HTMLElement | null>(null);
+  const commandScanRef = useRef<HTMLSpanElement | null>(null);
+  const signalPacketRef = useRef<HTMLSpanElement | null>(null);
+  const runtimeCardRef = useRef<HTMLDivElement | null>(null);
+  const runtimeWindowRef = useRef<HTMLDivElement | null>(null);
+  const rogueLayerRef = useRef<HTMLDivElement | null>(null);
+  const rogueProbeRef = useRef<HTMLSpanElement | null>(null);
+  const rogueFlashRef = useRef<HTMLSpanElement | null>(null);
+  const portalRingRef = useRef<HTMLSpanElement | null>(null);
+  const portalGlowRef = useRef<HTMLSpanElement | null>(null);
+
+  useLayoutEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) return;
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const tempo = getLoopTempo(isMobile);
+    let onRuntimeActive: (() => void) | undefined;
+    let onRuntimeIdle: (() => void) | undefined;
+    let onRuntimeWindowTrigger: (() => void) | undefined;
+
+    const context = gsap.context(() => {
+      gsap.to('.js-profile-float', {
+        y: isMobile ? -2 : -6,
+        duration: tempo.sway,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+      });
+
+      if (!isMobile) {
+        gsap.to('.js-terminal-orbit', {
+          rotate: 360,
+          duration: tempo.orbit,
+          ease: 'none',
+          repeat: -1,
+          transformOrigin: '50% 50%',
+        });
+
+        gsap.utils.toArray<HTMLElement>('.js-signal-chip').forEach((chip, index) => {
+          gsap.to(chip, {
+            y: index % 2 === 0 ? -5 : 5,
+            x: index % 2 === 0 ? 2 : -2,
+            duration: tempo.pulseSlow + index * tempo.beat,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+          });
+        });
+      }
+
+      if (commandScanRef.current) {
+        const scanElement = commandScanRef.current;
+        gsap.fromTo(
+          scanElement,
+          {
+            x: () => -scanElement.offsetWidth,
+          },
+          {
+            x: () => scanElement.parentElement?.clientWidth ?? 0,
+            duration: tempo.sweep,
+            ease: 'none',
+            repeat: -1,
+            repeatDelay: tempo.sweepPause,
+            repeatRefresh: true,
+          },
+        );
+      }
+
+      if (signalPacketRef.current) {
+        const packetElement = signalPacketRef.current;
+        gsap.fromTo(
+          packetElement,
+          {
+            x: () => -packetElement.offsetWidth,
+            scale: isMobile ? 0.9 : 1,
+            opacity: 0.72,
+          },
+          {
+            x: () => packetElement.parentElement?.clientWidth ?? 0,
+            duration: tempo.sweep,
+            ease: 'none',
+            repeat: -1,
+            repeatDelay: tempo.sweepPause,
+            repeatRefresh: true,
+            opacity: 1,
+          },
+        );
+      }
+
+      gsap.fromTo(
+        '.js-runtime-pulse-dot',
+        {
+          opacity: 0.34,
+          scale: 0.72,
+        },
+        {
+          opacity: 1,
+          scale: 1.02,
+          duration: tempo.pulseSlow,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          stagger: tempo.stagger,
+        },
+      );
+
+      const runtimeBarTweens = gsap.utils
+        .toArray<HTMLElement>('.js-runtime-bar')
+        .map((bar, index) =>
+          gsap.to(bar, {
+            scaleY: isMobile ? 0.52 : 0.4,
+            duration: tempo.barBase + (index % 3) * tempo.barStep,
+            ease: 'sine.inOut',
+            yoyo: true,
+            repeat: -1,
+            repeatDelay: tempo.beat,
+            delay: index * tempo.beat,
+          }),
+        );
+
+      if (runtimeCardRef.current && runtimeBarTweens.length > 0) {
+        const activeTimeScale = isMobile ? 1.2 : 1.5;
+
+        onRuntimeActive = () => {
+          gsap.to(runtimeBarTweens, {
+            timeScale: activeTimeScale,
+            duration: tempo.hover,
+            overwrite: true,
+          });
+        };
+
+        onRuntimeIdle = () => {
+          gsap.to(runtimeBarTweens, {
+            timeScale: 1,
+            duration: tempo.hover,
+            overwrite: true,
+          });
+        };
+
+        runtimeCardRef.current.addEventListener('pointerenter', onRuntimeActive);
+        runtimeCardRef.current.addEventListener('pointerleave', onRuntimeIdle);
+        runtimeCardRef.current.addEventListener('focusin', onRuntimeActive);
+        runtimeCardRef.current.addEventListener('focusout', onRuntimeIdle);
+      }
+
+      if (runtimeWindowRef.current && portalRingRef.current && portalGlowRef.current) {
+        let isPortalRunning = false;
+
+        gsap.set([portalRingRef.current, portalGlowRef.current], { autoAlpha: 0 });
+
+        onRuntimeWindowTrigger = () => {
+          if (isPortalRunning) return;
+          isPortalRunning = true;
+
+          const sparkElements = gsap.utils.toArray<HTMLElement>('.js-portal-spark');
+          const portalTimeline = gsap.timeline({
+            onComplete: () => {
+              isPortalRunning = false;
+            },
+          });
+
+          portalTimeline
+            .fromTo(
+              portalRingRef.current,
+              {
+                autoAlpha: 0,
+                scale: 0.25,
+                rotate: -26,
+              },
+              {
+                autoAlpha: 1,
+                scale: 1.1,
+                rotate: 20,
+                duration: tempo.pulseSlow,
+                ease: 'power3.out',
+              },
+            )
+            .to(
+              portalGlowRef.current,
+              {
+                autoAlpha: 0.55,
+                duration: tempo.hover,
+                yoyo: true,
+                repeat: 1,
+                ease: 'sine.inOut',
+              },
+              '<',
+            )
+            .fromTo(
+              sparkElements,
+              {
+                autoAlpha: 0,
+                scale: 0.2,
+                x: 0,
+                y: 0,
+              },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                x: (i: number) => [42, -36, 28, -44, 18][i % 5],
+                y: (i: number) => [-30, -24, 36, 28, -40][i % 5],
+                duration: tempo.pulse,
+                stagger: tempo.beat,
+                ease: 'power2.out',
+              },
+              '-=0.35',
+            )
+            .to(
+              sparkElements,
+              {
+                autoAlpha: 0,
+                duration: tempo.hover,
+                stagger: tempo.beat / 2,
+                ease: 'power2.in',
+              },
+              '>-0.08',
+            )
+            .to(
+              portalRingRef.current,
+              {
+                autoAlpha: 0,
+                scale: 1.35,
+                rotate: 38,
+                duration: tempo.pulse,
+                ease: 'power2.inOut',
+              },
+              '<',
+            );
+        };
+
+        runtimeWindowRef.current.addEventListener('pointerenter', onRuntimeWindowTrigger);
+        runtimeWindowRef.current.addEventListener('focusin', onRuntimeWindowTrigger);
+      }
+
+      if (rogueLayerRef.current && rogueProbeRef.current && rogueFlashRef.current) {
+        gsap.set(rogueLayerRef.current, { autoAlpha: 0 });
+
+        const surpriseTimeline = gsap.timeline({ delay: tempo.pulseSlow * 1.5 });
+        surpriseTimeline
+          .to(rogueLayerRef.current, {
+            autoAlpha: 1,
+            duration: tempo.hover,
+            ease: 'power2.out',
+          })
+          .fromTo(
+            rogueProbeRef.current,
+            {
+              xPercent: -45,
+              yPercent: 22,
+              rotate: -16,
+              scale: 0.68,
+              opacity: 0,
+            },
+            {
+              xPercent: 86,
+              yPercent: -18,
+              rotate: 7,
+              scale: 1,
+              opacity: 1,
+              duration: tempo.sweep * 0.7,
+              ease: 'power2.out',
+            },
+          )
+          .to(rogueProbeRef.current, {
+            xPercent: 8,
+            yPercent: 46,
+            rotate: -24,
+            duration: tempo.sweep * 0.5,
+            ease: 'power1.inOut',
+          })
+          .to(
+            rogueFlashRef.current,
+            {
+              opacity: 0.6,
+              duration: tempo.hover,
+              yoyo: true,
+              repeat: 1,
+              ease: 'power1.inOut',
+            },
+            '-=0.25',
+          )
+          .to(
+            rogueProbeRef.current,
+            {
+              xPercent: 118,
+              yPercent: 4,
+              scale: 0.58,
+              opacity: 0,
+              duration: tempo.sweep * 0.6,
+              ease: 'power2.in',
+            },
+            '-=0.08',
+          )
+          .to(rogueLayerRef.current, {
+            autoAlpha: 0,
+            duration: tempo.pulse,
+            ease: 'power1.out',
+          });
+      }
+    }, bannerRef);
+
+    return () => {
+      if (runtimeCardRef.current && onRuntimeActive && onRuntimeIdle) {
+        runtimeCardRef.current.removeEventListener('pointerenter', onRuntimeActive);
+        runtimeCardRef.current.removeEventListener('pointerleave', onRuntimeIdle);
+        runtimeCardRef.current.removeEventListener('focusin', onRuntimeActive);
+        runtimeCardRef.current.removeEventListener('focusout', onRuntimeIdle);
+      }
+
+      if (runtimeWindowRef.current && onRuntimeWindowTrigger) {
+        runtimeWindowRef.current.removeEventListener('pointerenter', onRuntimeWindowTrigger);
+        runtimeWindowRef.current.removeEventListener('focusin', onRuntimeWindowTrigger);
+      }
+
+      context.revert();
+    };
+  }, []);
 
   const socialLinks: ISocialLink[] = [
     {
@@ -44,8 +363,18 @@ const Banner: React.FC = () => {
   ];
 
   return (
-    <section id='top' className='terminal-section relative overflow-hidden px-4 sm:px-6'>
+    <section
+      id='top'
+      ref={bannerRef}
+      className='terminal-section relative overflow-hidden px-4 sm:px-6'
+    >
       <ParticleBackground />
+      <div ref={rogueLayerRef} className='terminal-rogue-layer' aria-hidden>
+        <span ref={rogueProbeRef} className='terminal-rogue-probe'>
+          <span className='terminal-rogue-probe-core'>`&gt;_`</span>
+        </span>
+        <span ref={rogueFlashRef} className='terminal-rogue-flash' />
+      </div>
 
       <motion.div
         className='relative z-10 mx-auto grid w-full max-w-6xl items-start gap-4 xl:grid-cols-[minmax(0,1.34fr)_minmax(0,0.66fr)]'
@@ -62,6 +391,7 @@ const Banner: React.FC = () => {
               <div className='terminal-command-row'>
                 <span className='text-tertiary-300'>$</span>
                 <span>{t('hero_terminal_line')}</span>
+                <span ref={commandScanRef} aria-hidden className='terminal-command-scan' />
               </div>
 
               <h1 className='font-display text-3xl leading-[1.1] font-bold text-gallery-100 sm:text-5xl'>
@@ -127,19 +457,26 @@ const Banner: React.FC = () => {
             </motion.div>
 
             <div className='space-y-3 self-start'>
-              <div className='terminal-subcard rounded-2xl p-1.5 corner-bevel'>
-                <img
-                  src='/personal_photo.webp'
-                  alt={t('hero_photo_alt')}
-                  loading='eager'
-                  className='aspect-4/3 w-full rounded-xl object-cover object-center'
-                  onError={(event) => {
-                    const imageElement = event.currentTarget;
-                    if (imageElement.dataset.fallbackApplied === 'true') return;
-                    imageElement.dataset.fallbackApplied = 'true';
-                    imageElement.src = '/personal_photo.jpg';
-                  }}
-                />
+              <div className='js-profile-float relative isolate pb-2'>
+                <div className='js-terminal-orbit terminal-orbit' aria-hidden>
+                  <span className='js-signal-chip terminal-chip terminal-orbit-chip'>ping</span>
+                  <span className='js-signal-chip terminal-chip terminal-orbit-chip'>sync</span>
+                  <span className='js-signal-chip terminal-chip terminal-orbit-chip'>ship</span>
+                </div>
+                <div className='terminal-subcard rounded-2xl p-1.5 corner-bevel'>
+                  <img
+                    src='/personal_photo.webp'
+                    alt={t('hero_photo_alt')}
+                    loading='eager'
+                    className='aspect-4/3 w-full rounded-xl object-cover object-center'
+                    onError={(event) => {
+                      const imageElement = event.currentTarget;
+                      if (imageElement.dataset.fallbackApplied === 'true') return;
+                      imageElement.dataset.fallbackApplied = 'true';
+                      imageElement.src = '/personal_photo.jpg';
+                    }}
+                  />
+                </div>
               </div>
               <p className='terminal-prompt'>module :: profile.meta</p>
               <div className='grid gap-3'>
@@ -166,17 +503,41 @@ const Banner: React.FC = () => {
           </div>
         </div>
 
-        <div className='terminal-window h-fit self-start overflow-hidden'>
+        <div
+          ref={runtimeWindowRef}
+          className='terminal-window relative h-fit self-start overflow-hidden'
+        >
+          <div className='terminal-portal-layer' aria-hidden>
+            <span ref={portalRingRef} className='terminal-portal-ring' />
+            <span ref={portalGlowRef} className='terminal-portal-glow' />
+            <span className='js-portal-spark terminal-portal-spark' />
+            <span className='js-portal-spark terminal-portal-spark' />
+            <span className='js-portal-spark terminal-portal-spark' />
+            <span className='js-portal-spark terminal-portal-spark' />
+            <span className='js-portal-spark terminal-portal-spark' />
+          </div>
           <div className='terminal-titlebar'>
             <span>runtime / signals</span>
-            <span className='terminal-chip'>live</span>
+            <div className='terminal-live-group'>
+              <span className='terminal-chip'>live</span>
+              <div className='terminal-live-pulse' aria-hidden>
+                <span className='js-runtime-pulse-dot terminal-live-dot' />
+                <span className='js-runtime-pulse-dot terminal-live-dot' />
+                <span className='js-runtime-pulse-dot terminal-live-dot' />
+              </div>
+            </div>
           </div>
           <div className='space-y-3 p-4 sm:p-5'>
-            <div className='terminal-subcard rounded-xl p-3'>
+            <div ref={runtimeCardRef} className='terminal-subcard rounded-xl p-3'>
               <p className='terminal-prompt mb-2'>system.bus</p>
               <p className='text-sm text-gallery-200'>
                 Building scalable frontend systems with stable DX and maintainable patterns.
               </p>
+              <div className='terminal-runtime-eq mt-3' aria-hidden>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <span key={index} className='js-runtime-bar terminal-runtime-eq-bar' />
+                ))}
+              </div>
             </div>
             <div className='terminal-subcard rounded-xl p-3'>
               <p className='terminal-prompt mb-2'>deploy.target</p>
@@ -187,6 +548,9 @@ const Banner: React.FC = () => {
             <div className='terminal-subcard rounded-xl p-3'>
               <p className='terminal-prompt mb-2'>ops.state</p>
               <p className='text-sm text-tertiary-300'>ready_for_collaboration=true</p>
+              <div className='terminal-signal-track mt-2' aria-hidden>
+                <span ref={signalPacketRef} className='terminal-signal-packet' />
+              </div>
             </div>
           </div>
         </div>

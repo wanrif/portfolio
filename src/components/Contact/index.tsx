@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { getLoopTempo } from '@utils/loopTempo';
 import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
 
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
 import { GiAce, GiCat, GiLinkedRings } from 'react-icons/gi';
 import { GoMention } from 'react-icons/go';
 
@@ -17,6 +19,45 @@ interface IContactLink {
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) return;
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const tempo = getLoopTempo(isMobile);
+
+    const context = gsap.context(() => {
+      gsap.to('.js-contact-node', {
+        scale: isMobile ? 1.02 : 1.04,
+        duration: tempo.pulseSlow,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        stagger: tempo.stagger,
+      });
+
+      gsap.utils.toArray<HTMLElement>('.js-contact-row-scan').forEach((scan, index) => {
+        gsap.fromTo(
+          scan,
+          {
+            x: () => -scan.offsetWidth,
+          },
+          {
+            x: () => scan.parentElement?.clientWidth ?? 0,
+            duration: tempo.sweep,
+            ease: 'none',
+            repeat: -1,
+            repeatDelay: tempo.sweepPause,
+            delay: index * tempo.hover,
+            repeatRefresh: true,
+          },
+        );
+      });
+    }, sectionRef);
+
+    return () => context.revert();
+  }, []);
 
   const contactLinks: IContactLink[] = [
     {
@@ -50,7 +91,11 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <section id='contacts' className='terminal-section relative min-h-[40dvh] px-4'>
+    <section
+      id='contacts'
+      ref={sectionRef}
+      className='terminal-section relative min-h-[40dvh] px-4'
+    >
       <div className='terminal-grid-bg' />
       <div className='relative z-10 container mx-auto max-w-6xl'>
         <motion.div {...sectionInViewMotion()} className='mb-7'>
@@ -81,7 +126,7 @@ const Contact: React.FC = () => {
                   {...cardInteractionMotion()}
                   className='group grid items-center gap-3 rounded-xl border border-gallery-700/80 bg-shark-950/60 p-3 sm:grid-cols-[44px_160px_1fr_24px] sm:gap-3.5'
                 >
-                  <div className='flex h-11 w-11 items-center justify-center rounded-xl border border-gallery-700 bg-shark-950/70 text-tertiary-300'>
+                  <div className='js-contact-node terminal-contact-node flex h-11 w-11 items-center justify-center rounded-xl border border-gallery-700 bg-shark-950/70 text-tertiary-300'>
                     {link.icon}
                   </div>
                   <p className='text-xs font-semibold tracking-[0.12em] text-tertiary-300 uppercase sm:text-sm'>
@@ -104,14 +149,17 @@ const Contact: React.FC = () => {
               <div className='terminal-command-row'>
                 <span className='text-tertiary-300'>$</span>
                 <span>open --channel email</span>
+                <span className='js-contact-row-scan terminal-contact-row-scan' aria-hidden />
               </div>
               <div className='terminal-command-row'>
                 <span className='text-tertiary-300'>$</span>
                 <span>open --channel linkedin</span>
+                <span className='js-contact-row-scan terminal-contact-row-scan' aria-hidden />
               </div>
               <div className='terminal-command-row'>
                 <span className='text-tertiary-300'>$</span>
                 <span>download --resource cv</span>
+                <span className='js-contact-row-scan terminal-contact-row-scan' aria-hidden />
               </div>
             </div>
           </div>

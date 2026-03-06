@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc -b && vite build",
     "dev": "bunx --bun vite --host",
-    "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "lint": "bunx oxlint ./src --tsconfig ./tsconfig.app.json --type-aware -D suspicious --deny-warnings",
     "lint:fix": "bunx oxlint ./src --tsconfig ./tsconfig.app.json --type-aware -D suspicious --fix --fix-suggestions --deny-warnings",
     "preview": "vite preview"

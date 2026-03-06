@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { getLoopTempo } from '@utils/loopTempo';
 import { cardInteractionMotion, makeStaggerInViewMotion, sectionInViewMotion } from '@utils/motion';
 
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
 
 interface ISkill {
   title: string;
@@ -12,6 +14,48 @@ interface ISkill {
 
 const MySkill: React.FC = () => {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) return;
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const tempo = getLoopTempo(isMobile);
+
+    const context = gsap.context(() => {
+      gsap.to('.js-skill-title-dot', {
+        opacity: 1,
+        scale: 1.06,
+        duration: tempo.pulse,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        stagger: tempo.stagger,
+      });
+
+      gsap.utils.toArray<HTMLElement>('.js-skill-row-scan').forEach((scan, index) => {
+        gsap.fromTo(
+          scan,
+          {
+            x: () => -scan.offsetWidth,
+            opacity: 0.22,
+          },
+          {
+            x: () => scan.parentElement?.clientWidth ?? 0,
+            opacity: 0.42,
+            duration: tempo.sweep,
+            ease: 'none',
+            repeat: -1,
+            repeatDelay: tempo.sweepPause,
+            delay: index * tempo.hover,
+            repeatRefresh: true,
+          },
+        );
+      });
+    }, sectionRef);
+
+    return () => context.revert();
+  }, []);
 
   const skillData: ISkill[] = [
     {
@@ -57,7 +101,7 @@ const MySkill: React.FC = () => {
   ];
 
   return (
-    <section id='skills' className='terminal-section relative px-4 py-16'>
+    <section id='skills' ref={sectionRef} className='terminal-section relative px-4 py-16'>
       <div className='terminal-grid-bg' />
       <div className='relative z-10 container mx-auto max-w-6xl'>
         <p className='terminal-prompt mb-2'>module: capability.matrix</p>
@@ -81,9 +125,11 @@ const MySkill: React.FC = () => {
                 key={idx}
                 {...makeStaggerInViewMotion(idx)}
                 {...cardInteractionMotion()}
-                className='grid gap-3 rounded-xl border border-gallery-700/80 bg-shark-950/65 p-3 sm:grid-cols-[180px_1fr] sm:items-start'
+                className='relative grid gap-3 overflow-hidden rounded-xl border border-gallery-700/80 bg-shark-950/65 p-3 sm:grid-cols-[180px_1fr] sm:items-start'
               >
+                <span className='js-skill-row-scan terminal-skill-row-scan' aria-hidden />
                 <h3 className='flex items-center text-sm font-semibold tracking-wider text-tertiary-300 uppercase sm:text-base'>
+                  <span className='js-skill-title-dot terminal-skill-title-dot' aria-hidden />
                   {category.title}
                 </h3>
 

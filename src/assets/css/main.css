@@ -460,6 +460,8 @@
   }
 
   .terminal-command-row {
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -469,6 +471,392 @@
     font-size: 0.86rem;
     color: var(--color-gallery-200);
     background: color-mix(in oklab, var(--color-shark-950) 88%, transparent);
+  }
+
+  .terminal-command-scan {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 28%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-tertiary-300) 30%, transparent),
+      transparent
+    );
+    mix-blend-mode: screen;
+    opacity: 0.5;
+  }
+
+  .terminal-rogue-layer {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 18;
+    overflow: hidden;
+  }
+
+  .terminal-rogue-probe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid color-mix(in oklab, var(--color-tertiary-400) 56%, transparent);
+    border-radius: 9999px;
+    padding: 0.16rem 0.48rem;
+    background: color-mix(in oklab, var(--color-shark-950) 72%, transparent);
+    box-shadow:
+      0 0 16px color-mix(in oklab, var(--color-tertiary-400) 32%, transparent),
+      inset 0 0 0 1px color-mix(in oklab, var(--color-gallery-700) 52%, transparent);
+  }
+
+  .terminal-rogue-probe-core {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-tertiary-200);
+    text-transform: uppercase;
+  }
+
+  .terminal-rogue-flash {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background:
+      radial-gradient(circle at 42% 46%, rgb(67 255 231 / 18%) 0, transparent 42%),
+      radial-gradient(circle at 72% 32%, rgb(118 188 255 / 15%) 0, transparent 45%);
+    mix-blend-mode: screen;
+  }
+
+  .terminal-portal-layer {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+  }
+
+  .terminal-portal-ring {
+    position: absolute;
+    right: 0.75rem;
+    top: 1.9rem;
+    width: 4rem;
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in oklab, var(--color-tertiary-300) 52%, transparent);
+    background: conic-gradient(
+      from 0deg,
+      transparent 0 35%,
+      color-mix(in oklab, var(--color-tertiary-400) 42%, transparent) 35% 54%,
+      transparent 54% 72%,
+      color-mix(in oklab, var(--color-gallery-200) 36%, transparent) 72% 88%,
+      transparent 88% 100%
+    );
+    box-shadow:
+      inset 0 0 12px color-mix(in oklab, var(--color-tertiary-500) 20%, transparent),
+      0 0 20px color-mix(in oklab, var(--color-tertiary-500) 24%, transparent);
+  }
+
+  .terminal-portal-glow {
+    position: absolute;
+    right: -1.6rem;
+    top: -0.75rem;
+    width: 10rem;
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgb(72 254 244 / 24%) 0, transparent 62%);
+    opacity: 0;
+  }
+
+  .terminal-portal-spark {
+    position: absolute;
+    right: 2.7rem;
+    top: 3.25rem;
+    width: 0.36rem;
+    height: 0.36rem;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--color-tertiary-200) 88%, transparent);
+    box-shadow: 0 0 10px color-mix(in oklab, var(--color-tertiary-400) 34%, transparent);
+    opacity: 0;
+  }
+
+  .dark .terminal-portal-ring {
+    box-shadow:
+      inset 0 0 14px rgb(22 231 255 / 24%),
+      0 0 24px rgb(22 231 255 / 24%);
+  }
+
+  .dark .terminal-rogue-probe {
+    box-shadow:
+      0 0 18px rgb(36 232 255 / 30%),
+      inset 0 0 0 1px rgb(76 167 230 / 28%);
+  }
+
+  .terminal-project-scan {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 34%;
+    opacity: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-tertiary-300) 28%, transparent),
+      transparent
+    );
+    mix-blend-mode: screen;
+    z-index: 2;
+  }
+
+  .js-project-card {
+    transition: box-shadow 0.25s ease;
+  }
+
+  .js-project-card:hover,
+  .js-project-card:focus-within {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--color-tertiary-400) 30%, transparent),
+      0 0 14px color-mix(in oklab, var(--color-tertiary-500) 12%, transparent);
+  }
+
+  .dark .js-project-card:hover,
+  .dark .js-project-card:focus-within {
+    box-shadow:
+      inset 0 0 0 1px rgb(66 221 255 / 24%),
+      0 0 16px rgb(66 221 255 / 13%);
+  }
+
+  .terminal-orbit {
+    pointer-events: none;
+    position: absolute;
+    inset: -0.55rem;
+    z-index: 2;
+  }
+
+  .terminal-orbit-chip {
+    position: absolute;
+    border-color: color-mix(in oklab, var(--color-tertiary-400) 68%, transparent);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    background: color-mix(in oklab, var(--color-shark-950) 82%, transparent);
+    box-shadow: 0 0 12px color-mix(in oklab, var(--color-tertiary-500) 18%, transparent);
+  }
+
+  .terminal-orbit-chip:nth-of-type(1) {
+    top: -0.3rem;
+    right: 0.5rem;
+  }
+
+  .terminal-orbit-chip:nth-of-type(2) {
+    top: 44%;
+    left: -0.5rem;
+    transform: translateY(-50%);
+  }
+
+  .terminal-orbit-chip:nth-of-type(3) {
+    top: 62%;
+    right: -0.4rem;
+    transform: translateY(-50%);
+  }
+
+  .dark .terminal-orbit-chip {
+    box-shadow: 0 0 14px rgb(22 231 255 / 28%);
+  }
+
+  .terminal-live-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .terminal-live-pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .terminal-live-dot {
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--color-tertiary-300) 82%, transparent);
+    box-shadow: 0 0 8px color-mix(in oklab, var(--color-tertiary-400) 44%, transparent);
+  }
+
+  .dark .terminal-live-dot {
+    box-shadow: 0 0 10px rgb(22 231 255 / 42%);
+  }
+
+  .terminal-signal-track {
+    position: relative;
+    height: 0.42rem;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklab, var(--color-gallery-700) 70%, transparent);
+    border-radius: 9999px;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--color-gallery-700) 34%, transparent) 0 8px,
+        transparent 8px 14px
+      ),
+      color-mix(in oklab, var(--color-shark-950) 90%, transparent);
+  }
+
+  .terminal-signal-packet {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 1.3rem;
+    height: 0.2rem;
+    border-radius: 9999px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--color-tertiary-500) 80%, transparent),
+      color-mix(in oklab, var(--color-tertiary-200) 88%, transparent)
+    );
+    box-shadow:
+      0 0 10px color-mix(in oklab, var(--color-tertiary-500) 42%, transparent),
+      0 0 2px color-mix(in oklab, white 36%, transparent);
+  }
+
+  .dark .terminal-signal-track {
+    background:
+      repeating-linear-gradient(90deg, rgb(94 152 255 / 30%) 0 8px, transparent 8px 14px),
+      color-mix(in oklab, var(--color-shark-950) 86%, black);
+  }
+
+  .dark .terminal-signal-packet {
+    box-shadow: 0 0 12px rgb(22 231 255 / 40%);
+  }
+
+  .terminal-runtime-eq {
+    display: flex;
+    align-items: end;
+    gap: 0.2rem;
+    height: 0.95rem;
+    width: fit-content;
+  }
+
+  .terminal-runtime-eq-bar {
+    width: 0.16rem;
+    height: 100%;
+    border-radius: 9999px;
+    transform-origin: center bottom;
+    transform: scaleY(0.22);
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-tertiary-200) 92%, transparent),
+      color-mix(in oklab, var(--color-tertiary-500) 80%, transparent)
+    );
+    box-shadow: 0 0 8px color-mix(in oklab, var(--color-tertiary-500) 32%, transparent);
+  }
+
+  .dark .terminal-runtime-eq-bar {
+    box-shadow: 0 0 10px rgb(34 233 255 / 34%);
+  }
+
+  .terminal-feed-track {
+    pointer-events: none;
+    position: absolute;
+    top: 1.1rem;
+    bottom: 1.1rem;
+    left: 0.6rem;
+    width: 0.28rem;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in oklab, var(--color-gallery-700) 65%, transparent);
+    background: color-mix(in oklab, var(--color-shark-950) 86%, transparent);
+    overflow: hidden;
+  }
+
+  .terminal-feed-packet {
+    position: absolute;
+    left: 50%;
+    width: 0.14rem;
+    height: 0.95rem;
+    transform: translateX(-50%);
+    border-radius: 9999px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-tertiary-100) 90%, transparent),
+      color-mix(in oklab, var(--color-tertiary-500) 80%, transparent)
+    );
+    box-shadow: 0 0 10px color-mix(in oklab, var(--color-tertiary-500) 42%, transparent);
+  }
+
+  .terminal-now-dot {
+    width: 0.36rem;
+    height: 0.36rem;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--color-tertiary-300) 85%, transparent);
+    box-shadow: 0 0 8px color-mix(in oklab, var(--color-tertiary-500) 34%, transparent);
+  }
+
+  .dark .terminal-feed-packet {
+    box-shadow: 0 0 12px rgb(22 231 255 / 42%);
+  }
+
+  .dark .terminal-now-dot {
+    box-shadow: 0 0 9px rgb(22 231 255 / 36%);
+  }
+
+  .terminal-contact-node {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--color-gallery-700) 70%, transparent),
+      0 0 8px color-mix(in oklab, var(--color-tertiary-500) 14%, transparent);
+    will-change: transform;
+  }
+
+  .terminal-contact-row-scan {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 26%;
+    opacity: 0.4;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-tertiary-300) 28%, transparent),
+      transparent
+    );
+    mix-blend-mode: screen;
+  }
+
+  .terminal-skill-row-scan {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 30%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-tertiary-300) 22%, transparent),
+      transparent
+    );
+    mix-blend-mode: screen;
+  }
+
+  .terminal-skill-title-dot {
+    display: inline-block;
+    margin-right: 0.48rem;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 9999px;
+    opacity: 0.55;
+    background: color-mix(in oklab, var(--color-tertiary-300) 80%, transparent);
+    box-shadow: 0 0 8px color-mix(in oklab, var(--color-tertiary-500) 30%, transparent);
+  }
+
+  .dark .terminal-skill-title-dot {
+    box-shadow: 0 0 10px rgb(22 231 255 / 32%);
+  }
+
+  .dark .terminal-contact-node {
+    box-shadow:
+      inset 0 0 0 1px rgb(82 165 221 / 28%),
+      0 0 10px rgb(22 231 255 / 18%);
   }
 
   .boot-overlay {
@@ -538,6 +926,76 @@
     .terminal-statusbar {
       letter-spacing: 0.05em;
     }
+
+    .terminal-orbit {
+      display: none;
+    }
+
+    .terminal-live-group {
+      gap: 0.35rem;
+    }
+
+    .terminal-live-dot {
+      width: 0.28rem;
+      height: 0.28rem;
+    }
+
+    .terminal-runtime-eq {
+      height: 0.8rem;
+      gap: 0.16rem;
+    }
+
+    .terminal-runtime-eq-bar {
+      width: 0.14rem;
+    }
+
+    .terminal-feed-track {
+      left: 0.45rem;
+      width: 0.24rem;
+    }
+
+    .terminal-now-dot {
+      width: 0.32rem;
+      height: 0.32rem;
+    }
+
+    .terminal-skill-title-dot {
+      width: 0.34rem;
+      height: 0.34rem;
+      margin-right: 0.38rem;
+    }
+
+    .terminal-rogue-probe {
+      padding: 0.12rem 0.42rem;
+    }
+
+    .terminal-rogue-probe-core {
+      font-size: 0.62rem;
+    }
+
+    .terminal-portal-ring {
+      right: 0.55rem;
+      top: 2.05rem;
+      width: 3.35rem;
+    }
+
+    .terminal-portal-glow {
+      width: 8rem;
+      right: -1.15rem;
+    }
+
+    .terminal-portal-spark {
+      right: 2.2rem;
+      top: 3.1rem;
+      width: 0.3rem;
+      height: 0.3rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .terminal-orbit {
+      display: none;
+    }
   }
 
   .terminal-dot {
@@ -594,6 +1052,13 @@
       animation: none;
       opacity: 1;
       transform: none;
+    }
+
+    .terminal-command-scan,
+    .terminal-orbit,
+    .terminal-rogue-layer,
+    .terminal-portal-layer {
+      display: none;
     }
   }
 }
