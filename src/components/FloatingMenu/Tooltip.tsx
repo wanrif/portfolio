@@ -1,7 +1,5 @@
 import { forwardRef } from 'react';
 
-import cn from '@utils/cn';
-
 interface TooltipProps {
   isActive: boolean;
   tooltipIndex: number;
@@ -12,10 +10,8 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
   ({ isActive, tooltipIndex, items }, ref) => (
     <div
       ref={ref}
-      className={cn(
-        'pointer-events-none absolute bottom-full hidden rounded-2xl border border-tertiary-700/45 bg-shark-950/95 px-3 py-1 text-[11px] tracking-wider uppercase opacity-0 backdrop-blur corner-superellipse/2 sm:block',
-        !isActive ? 'hidden' : '',
-      )}
+      aria-hidden={!isActive}
+      className='pointer-events-none absolute bottom-full rounded-2xl border border-tertiary-700/45 bg-shark-950/95 px-3 py-1 text-[11px] tracking-wider uppercase opacity-0 backdrop-blur corner-superellipse/2 sm:block'
       style={{
         left: '50%',
         transform: 'translateX(-50%)',

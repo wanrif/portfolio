@@ -66,4 +66,5 @@
 
 - Use Context7 MCP for up-to-date library/API docs and setup guidance.
 - Use SOLID frontend review mindset for code changes and refactors.
-- Prefer minimal diffs and preserve existing public APIs unless a task explicitly requires changes.
+- Prefer minimal diffs and preserve existing public APIs unless a task
+  explicitly requires changes.

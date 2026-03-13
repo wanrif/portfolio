@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import ThemeMode from '@components/ThemeMode';
 import Language from '@containers/language';
 import { selectLocale, selectTheme, useAppStore } from '@stores/app/store';
+import cn from '@utils/cn';
 import scrollToSection from '@utils/scrollToSection';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -200,9 +201,14 @@ const FloatingMenu: React.FC = () => {
         animate='visible'
         exit='exit'
         variants={containerVariants}
-        className={`hidden sm:flex ${
-          isScrolled ? 'bg-shark-900/86' : 'bg-shark-950/95'
-        } relative flex w-fit max-w-[calc(100vw-2rem)] items-center gap-x-2 overflow-x-auto rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl [scrollbar-width:none] sm:max-w-none sm:px-3 sm:py-2 [&::-webkit-scrollbar]:hidden`}
+        className={cn(
+          'hidden sm:flex',
+          {
+            'bg-shark-900/86': isScrolled,
+            'bg-shark-950/95': !isScrolled,
+          },
+          'relative flex w-fit max-w-[calc(100vw-2rem)] items-center gap-x-2 overflow-visible rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl sm:max-w-none sm:px-3 sm:py-2',
+        )}
       >
         <Tooltip
           ref={refs.tooltip}
@@ -253,9 +259,13 @@ const FloatingMenu: React.FC = () => {
         animate='visible'
         exit='exit'
         variants={containerVariants}
-        className={`${
-          isScrolled ? 'bg-shark-900/88' : 'bg-shark-950/95'
-        } flex w-fit max-w-full items-center justify-center gap-1.5 rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl sm:hidden`}
+        className={cn(
+          {
+            'bg-shark-900/88': isScrolled,
+            'bg-shark-950/95': !isScrolled,
+          },
+          'flex w-fit max-w-full items-center justify-center gap-1.5 rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl sm:hidden',
+        )}
       >
         {mobileMenuList.map((item, index) => (
           <motion.button

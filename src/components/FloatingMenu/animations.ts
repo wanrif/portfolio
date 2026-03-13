@@ -38,7 +38,7 @@ export const menuItemVariants: Variants = {
 
 export const animateTooltip = (element: HTMLElement, show: boolean) => {
   return gsap.to(element, {
-    opacity: show ? 1 : 0,
+    autoAlpha: show ? 1 : 0,
     y: show ? -10 : 0,
     duration: show ? 0.3 : 0.2,
     ease: show ? 'power2.out' : 'power2.in',
