@@ -61,3 +61,9 @@
   plugin, and Rollup visualizer.
 - Build output intentionally uses manual vendor chunking + Terser `drop_console`
   / `drop_debugger`; avoid changing unless required.
+
+## Agent Workflow Preferences
+
+- Use Context7 MCP for up-to-date library/API docs and setup guidance.
+- Use SOLID frontend review mindset for code changes and refactors.
+- Prefer minimal diffs and preserve existing public APIs unless a task explicitly requires changes.

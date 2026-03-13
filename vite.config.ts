@@ -1,11 +1,11 @@
 import mdx from '@mdx-js/rollup';
 import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { URL, fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 
-const prefix = 'portreez';
+const PREFIX = 'portreez';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,7 +13,7 @@ export default defineConfig({
   css: {
     modules: {
       localsConvention: 'camelCase',
-      hashPrefix: prefix,
+      hashPrefix: PREFIX,
       generateScopedName: '_[folder]_[local]_[sha256:hash:base64:5]_[sha512:hash:base64:4]',
     },
   },
@@ -44,31 +44,48 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    minify: 'terser',
+    target: 'esnext',
+    minify: 'oxc',
     cssCodeSplit: true,
-    rollupOptions: {
+    cssMinify: 'lightningcss',
+    chunkSizeWarningLimit: 700,
+    rolldownOptions: {
       output: {
-        entryFileNames: `[name].${prefix}.[hash].js`,
-        chunkFileNames: `[name].${prefix}.[hash].js`,
-        assetFileNames: `[name].${prefix}.[hash].[ext]`,
+        minify: {
+          compress: {
+            dropConsole: true,
+            dropDebugger: true,
+          },
+        },
+        entryFileNames: `[name].${PREFIX}.[hash].js`,
+        chunkFileNames: `assets/[name].${PREFIX}.[hash].js`,
+        assetFileNames: `assets/[name].${PREFIX}.[hash].[ext]`,
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            return id
-              .toString()
-              .split('node_modules/')[1]
-              .split('/')[0]
-              .toString()
-              .replace('@', '');
+            if (
+              id.includes('/react/') ||
+              id.includes('/react-dom/') ||
+              id.includes('/scheduler/')
+            ) {
+              return 'vendor-react';
+            }
+            if (id.includes('/framer-motion/')) {
+              return 'vendor-motion';
+            }
+            if (id.includes('/react-i18next/') || id.includes('/i18next/')) {
+              return 'vendor-i18n';
+            }
+            if (id.includes('/tsparticles') || id.includes('/react-particles')) {
+              return 'vendor-particles';
+            }
+            if (id.includes('/gsap/')) {
+              return 'vendor-gsap';
+            }
+            return 'vendor';
           }
         },
       },
     },
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
-    reportCompressedSize: true,
+    reportCompressedSize: false,
   },
 });
