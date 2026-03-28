@@ -43,7 +43,7 @@ function App() {
           <div className='boot-panel terminal-window w-full max-w-2xl overflow-hidden rounded-2xl'>
             <div className='terminal-titlebar'>
               <span>{t('boot_title')}</span>
-              <span className='terminal-chip terminal-chip-accent'>v2.0.2</span>
+              <span className='terminal-chip terminal-chip-accent'>v2.0.3</span>
             </div>
             <div className='space-y-2 p-4 sm:p-5'>
               <p className='boot-line text-sm text-gallery-200'>{t('boot_line_1')}</p>

@@ -60,29 +60,29 @@ export default defineConfig({
         entryFileNames: `[name].${PREFIX}.[hash].js`,
         chunkFileNames: `assets/[name].${PREFIX}.[hash].js`,
         assetFileNames: `assets/[name].${PREFIX}.[hash].[ext]`,
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (
-              id.includes('/react/') ||
-              id.includes('/react-dom/') ||
-              id.includes('/scheduler/')
-            ) {
-              return 'vendor-react';
-            }
-            if (id.includes('/framer-motion/')) {
-              return 'vendor-motion';
-            }
-            if (id.includes('/react-i18next/') || id.includes('/i18next/')) {
-              return 'vendor-i18n';
-            }
-            if (id.includes('/tsparticles') || id.includes('/react-particles')) {
-              return 'vendor-particles';
-            }
-            if (id.includes('/gsap/')) {
-              return 'vendor-gsap';
-            }
-            return 'vendor';
-          }
+        codeSplitting: {
+          groups: [
+            {
+              name: 'react-vendor',
+              test: /node_modules[\\/]react/,
+              priority: 20,
+            },
+            {
+              name: 'motion-vendor',
+              test: /node_modules[\\/]framer-motion/,
+              priority: 15,
+            },
+            {
+              name: 'i18n-vendor',
+              test: /node_modules[\\/](react-i18next|i18next)/,
+              priority: 10,
+            },
+            {
+              name: 'gsap-vendor',
+              test: /node_modules[\\/]gsap/,
+              priority: 5,
+            },
+          ],
         },
       },
     },

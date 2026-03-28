@@ -1,6 +1,6 @@
 {
   "name": "portfolio",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,40 +8,41 @@
     "dev": "bunx --bun vite --host",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
+    "format:lint": "oxfmt --check && bunx oxlint ./src --tsconfig ./tsconfig.app.json --type-aware -D suspicious --deny-warnings",
     "lint": "bunx oxlint ./src --tsconfig ./tsconfig.app.json --type-aware -D suspicious --deny-warnings",
     "lint:fix": "bunx oxlint ./src --tsconfig ./tsconfig.app.json --type-aware -D suspicious --fix --fix-suggestions --deny-warnings",
     "preview": "vite preview"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@tailwindcss/vite": "^4.2.1",
+    "@tailwindcss/vite": "^4.2.2",
     "@toolwind/corner-shape": "^0.0.8-3",
     "clsx": "2.1.1",
-    "framer-motion": "^12.36.0",
+    "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-i18next": "^16.5.8",
+    "react-i18next": "^17.0.1",
     "react-icons": "^5.6.0",
     "react-particles": "^2.12.2",
     "tailwind-merge": "3.5.0",
     "tsparticles-slim": "^2.12.0",
-    "zustand": "^5.0.11"
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
-    "@types/bun": "^1.3.10",
+    "@types/bun": "^1.3.11",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.4.27",
-    "oxfmt": "^0.40.0",
-    "oxlint": "^1.55.0",
-    "oxlint-tsgolint": "^0.16.0",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
+    "oxlint-tsgolint": "^0.18.1",
     "rollup-plugin-visualizer": "^7.0.1",
-    "tailwindcss": "^4.2.1",
-    "terser": "^5.46.0",
-    "typescript": "^5.9.3",
-    "vite": "^8.0.0"
+    "tailwindcss": "^4.2.2",
+    "terser": "^5.46.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3"
   }
 }

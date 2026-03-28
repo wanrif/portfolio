@@ -21,7 +21,9 @@ const FloatingMenu: React.FC = () => {
   const toggleTheme = useAppStore((state) => state.toggleTheme);
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isCompactDock, setIsCompactDock] = useState(false);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [isMobileUtilityOpen, setIsMobileUtilityOpen] = useState(false);
   const [commandInput, setCommandInput] = useState('');
   const [activeCommandIndex, setActiveCommandIndex] = useState(0);
   const [tooltipState, setTooltipState] = useState({ index: 0, isActive: false });
@@ -123,6 +125,26 @@ const FloatingMenu: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    // Compact dock is mobile-only; tablets and above keep the regular dock.
+    const mobileLayoutMediaQuery = window.matchMedia('(max-width: 932px)');
+
+    const updateDockLayout = () => {
+      setIsCompactDock(mobileLayoutMediaQuery.matches);
+    };
+
+    updateDockLayout();
+
+    mobileLayoutMediaQuery.addEventListener('change', updateDockLayout);
+    return () => {
+      mobileLayoutMediaQuery.removeEventListener('change', updateDockLayout);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
@@ -139,7 +161,7 @@ const FloatingMenu: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isPaletteOpen) {
+    if (!isPaletteOpen && !isMobileUtilityOpen) {
       document.body.style.overflow = '';
       return;
     }
@@ -148,6 +170,12 @@ const FloatingMenu: React.FC = () => {
     return () => {
       document.body.style.overflow = '';
     };
+  }, [isPaletteOpen, isMobileUtilityOpen]);
+
+  useEffect(() => {
+    if (isPaletteOpen) {
+      setIsMobileUtilityOpen(false);
+    }
   }, [isPaletteOpen]);
 
   const filteredCommands = commandList.filter(({ command }) =>
@@ -163,6 +191,7 @@ const FloatingMenu: React.FC = () => {
     selectedCommand?.action();
     setCommandInput('');
     setIsPaletteOpen(false);
+    setIsMobileUtilityOpen(false);
   };
 
   const handlePaletteKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -194,7 +223,14 @@ const FloatingMenu: React.FC = () => {
   };
 
   return (
-    <div className='fixed bottom-3 left-1/2 z-50 flex w-[calc(100vw-1rem)] -translate-x-1/2 items-center justify-center sm:bottom-4 sm:w-auto'>
+    <div
+      className={cn(
+        'fixed left-1/2 z-50 flex -translate-x-1/2 items-center justify-center',
+        isCompactDock
+          ? 'bottom-[max(0.5rem,env(safe-area-inset-bottom))] w-[calc(100vw-0.75rem)]'
+          : 'bottom-4 w-auto',
+      )}
+    >
       <motion.div
         ref={refs.menu}
         initial='hidden'
@@ -202,12 +238,12 @@ const FloatingMenu: React.FC = () => {
         exit='exit'
         variants={containerVariants}
         className={cn(
-          'hidden sm:flex',
+          isCompactDock ? 'hidden' : 'flex',
           {
             'bg-shark-900/86': isScrolled,
             'bg-shark-950/95': !isScrolled,
           },
-          'relative flex w-fit max-w-[calc(100vw-2rem)] items-center gap-x-2 overflow-visible rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl sm:max-w-none sm:px-3 sm:py-2',
+          'relative w-fit max-w-none items-center gap-x-2 overflow-visible rounded-2xl border border-tertiary-700/55 px-3 py-2 backdrop-blur-xl',
         )}
       >
         <Tooltip
@@ -247,7 +283,7 @@ const FloatingMenu: React.FC = () => {
           type='button'
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className='ml-auto cursor-pointer rounded-xl border border-gallery-700/90 bg-shark-950/75 px-2 py-1 text-[10px] tracking-[0.12em] text-gallery-200 uppercase hover:border-tertiary-400 sm:ml-0 sm:text-[11px]'
+          className='ml-auto cursor-pointer rounded-xl border border-gallery-700/90 bg-shark-950/75 px-2 py-1 text-[11px] tracking-[0.12em] text-gallery-200 uppercase hover:border-tertiary-400'
           onClick={() => setIsPaletteOpen(true)}
         >
           exec
@@ -260,40 +296,118 @@ const FloatingMenu: React.FC = () => {
         exit='exit'
         variants={containerVariants}
         className={cn(
+          isCompactDock ? 'flex' : 'hidden',
           {
             'bg-shark-900/88': isScrolled,
             'bg-shark-950/95': !isScrolled,
           },
-          'flex w-fit max-w-full items-center justify-center gap-1.5 rounded-2xl border border-tertiary-700/55 px-2 py-1.5 backdrop-blur-xl sm:hidden',
+          'max-w-136 items-center gap-1.5 rounded-2xl border border-tertiary-700/55 bg-shark-950/78 px-1.5 py-1.5 shadow-[0_10px_26px_rgba(0,0,0,0.45)] backdrop-blur-xl',
         )}
       >
-        {mobileMenuList.map((item, index) => (
-          <motion.button
-            key={index}
-            custom={index}
-            variants={menuItemVariants}
-            whileTap={{ scale: 0.94 }}
-            type='button'
-            aria-label={item.tooltip}
-            className='flex h-10 w-10 items-center justify-center rounded-xl border border-gallery-700/90 bg-shark-950/75 text-tertiary-300'
-            onClick={item.handleClick}
-          >
-            {item.component}
-          </motion.button>
-        ))}
+        <div className='min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
+          <div className='flex min-w-max items-center gap-1.5 pr-1'>
+            {mobileMenuList.map((item, index) => (
+              <motion.button
+                key={index}
+                custom={index}
+                variants={menuItemVariants}
+                whileTap={{ scale: 0.94 }}
+                type='button'
+                aria-label={item.tooltip}
+                className='flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gallery-700/90 bg-shark-950/75 text-tertiary-300'
+                onClick={item.handleClick}
+              >
+                {item.component}
+              </motion.button>
+            ))}
+          </div>
+        </div>
 
         <motion.button
           type='button'
           whileTap={{ scale: 0.94 }}
-          className='flex h-10 min-w-10 items-center justify-center rounded-xl border border-gallery-700/90 bg-shark-950/75 px-2 text-[10px] font-semibold tracking-[0.12em] text-gallery-200 uppercase'
-          onClick={() => setIsPaletteOpen(true)}
+          className='flex h-10 min-w-15 shrink-0 items-center justify-center rounded-xl border border-tertiary-500/55 bg-shark-900/85 px-3 text-[10px] font-semibold tracking-[0.14em] text-tertiary-200 uppercase'
+          onClick={() => setIsMobileUtilityOpen(true)}
         >
-          exec
+          sys
         </motion.button>
       </motion.div>
 
       {createPortal(
         <AnimatePresence>
+          {isMobileUtilityOpen && (
+            <motion.div
+              key='mobile-utility-overlay'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.14, ease: [0.33, 1, 0.68, 1] }}
+              className='fixed inset-0 z-55 flex items-end justify-center bg-shark-950/80 px-0 pt-6'
+              onClick={() => setIsMobileUtilityOpen(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 18, scale: 0.99 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 14, scale: 0.99 }}
+                transition={{ type: 'spring', stiffness: 380, damping: 32, mass: 0.9 }}
+                className='w-full max-w-136 overflow-hidden rounded-t-3xl border border-tertiary-700/55 bg-shark-950 pb-[max(0.75rem,env(safe-area-inset-bottom))] corner-superellipse/2'
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className='border-b border-gallery-700 px-4 py-3 text-[11px] tracking-[0.16em] text-gallery-300 uppercase'>
+                  {'>'} system controls
+                </div>
+                <div className='grid grid-cols-3 gap-2 p-3'>
+                  <motion.button
+                    type='button'
+                    whileTap={{ scale: 0.96 }}
+                    className='flex min-h-20 flex-col items-center justify-center gap-2 rounded-2xl border border-gallery-700/85 bg-shark-900/70 px-2 text-center'
+                    onClick={() => {
+                      setIsMobileUtilityOpen(false);
+                      setIsPaletteOpen(true);
+                    }}
+                  >
+                    <span className='text-[11px] tracking-[0.14em] text-tertiary-300 uppercase'>
+                      exec
+                    </span>
+                    <span className='text-[10px] text-gallery-400'>command</span>
+                  </motion.button>
+
+                  <motion.button
+                    type='button'
+                    whileTap={{ scale: 0.96 }}
+                    className='flex min-h-20 flex-col items-center justify-center gap-2 rounded-2xl border border-gallery-700/85 bg-shark-900/70 px-2 text-center'
+                    onClick={() => {
+                      toggleTheme();
+                      setIsMobileUtilityOpen(false);
+                    }}
+                  >
+                    <span className='text-[11px] tracking-[0.14em] text-tertiary-300 uppercase'>
+                      theme
+                    </span>
+                    <span className='text-[10px] text-gallery-400'>
+                      {theme === 'dark' ? 'cyber' : 'amber'}
+                    </span>
+                  </motion.button>
+
+                  <motion.button
+                    type='button'
+                    whileTap={{ scale: 0.96 }}
+                    className='flex min-h-20 flex-col items-center justify-center gap-2 rounded-2xl border border-gallery-700/85 bg-shark-900/70 px-2 text-center'
+                    onClick={() => {
+                      document.querySelector<HTMLElement>('[data-testid="locale-toggle"]')?.click();
+                      setIsMobileUtilityOpen(false);
+                    }}
+                  >
+                    <span className='text-[11px] tracking-[0.14em] text-tertiary-300 uppercase'>
+                      lang
+                    </span>
+                    <span className='text-[10px] text-gallery-400 uppercase'>{locale}</span>
+                  </motion.button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+
           {isPaletteOpen && (
             <motion.div
               key='palette-overlay'
