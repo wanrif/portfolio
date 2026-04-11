@@ -97,16 +97,17 @@ const FloatingMenu: React.FC = () => {
 
   // Scroll observer effect
   useEffect(() => {
-    refs.scrollObserver.current = new IntersectionObserver(
+    const scrollObserver = new IntersectionObserver(
       ([entry]) => setIsScrolled(!entry.isIntersecting),
       SCROLL_OBSERVER_OPTIONS,
     );
+    refs.scrollObserver.current = scrollObserver;
 
     const target = document.getElementById('header') || document.body;
-    refs.scrollObserver.current.observe(target);
+    scrollObserver.observe(target);
 
-    return () => refs.scrollObserver.current?.disconnect();
-  }, []);
+    return () => scrollObserver.disconnect();
+  }, [refs.scrollObserver]);
 
   // Click outside effect
   useEffect(() => {
@@ -122,7 +123,7 @@ const FloatingMenu: React.FC = () => {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [refs.tooltipAnimation, refs.menu.current, refs.tooltip]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {

@@ -1,0 +1,48 @@
+export const meta = {
+  slug: 'oharatools',
+  name: 'Oharatools',
+  status: 'completed',
+  summary:
+    'Hub utilitas developer berbasis browser untuk kebutuhan encoding, formatting, kriptografi, scheduling, dan workflow diagnostik cepat dalam satu antarmuka yang fokus.',
+  problem:
+    'Tugas engineering umum seperti memformat JSON, decode JWT, konversi timestamp, generate hash, atau menguji regex sering memaksa pengguna berpindah-pindah tool dengan UX yang tidak konsisten dan batas kepercayaan yang kurang jelas.',
+  architecture:
+    'Platform utilitas single frontend dengan route terpisah untuk setiap tool, navigasi bergaya command palette, dan discoverability berbasis sitemap agar developer bisa berpindah workflow tanpa kehilangan konteks.',
+  stack: [
+    'React',
+    'TypeScript',
+    'Vite',
+    'TanStack Router',
+    'tailwindcss',
+    'zustand',
+    'lucide-react',
+  ],
+  tradeoffs:
+    'Prioritas utamanya adalah kecepatan, eksekusi di browser yang lebih ramah privasi, dan pola interaksi yang konsisten, bukan fitur berat berbasis server; hasilnya tool terasa cepat dan mudah diakses tetapi beberapa workflow yang idealnya dibantu backend menjadi lebih terbatas.',
+  demo: 'https://oharatools.redwans.com/',
+};
+
+### Konteks
+
+Oharatools dibuat sebagai toolbox terfokus untuk kebutuhan developer sehari-hari
+yang biasanya tersebar di banyak situs, browser extension, dan potongan CLI.
+
+### Solusi
+
+- Menggabungkan berbagai utilitas dalam satu homepage, termasuk Base64, URL
+  encode/decode, JSON formatter, inspeksi JWT, regex tester, konversi timestamp,
+  password generator, hashing, generator UUID/NanoID, SQL formatter, diff tool,
+  dan cron parser.
+- Mengurangi friction dengan pola navigasi cepat agar pengguna dapat berpindah
+  antar tool tanpa perlu beradaptasi ulang dengan antarmuka baru.
+- Menjaga pengalaman tetap langsung bisa dipakai dari browser melalui halaman
+  utilitas khusus dan sitemap publik untuk discovery.
+
+### Catatan Arsitektur
+
+- Halaman tool diekspos sebagai route khusus seperti `/base64`,
+  `/json-formatter`, `/jwt-tools`, `/diff`, dan `/cron-parser`.
+- Homepage berperan sebagai layer registry untuk discovery utilitas dan titik
+  masuk cepat ke workflow tertentu.
+- Pemrosesan browser-first cocok untuk encoding, formatting, dan banyak helper
+  kriptografi karena meminimalkan latensi bagi pengguna akhir.

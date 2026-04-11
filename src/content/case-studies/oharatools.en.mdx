@@ -1,0 +1,48 @@
+export const meta = {
+  slug: 'oharatools',
+  name: 'Oharatools',
+  status: 'completed',
+  summary:
+    'Browser-based developer utilities hub for encoding, formatting, cryptography, scheduling, and quick diagnostic workflows in one focused interface.',
+  problem:
+    'Common engineering tasks such as formatting JSON, decoding JWTs, converting timestamps, generating hashes, or testing regex often require switching between scattered tools with inconsistent UX and unclear trust boundaries.',
+  architecture:
+    'Single frontend utility platform with dedicated routes for each tool, command-palette style navigation, and sitemap-backed discoverability so developers can jump between workflows without losing context.',
+  stack: [
+    'React',
+    'TypeScript',
+    'Vite',
+    'TanStack Router',
+    'tailwindcss',
+    'zustand',
+    'lucide-react',
+  ],
+  tradeoffs:
+    'Prioritized speed, privacy-friendly browser execution, and consistent interaction patterns over server-heavy features, which keeps the tools fast and accessible but constrains workflows that would benefit from backend processing.',
+  demo: 'https://oharatools.redwans.com/',
+};
+
+### Context
+
+Oharatools was built as a focused toolbox for everyday developer tasks that are
+usually fragmented across multiple sites, browser extensions, and CLI snippets.
+
+### Solution
+
+- Centralized a broad set of utilities from one homepage, including Base64, URL
+  encode/decode, JSON formatting, JWT inspection, regex testing, timestamp
+  conversion, password generation, hashing, UUID/NanoID generation, SQL
+  formatting, diffing, and cron parsing.
+- Reduced friction with quick navigation patterns so users can move across tools
+  without relearning the interface.
+- Kept the experience immediately usable from the browser with direct utility
+  pages and public sitemap discovery.
+
+### Architecture Notes
+
+- Tool pages are exposed as dedicated routes such as `/base64`,
+  `/json-formatter`, `/jwt-tools`, `/diff`, and `/cron-parser`.
+- The homepage acts as a registry layer for utility discovery and fast entry
+  into specific workflows.
+- Browser-first processing is a good fit for encoding, formatting, and many
+  cryptography helpers because it minimizes latency for the end user.

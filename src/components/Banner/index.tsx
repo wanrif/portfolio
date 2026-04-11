@@ -40,6 +40,8 @@ const Banner: React.FC = () => {
     let onRuntimeActive: (() => void) | undefined;
     let onRuntimeIdle: (() => void) | undefined;
     let onRuntimeWindowTrigger: (() => void) | undefined;
+    const runtimeCardElement = runtimeCardRef.current;
+    const runtimeWindowElement = runtimeWindowRef.current;
 
     const context = gsap.context(() => {
       gsap.to('.js-profile-float', {
@@ -141,7 +143,7 @@ const Banner: React.FC = () => {
           }),
         );
 
-      if (runtimeCardRef.current && runtimeBarTweens.length > 0) {
+      if (runtimeCardElement && runtimeBarTweens.length > 0) {
         const activeTimeScale = isMobile ? 1.2 : 1.5;
 
         onRuntimeActive = () => {
@@ -160,13 +162,13 @@ const Banner: React.FC = () => {
           });
         };
 
-        runtimeCardRef.current.addEventListener('pointerenter', onRuntimeActive);
-        runtimeCardRef.current.addEventListener('pointerleave', onRuntimeIdle);
-        runtimeCardRef.current.addEventListener('focusin', onRuntimeActive);
-        runtimeCardRef.current.addEventListener('focusout', onRuntimeIdle);
+        runtimeCardElement.addEventListener('pointerenter', onRuntimeActive);
+        runtimeCardElement.addEventListener('pointerleave', onRuntimeIdle);
+        runtimeCardElement.addEventListener('focusin', onRuntimeActive);
+        runtimeCardElement.addEventListener('focusout', onRuntimeIdle);
       }
 
-      if (runtimeWindowRef.current && portalRingRef.current && portalGlowRef.current) {
+      if (runtimeWindowElement && portalRingRef.current && portalGlowRef.current) {
         let isPortalRunning = false;
 
         gsap.set([portalRingRef.current, portalGlowRef.current], { autoAlpha: 0 });
@@ -251,8 +253,8 @@ const Banner: React.FC = () => {
             );
         };
 
-        runtimeWindowRef.current.addEventListener('pointerenter', onRuntimeWindowTrigger);
-        runtimeWindowRef.current.addEventListener('focusin', onRuntimeWindowTrigger);
+        runtimeWindowElement.addEventListener('pointerenter', onRuntimeWindowTrigger);
+        runtimeWindowElement.addEventListener('focusin', onRuntimeWindowTrigger);
       }
 
       if (rogueLayerRef.current && rogueProbeRef.current && rogueFlashRef.current) {
@@ -323,16 +325,16 @@ const Banner: React.FC = () => {
     }, bannerRef);
 
     return () => {
-      if (runtimeCardRef.current && onRuntimeActive && onRuntimeIdle) {
-        runtimeCardRef.current.removeEventListener('pointerenter', onRuntimeActive);
-        runtimeCardRef.current.removeEventListener('pointerleave', onRuntimeIdle);
-        runtimeCardRef.current.removeEventListener('focusin', onRuntimeActive);
-        runtimeCardRef.current.removeEventListener('focusout', onRuntimeIdle);
+      if (runtimeCardElement && onRuntimeActive && onRuntimeIdle) {
+        runtimeCardElement.removeEventListener('pointerenter', onRuntimeActive);
+        runtimeCardElement.removeEventListener('pointerleave', onRuntimeIdle);
+        runtimeCardElement.removeEventListener('focusin', onRuntimeActive);
+        runtimeCardElement.removeEventListener('focusout', onRuntimeIdle);
       }
 
-      if (runtimeWindowRef.current && onRuntimeWindowTrigger) {
-        runtimeWindowRef.current.removeEventListener('pointerenter', onRuntimeWindowTrigger);
-        runtimeWindowRef.current.removeEventListener('focusin', onRuntimeWindowTrigger);
+      if (runtimeWindowElement && onRuntimeWindowTrigger) {
+        runtimeWindowElement.removeEventListener('pointerenter', onRuntimeWindowTrigger);
+        runtimeWindowElement.removeEventListener('focusin', onRuntimeWindowTrigger);
       }
 
       context.revert();
