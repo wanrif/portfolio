@@ -69,15 +69,18 @@ function App() {
         <Navbar />
         <main className='relative box-border scroll-smooth font-sans antialiased transition-all'>
           <Banner />
-          <Projects />
           <Experiences />
+          <Projects />
           <MySkill />
           <Contact />
         </main>
         <div className='terminal-statusbar'>
           <span className='hidden sm:inline'>session: interactive</span>
           <span className='text-tertiary-300'>runtime: stable</span>
-          <span className='truncate'>hint: ctrl+k command palette</span>
+          <span className='truncate'>
+            hint: <span className='text-gallery-200'>ctrl+k</span>
+            <span className='hidden min-[420px]:inline'> command palette</span>
+          </span>
         </div>
       </div>
       <FloatingMenu />

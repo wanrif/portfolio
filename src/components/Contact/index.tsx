@@ -94,7 +94,7 @@ const Contact: React.FC = () => {
     <section
       id='contacts'
       ref={sectionRef}
-      className='terminal-section relative min-h-[40dvh] px-4'
+      className='terminal-section relative min-h-[40dvh] px-4 sm:px-6'
     >
       <div className='terminal-grid-bg' />
       <div className='relative z-10 container mx-auto max-w-6xl'>

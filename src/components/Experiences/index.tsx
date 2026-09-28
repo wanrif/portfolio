@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import ErrorBoundary from '@components/ErrorBoundary';
 import { selectLocale, useAppStore } from '@stores/app/store';
 import { getLoopTempo } from '@utils/loopTempo';
 import { getLocalizedModule } from '@utils/mdxLocale';
@@ -128,6 +129,11 @@ const Experiences: React.FC = () => {
       eager: true,
     });
     const firstModule = getLocalizedModule(modules, locale);
+    if (import.meta.env.DEV && !firstModule) {
+      console.warn(
+        `[wanrif-os::Experiences] No localized now module found for locale "${locale}".`,
+      );
+    }
 
     return {
       entries: firstModule?.entries ?? [],
@@ -163,7 +169,7 @@ const Experiences: React.FC = () => {
   };
 
   return (
-    <section id='now' ref={sectionRef} className='terminal-section relative px-4 py-16'>
+    <section id='now' ref={sectionRef} className='terminal-section relative px-4 sm:px-6'>
       <div className='terminal-grid-bg' />
       <div className='relative z-10 container mx-auto max-w-6xl'>
         <div className='mb-7 space-y-2'>
@@ -251,9 +257,17 @@ const Experiences: React.FC = () => {
                 </div>
               ))}
 
+              {nowContent.entries.length === 0 && !nowContent.Body && (
+                <div className='terminal-subcard rounded-xl p-4 text-center text-xs text-gallery-400'>
+                  <p>system.status :: no_now_entries</p>
+                </div>
+              )}
+
               {nowContent.Body && (
                 <div className='rounded-xl border border-gallery-700/70 bg-shark-950/55 p-3 text-sm text-gallery-300'>
-                  <nowContent.Body />
+                  <ErrorBoundary sectionName='now-changelog'>
+                    <nowContent.Body />
+                  </ErrorBoundary>
                 </div>
               )}
             </div>

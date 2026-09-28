@@ -58,13 +58,12 @@ export default {
   projects_live_demo: 'demo live',
   projects_open_case_study: 'buka case study',
   projects_close_case_study: 'tutup case study',
+  projects_empty_title: 'system.status :: tidak_ada_studi_kasus',
+  projects_empty_desc: 'Tidak ada studi kasus yang ditemukan untuk bahasa ini.',
 
-  lab_title: 'Lab',
-  lab_subtitle: 'Eksperimen mini dan prototype tooling developer',
-  lab_item_cli: 'playground command runner untuk navigasi portfolio',
-  lab_item_ws: 'eksperimen throughput websocket dan rekoneksi',
-  lab_item_perf: 'profiling render path di perangkat mobile low-end',
-  lab_item_state: 'benchmark state management: Redux vs Zustand',
+  error_boundary_title: 'runtime :: error_bagian',
+  error_boundary_desc: 'Gagal memuat modul ini.',
+  error_boundary_retry: 'coba lagi modul',
 
   now_title: 'Saat Ini',
   now_changelog_title: 'changelog',
@@ -85,7 +84,7 @@ export default {
   contact_value_cv: 'Lihat CV atau Unduh',
 
   palette_title: 'terminal command palette',
-  palette_placeholder: 'ketik command: home | projects | now | skills | contact | theme | lang',
+  palette_placeholder: 'ketik command: home | now | projects | skills | contact | theme | lang',
   palette_hint: 'panah atas/bawah untuk navigasi • enter untuk jalankan • esc untuk tutup',
   palette_empty: 'command tidak ditemukan',
   palette_home: 'lompat ke hero',
