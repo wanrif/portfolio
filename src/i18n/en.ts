@@ -54,13 +54,12 @@ export default {
   projects_live_demo: 'live demo',
   projects_open_case_study: 'open case study',
   projects_close_case_study: 'close case study',
+  projects_empty_title: 'system.status :: no_case_studies',
+  projects_empty_desc: 'No case studies found for the active locale.',
 
-  lab_title: 'Lab',
-  lab_subtitle: 'Mini experiments and developer tooling prototypes',
-  lab_item_cli: 'command runner playground for portfolio navigation',
-  lab_item_ws: 'websocket throughput and reconnection experiments',
-  lab_item_perf: 'render path profiling on low-end mobile devices',
-  lab_item_state: 'state management benchmark: Redux vs Zustand',
+  error_boundary_title: 'runtime :: section_error',
+  error_boundary_desc: 'Failed to load this module.',
+  error_boundary_retry: 'retry module',
 
   now_title: 'Now',
   now_changelog_title: 'changelog',
@@ -80,7 +79,7 @@ export default {
   contact_value_cv: 'View CV or Download',
 
   palette_title: 'terminal command palette',
-  palette_placeholder: 'type command: home | projects | now | skills | contact | theme | lang',
+  palette_placeholder: 'type command: home | now | projects | skills | contact | theme | lang',
   palette_hint: 'arrow up/down to navigate • enter to run • esc to close',
   palette_empty: 'no command found',
   palette_home: 'jump to hero',

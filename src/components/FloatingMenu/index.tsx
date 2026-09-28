@@ -69,12 +69,12 @@ const FloatingMenu: React.FC = () => {
   const commandList = useMemo(
     () => [
       { command: 'home', description: t('palette_home'), action: () => scrollToSection('top') },
+      { command: 'now', description: t('palette_now'), action: () => scrollToSection('now') },
       {
         command: 'projects',
         description: t('palette_projects'),
         action: () => scrollToSection('projects'),
       },
-      { command: 'now', description: t('palette_now'), action: () => scrollToSection('now') },
       {
         command: 'skills',
         description: t('palette_skills'),
@@ -305,7 +305,7 @@ const FloatingMenu: React.FC = () => {
           'max-w-136 items-center gap-1.5 rounded-2xl border border-tertiary-700/55 bg-shark-950/78 px-1.5 py-1.5 shadow-[0_10px_26px_rgba(0,0,0,0.45)] backdrop-blur-xl',
         )}
       >
-        <div className='min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
+        <div className='min-w-0 flex-1 scrollbar-none overflow-x-auto [&::-webkit-scrollbar]:hidden'>
           <div className='flex min-w-max items-center gap-1.5 pr-1'>
             {mobileMenuList.map((item, index) => (
               <motion.button

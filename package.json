@@ -4,43 +4,53 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc -b && vite build",
-    "dev": "bunx --bun vite --host",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check",
-    "format:lint": "oxfmt --check && bunx oxlint",
-    "lint": "bunx oxlint",
-    "lint:fix": "bunx oxlint --fix --fix-suggestions",
-    "preview": "vite preview"
+    "build": "tsc -b && vp build",
+    "dev": "bunx --bun vp dev --host",
+    "format": "vp fmt",
+    "format:check": "vp fmt --check",
+    "format:lint": "vp fmt --check && bunx vp lint",
+    "lint": "bunx vp lint",
+    "lint:fix": "bunx vp lint --fix --fix-suggestions",
+    "prepare": "vp config",
+    "preview": "vp preview"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/vite": "^4.3.3",
     "@toolwind/corner-shape": "^0.0.8-3",
     "clsx": "2.1.1",
-    "framer-motion": "^12.38.0",
-    "gsap": "^3.14.2",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "react-i18next": "^17.0.2",
-    "react-icons": "^5.6.0",
+    "framer-motion": "^13.4.4",
+    "gsap": "^3.15.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-i18next": "^17.0.15",
+    "react-icons": "^5.7.0",
     "tailwind-merge": "3.5.0",
-    "zustand": "^5.0.12"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
-    "@types/bun": "^1.3.12",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "autoprefixer": "^10.4.27",
-    "oxfmt": "^0.44.0",
-    "oxlint": "^1.59.0",
-    "oxlint-tsgolint": "^0.20.0",
-    "rollup-plugin-visualizer": "^7.0.1",
-    "tailwindcss": "^4.2.2",
-    "terser": "^5.46.1",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.8"
-  }
+    "@types/bun": "^1.4.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
+    "rollup-plugin-visualizer": "^7.1.1",
+    "tailwindcss": "^4.3.3",
+    "terser": "^5.51.2",
+    "typescript": "^6.0.3",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.0.0",
+    "vite-plus": "1.0.0"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.0.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "bun",
+      "version": "1.4.2",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "bun@1.4.2"
 }

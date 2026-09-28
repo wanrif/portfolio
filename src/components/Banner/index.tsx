@@ -16,6 +16,7 @@ import ParticleBackground from './ParticleBackground';
 interface ISocialLink {
   href: string;
   icon: React.ReactNode;
+  label: string;
   tooltipText: string;
 }
 
@@ -344,23 +345,27 @@ const Banner: React.FC = () => {
   const socialLinks: ISocialLink[] = [
     {
       href: 'mailto:redwan_work@pm.me',
-      icon: <GoMention className='h-5 w-5' />,
+      icon: <GoMention className='h-4 w-4 shrink-0' />,
+      label: t('contact_label_email'),
       tooltipText: 'redwan_work@pm.me',
     },
     {
       href: 'https://www.linkedin.com/in/wanrif/',
-      icon: <GiLinkedRings className='h-5 w-5' />,
+      icon: <GiLinkedRings className='h-4 w-4 shrink-0' />,
+      label: t('contact_label_linkedin'),
       tooltipText: 'linkedIn',
     },
     {
       href: 'https://github.com/wanrif',
-      icon: <GiCat className='h-5 w-5' />,
+      icon: <GiCat className='h-4 w-4 shrink-0' />,
+      label: t('contact_label_github'),
       tooltipText: 'Github',
     },
     {
       href: 'https://drive.proton.me/urls/253KWW5VM4#Tw7dKlEuPOPr',
-      icon: <GiAce className='h-5 w-5' />,
-      tooltipText: 'CV',
+      icon: <GiAce className='h-4 w-4 shrink-0' />,
+      label: t('contact_label_cv'),
+      tooltipText: t('contact_value_cv'),
     },
   ];
 
@@ -379,7 +384,7 @@ const Banner: React.FC = () => {
       </div>
 
       <motion.div
-        className='relative z-10 mx-auto grid w-full max-w-6xl items-start gap-4 xl:grid-cols-[minmax(0,1.34fr)_minmax(0,0.66fr)]'
+        className='relative z-10 mx-auto grid w-full max-w-6xl items-start gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,0.6fr)]'
         {...pageEnterMotion()}
       >
         <div className='terminal-window overflow-hidden'>
@@ -396,30 +401,31 @@ const Banner: React.FC = () => {
                 <span ref={commandScanRef} aria-hidden className='terminal-command-scan' />
               </div>
 
-              <h1 className='font-display text-3xl leading-[1.1] font-bold text-gallery-100 sm:text-5xl'>
+              <h1 className='font-display text-4xl leading-[1.08] font-bold tracking-tight text-gallery-100 sm:text-5xl lg:text-5xl'>
                 Redwan Sarif
-                <span className='mt-1.5 block text-xl text-tertiary-300 sm:text-3xl'>
+                <span className='mt-2 block font-mono text-lg font-medium text-tertiary-300 sm:text-2xl'>
                   {t('hero_role')}
                 </span>
               </h1>
 
-              <p className='max-w-xl text-gallery-300'>{t('hero_intro')}</p>
+              <p className='max-w-xl leading-relaxed text-gallery-300'>{t('hero_intro')}</p>
 
-              <div className='flex flex-wrap items-center gap-2 pt-1'>
+              <div className='flex flex-wrap items-center gap-3 pt-1'>
                 <button
                   type='button'
                   onClick={() => scrollToSection('projects')}
-                  className='terminal-btn-primary rounded-xl px-4 py-2 transition-colors corner-bevel'
+                  className='terminal-btn-primary flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold tracking-wide shadow-sm transition-all corner-bevel hover:shadow-md'
                 >
-                  {t('hero_primary_cta')}
+                  <span className='text-xs opacity-75'>&gt;_</span>
+                  <span>{t('hero_primary_cta')}</span>
                 </button>
                 <a
                   href='https://github.com/wanrif'
                   target='_blank'
                   rel='noreferrer'
-                  className='terminal-btn-secondary rounded-xl px-4 py-2 transition-colors corner-bevel'
+                  className='terminal-btn-secondary flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-medium text-gallery-300 transition-colors corner-bevel hover:text-gallery-100'
                 >
-                  {t('hero_secondary_cta')}
+                  <span>{t('hero_secondary_cta')}</span>
                 </a>
               </div>
 
@@ -430,10 +436,13 @@ const Banner: React.FC = () => {
                       href={link.href}
                       target='_blank'
                       rel='noreferrer'
-                      className='terminal-subcard flex h-11 items-center justify-center rounded-xl text-tertiary-300 transition-colors duration-300 corner-bevel hover:border-tertiary-400'
+                      className='terminal-subcard flex h-10 items-center justify-center gap-1.5 rounded-xl px-2.5 text-tertiary-300 transition-colors duration-300 corner-bevel hover:border-tertiary-400 hover:text-tertiary-200'
                       {...iconInteractionMotion()}
                     >
                       {link.icon}
+                      <span className='font-mono text-xs font-medium tracking-wider lowercase'>
+                        {link.label}
+                      </span>
                     </motion.a>
                   </Tooltip>
                 ))}
@@ -507,7 +516,7 @@ const Banner: React.FC = () => {
 
         <div
           ref={runtimeWindowRef}
-          className='terminal-window relative h-fit self-start overflow-hidden'
+          className='terminal-window relative h-fit self-start overflow-hidden border-gallery-800/70 bg-shark-950/70 opacity-92 transition-opacity duration-300 hover:opacity-100'
         >
           <div className='terminal-portal-layer' aria-hidden>
             <span ref={portalRingRef} className='terminal-portal-ring' />
@@ -518,10 +527,10 @@ const Banner: React.FC = () => {
             <span className='js-portal-spark terminal-portal-spark' />
             <span className='js-portal-spark terminal-portal-spark' />
           </div>
-          <div className='terminal-titlebar'>
-            <span>runtime / signals</span>
+          <div className='terminal-titlebar text-xs text-gallery-400'>
+            <span>runtime / telemetry</span>
             <div className='terminal-live-group'>
-              <span className='terminal-chip'>live</span>
+              <span className='terminal-chip text-[10px]'>live</span>
               <div className='terminal-live-pulse' aria-hidden>
                 <span className='js-runtime-pulse-dot terminal-live-dot' />
                 <span className='js-runtime-pulse-dot terminal-live-dot' />
@@ -548,8 +557,12 @@ const Banner: React.FC = () => {
               </p>
             </div>
             <div className='terminal-subcard rounded-xl p-3'>
-              <p className='terminal-prompt mb-2'>ops.state</p>
-              <p className='text-sm text-tertiary-300'>ready_for_collaboration=true</p>
+              <div className='mb-1.5 flex items-center justify-between'>
+                <p className='terminal-prompt'>ops.current_role</p>
+                <span className='font-mono text-[10px] text-tertiary-300'>active</span>
+              </div>
+              <p className='text-xs font-semibold text-gallery-100'>Frontend Developer</p>
+              <p className='text-xs text-gallery-400'>PT Indocyber Global Teknologi</p>
               <div className='terminal-signal-track mt-2' aria-hidden>
                 <span ref={signalPacketRef} className='terminal-signal-packet' />
               </div>

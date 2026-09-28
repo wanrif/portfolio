@@ -101,7 +101,7 @@ const MySkill: React.FC = () => {
   ];
 
   return (
-    <section id='skills' ref={sectionRef} className='terminal-section relative px-4 py-16'>
+    <section id='skills' ref={sectionRef} className='terminal-section relative px-4 sm:px-6'>
       <div className='terminal-grid-bg' />
       <div className='relative z-10 container mx-auto max-w-6xl'>
         <p className='terminal-prompt mb-2'>module: capability.matrix</p>

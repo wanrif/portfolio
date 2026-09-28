@@ -12,14 +12,14 @@ export const MENU_ITEMS = [
     tooltip: 'home',
   },
   {
-    icon: GiJetFighter,
-    sectionId: 'projects',
-    tooltip: 'projects',
-  },
-  {
     icon: GiSpellBook,
     sectionId: 'now',
     tooltip: 'now',
+  },
+  {
+    icon: GiJetFighter,
+    sectionId: 'projects',
+    tooltip: 'projects',
   },
   {
     icon: GiSkills,
